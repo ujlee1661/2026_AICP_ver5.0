@@ -429,11 +429,9 @@ def structured_persona_sha256(agent: dict) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
-# WARNING: this slot-driven selector targets the RETIRED demographic design.
-# The active cohort is distribution-matched to TwinMarket's behavioural axes and is
-# built by TwinMarket_analysis/build_ver3_cohort.py. A cohort produced here will
-# carry the 90/10 slot cash split and therefore FAIL verify_distribution, which now
-# expects 73/27. Kept for reference; do not use it to rebuild the study cohort.
+# This selector is used only by the explicit ``--create-new-cohort`` path.  The
+# frozen baseline is never rebuilt through it.  New cohorts must still receive all
+# current structured axes and the current 73/27 cash split before validation.
 def match_agents(pool: list[dict], slots: list[dict], seed: int = config.RANDOM_SEED) -> list[dict]:
     if len(pool) < len(slots):
         raise ValueError(f"pool has {len(pool)} agents but {len(slots)} slots are required")
@@ -455,12 +453,21 @@ def match_agents(pool: list[dict], slots: list[dict], seed: int = config.RANDOM_
         chosen["ini_cash"] = slot["ini_cash"]
         chosen["location"] = assign_location(rng)
         chosen["news_depth"] = 1  # replaced below by assign_news_depths
+        chosen["momentum_contrarian"] = "neutral"
         chosen["can_post_community"] = 0
         chosen["segment_key"] = segment_key(slot["age_group"], slot["gender"], slot["ini_cash"])
         chosen["match_score"] = score_agent(chosen, preferred)
         chosen["persona_prompt"] = generate_persona_prompt(chosen)
         used_source_ids.add(chosen["source_user_id"])
         selected.append(chosen)
+
+    cash_assignments = (
+        [config.INI_CASH_SMALL] * 73
+        + [config.INI_CASH_LARGE] * (len(selected) - 73)
+    )
+    rng.shuffle(cash_assignments)
+    for agent, initial_cash in zip(selected, cash_assignments):
+        agent["ini_cash"] = initial_cash
 
     assign_news_depths(selected, rng)
     for agent in selected:
