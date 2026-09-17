@@ -804,6 +804,88 @@ class HierarchicalBeliefValidationTests(unittest.IsolatedAsyncioTestCase):
             [outcome_id],
         )
 
+    async def test_ltb_accepts_neutral_verdict_for_flat_outcome(self) -> None:
+        outcome_id = "outcome:fill-flat:h1"
+        client = _SequenceClient(
+            [
+                {
+                    **_dimensions("flat outcome"),
+                    "integration_evidence": _evidence(),
+                    "outcome_verdicts": ["neutral"],
+                }
+            ]
+        )
+        result = await update_long_term_belief(
+            {"agent_id": "agent-1", "news_depth": 1, "persona_prompt": "persona"},
+            event={
+                "event_id": "2026-03-03/AM",
+                "turn": 3,
+                "date": "2026-03-03",
+                "subturn": "am",
+            },
+            previous_ltb={"dimensions": _dimensions("previous")},
+            current_stb={
+                "dimensions": _dimensions("current"),
+                "dimension_evidence": _evidence(),
+            },
+            transaction_episode={
+                "fill_id": "fill-3",
+                "action": "buy",
+                "filled_quantity": 1,
+                "executed_price": 100.0,
+            },
+            eligible_price_outcomes_dim_6_only=[
+                {
+                    "outcome_id": outcome_id,
+                    "action_aligned_markout": 0.0,
+                }
+            ],
+            client=client,
+            seed=2,
+            validation_attempts=1,
+        )
+        self.assertEqual(
+            result["integration_evidence"]["dim_6"]["support"],
+            [outcome_id],
+        )
+
+    async def test_ltb_rejects_neutral_verdict_for_nonflat_outcome(self) -> None:
+        outcome_id = "outcome:fill-nonflat:h1"
+        def response(verdict: str) -> dict[str, object]:
+            return {
+                **_dimensions(verdict),
+                "integration_evidence": _evidence(),
+                "outcome_verdicts": [verdict],
+            }
+        client = _SequenceClient([response("neutral"), response("contradict")])
+        result = await update_long_term_belief(
+            {"agent_id": "agent-1", "news_depth": 1, "persona_prompt": "persona"},
+            event={
+                "event_id": "2026-03-03/AM", "turn": 3,
+                "date": "2026-03-03", "subturn": "am",
+            },
+            previous_ltb={"dimensions": _dimensions("previous")},
+            current_stb={
+                "dimensions": _dimensions("current"),
+                "dimension_evidence": _evidence(),
+            },
+            transaction_episode={
+                "fill_id": "fill-3", "action": "buy",
+                "filled_quantity": 1, "executed_price": 100.0,
+            },
+            eligible_price_outcomes_dim_6_only=[{
+                "outcome_id": outcome_id, "action_aligned_markout": -0.1,
+            }],
+            client=client,
+            seed=2,
+            validation_attempts=2,
+        )
+        self.assertEqual(result["generation_attempts"], 2)
+        self.assertEqual(
+            result["integration_evidence"]["dim_6"]["contradict"],
+            [outcome_id],
+        )
+
     async def test_ltb_generator_retries_relation_flips_and_accepts_exact_polarity(
         self,
     ) -> None:

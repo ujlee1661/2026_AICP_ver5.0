@@ -1002,7 +1002,7 @@ def _offline_response(messages: list[dict[str, str]]) -> str:
         # 가격 결과는 인용이 아니라 순서대로 판정만 낸다(라이브와 같은 계약).
         verdicts = [
             outcome_evidence_relation(row.get("action_aligned_markout"))
-            or "support"
+            or "neutral"
             for row in due_outcomes
             if isinstance(row, dict)
         ]

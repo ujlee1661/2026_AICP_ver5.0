@@ -678,6 +678,8 @@ class StbScopeAndAnalysisEvidenceContractTests(unittest.IsolatedAsyncioTestCase)
         self.assertIn("어느 쪽인지는 **당신이 판단합니다**", instructions)
         self.assertIn("매도한 뒤 가격이 내렸다", instructions)
         self.assertIn("부분 매도", instructions)
+        self.assertIn('"support", "contradict", "neutral"', instructions)
+        self.assertIn('가격 변화가 사실상 0이면 "neutral"', instructions)
         self.assertNotIn("action_aligned_markout가 양수면 support", instructions)
         # STB dim_6 전용 형식 요구는 LTB 지시문으로 번지지 않는다. 다만 STB의
         # dim_6 문자열 자체는 current_stb payload로 정상 전달된다.
