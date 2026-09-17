@@ -40,7 +40,8 @@
 | 주 분석 | burn-in 이후 42거래일 |
 | cohort | 동일한 고정 100명 |
 | depth | D0=30, D1=55, D2=15 |
-| 능동 community 참여 가능 | D1+D2=70명 |
+| community 선택·반응 가능 | D1+D2=70명 |
+| community 게시 판단 가능 | `can_post_community=1`인 D1/D2 14명 |
 | 초기 현금 | 1억 원 90명, 10억 원 10명 |
 | study seed | 2 |
 | 거래 선택 | `buy` 또는 `sell`; `hold` 없음 |
@@ -260,11 +261,12 @@ analysis/decision이 방금 생성한 `LTB_t`를 다시 읽는 순환은 금지�
 | Depth | 쓰기 | 선택 읽기·반응 | 다음 AM Best |
 | --- | --- | --- | --- |
 | D0 | 불가 | 불가 | 자기 글 문제가 없는 Best 원문 전체, 익명 닉네임 |
-| D1 | 게시 여부 판단, PM당 최대 1개 | 최대 5개 | Best 원문 전체, 익명 닉네임 |
-| D2 | 게시 여부 판단, PM당 최대 1개 | 최대 5개 | D1 정보 + 작성자의 PM 시점 동결 profile |
+| D1 | `can_post_community=1`이면 게시 판단, PM당 최대 1개 | 최대 5개 | Best 원문 전체, 익명 닉네임 |
+| D2 | `can_post_community=1`이면 게시 판단, PM당 최대 1개 | 최대 5개 | D1 정보 + 작성자의 PM 시점 동결 profile |
 
-D1+D2 70명만 능동 작성·선택·반응 후보이며 게시를 강제하지 않는다. D0는
-게시, 후보 선택, 반응을 하지 않지만 다음 AM Best의 **본문 전체**를 받는다.
+D1+D2 70명은 선택·반응 후보이고, 그중 봉인된 게시 권한 보유자 14명만 작성
+판단을 한다. 게시를 강제하지 않는다. D0는 게시, 후보 선택, 반응을 하지 않지만
+다음 AM Best의 **본문 전체**를 받는다.
 
 작성자 평판 badge는 두지 않는다. legacy 동적 badge 3종은 임계값 없는 상위
 20% 배정과 초기자본 의존성 때문에 처치를 교란하는 미봉인 자유 변수였고,
@@ -281,7 +283,9 @@ agent ID, 미래 상태는 노출하지 않으며 다음 AM에 다시 조회하�
 - 게시글 본문은 글당 최대 500자다.
 - 500자는 통과하고 501자는 서버가 거부한다.
 - 의미를 바꿀 수 있는 자동·무음 잘라내기는 하지 않는다.
-- 한 agent는 한 PM에 최대 한 글만 쓴다. `community_posts`의
+- 구조화 persona의 `can_post_community=1`로 봉인된 D1/D2만 게시 판단을 한다.
+  이 플래그는 읽기 depth와 별도이며 현재 100명 중 14명에게 부여된다.
+- 권한이 있는 agent는 한 PM에 최대 한 글만 쓴다. `community_posts`의
   unique index `(agent_id, date)`가 이를 DB에서 강제한다.
 - 후보 보드에는 익명 닉네임·제목·post type·동결 반응 count/score만 보이고
   본문과 작성자 평판 신호는 넣지 않는다.
@@ -495,7 +499,7 @@ community mode, model, 수수료를 결정하는 정본이 아니다.
 | resolver | authored spec과 registry hash를 검증해 계산값을 포함한 불변 manifest 생성 | `twinmarket_kr/study_spec.py`, `scripts/15_seal_study.py` |
 | RunContext | manifest, run ID, 조건, 경로, registry reader, 정책을 dependency로 전달 | `scripts/05_run_simulation.py`, `twinmarket_kr/experiment_runtime.py` |
 | EventSchedule | 45일·90 event의 순서, AM/PM, cutoff, reference price ID 제공 | `calendar.json`, `stage_inputs.json`, `prices.json` |
-| cohort registry | agent ID, 구조화 persona, depth, 초기 현금 exact map | `cohort.json`, `persona_projection.json`, `data/sys_100_ko_ver5.db` |
+| cohort registry | agent ID, 구조화 persona, depth, 게시 권한, 초기 현금 exact map | `cohort.json`, `persona_projection.json`, `data/sys_100_ko_ver5.db` |
 | sealed news registry | event별 순서가 고정된 실제뉴스, payload hash, shortage | `news.json` |
 | prompt registry | production prompt hash와 stage schema를 고정 | 최상위 `prompts/`; run bundle의 사본은 재현 artifact |
 

@@ -40,7 +40,7 @@ class SimulationCohortSelectionTests(unittest.TestCase):
         self.assertIn("테스트 종목 개인투자자", prompt)
         self.assertIn("테스트 종목 단일 자산", prompt)
         self.assertNotIn("삼성전자", prompt)
-        self.assertIn(f"나이는 {int(agent['age'])}세", prompt)
+        self.assertNotIn("나이는", prompt)
         self.assertIn("기본 뉴스의 기사 제목(헤드라인)", prompt)
 
     def test_loader_regenerates_persona_from_structured_depth_without_mutating_db(self) -> None:
@@ -66,6 +66,7 @@ class SimulationCohortSelectionTests(unittest.TestCase):
                         "fol_ind": '["전기전자", "반도체"]',
                         "ini_cash": 100_000_000,
                         "news_depth": 0,
+                        "momentum_contrarian": "neutral",
                         "segment_key": "fixture",
                         "match_score": 1,
                         "persona_prompt": source_prompt,
@@ -86,10 +87,8 @@ class SimulationCohortSelectionTests(unittest.TestCase):
             "기본 뉴스의 기사 제목(헤드라인)을 모두 확인",
             loaded[0]["persona_prompt"],
         )
-        self.assertIn(
-            "성별은 남성, 나이는 35세, 거주 지역은 서울",
-            loaded[0]["persona_prompt"],
-        )
+        self.assertNotIn("성별은", loaded[0]["persona_prompt"])
+        self.assertNotIn("거주 지역은", loaded[0]["persona_prompt"])
         self.assertNotIn("[기본 정보]", loaded[0]["persona_prompt"])
         self.assertNotIn("거래 경험 지표", loaded[0]["persona_prompt"])
         self.assertNotIn("관심 산업", loaded[0]["persona_prompt"])
@@ -98,23 +97,18 @@ class SimulationCohortSelectionTests(unittest.TestCase):
             loaded[0]["source_persona_prompt_sha256"],
             loaded[0]["persona_prompt_sha256"],
         )
+        self.assertEqual(loaded[0]["can_post_community"], 0)
 
-    def test_all_100_prompts_keep_legacy_visible_feature_set(self) -> None:
+    def test_all_100_prompts_keep_structured_non_demographic_feature_set(self) -> None:
         agents = load_agents_from_sys100(config.SYS_100_DB)
         self.assertEqual(len(agents), 100)
         for agent in agents:
             prompt = str(agent["persona_prompt"])
-            self.assertEqual(len(prompt.rstrip("\n").split("\n")), 9)
+            self.assertEqual(len(prompt.rstrip("\n").split("\n")), 10)
             self.assertTrue(prompt.endswith("\n"))
             self.assertFalse(prompt.endswith("\n\n"))
-            self.assertIn(
-                f"나이는 {int(agent['age'])}세",
-                prompt,
-            )
-            self.assertIn(
-                f"거주 지역은 {str(agent['location']).strip()}",
-                prompt,
-            )
+            self.assertNotIn("나이는", prompt)
+            self.assertNotIn("거주 지역은", prompt)
             self.assertIn(
                 f"현금 {int(agent['ini_cash']):,}원",
                 prompt,

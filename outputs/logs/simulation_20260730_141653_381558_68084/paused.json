@@ -1,8 +1,0 @@
-{
-  "checkpoint_status": "paused",
-  "error": "1 agent turn(s) failed after all parallel tasks settled: AnalysisValidationError: market_analysis did not produce all required JSON keys after 4 attempts: [['missing:directional_stance', 'missing:evidence_references'], ['missing:directional_stance', 'missing:evidence_references'], ['missing:directional_stance', 'missing:evidence_references'], ['missing:directional_stance', 'missing:evidence_references']]",
-  "error_type": "ParallelTaskError",
-  "event_id": "2026-02-27/AM",
-  "restart_command": "rerun the identical command with --resume and --run-dir /Users/sujinjung/Desktop/felab/aicp/2026_AICP_ver3.0/outputs/logs/simulation_20260730_141653_381558_68084",
-  "status": "paused"
-}

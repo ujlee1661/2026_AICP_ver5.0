@@ -89,6 +89,7 @@ STRUCTURED_PERSONA_FIELDS = (
     "segment_key",
     "match_score",
     "momentum_contrarian",
+    "can_post_community",
 )
 
 
@@ -396,6 +397,7 @@ def structured_persona_sha256(agent: dict) -> str:
         "ini_cash",
         "news_depth",
         "match_score",
+        "can_post_community",
     }
     payload: dict[str, object] = {}
     for field in STRUCTURED_PERSONA_FIELDS:
@@ -453,6 +455,7 @@ def match_agents(pool: list[dict], slots: list[dict], seed: int = config.RANDOM_
         chosen["ini_cash"] = slot["ini_cash"]
         chosen["location"] = assign_location(rng)
         chosen["news_depth"] = 1  # replaced below by assign_news_depths
+        chosen["can_post_community"] = 0
         chosen["segment_key"] = segment_key(slot["age_group"], slot["gender"], slot["ini_cash"])
         chosen["match_score"] = score_agent(chosen, preferred)
         chosen["persona_prompt"] = generate_persona_prompt(chosen)
@@ -488,11 +491,24 @@ def save_sys_100(agents: Iterable[dict], output_db: Path = config.SYS_100_DB) ->
         "segment_key",
         "match_score",
         "persona_prompt",
+        "momentum_contrarian",
+        "can_post_community",
     ]
     placeholders = ", ".join(["?"] * len(columns))
     sql = f"INSERT INTO agents ({', '.join(columns)}) VALUES ({placeholders})"
     with connect(output_db) as conn:
-        conn.executemany(sql, [[agent[col] for col in columns] for agent in agents])
+        conn.executemany(
+            sql,
+            [
+                [
+                    int(agent.get(col, 0))
+                    if col == "can_post_community"
+                    else agent[col]
+                    for col in columns
+                ]
+                for agent in agents
+            ],
+        )
         conn.commit()
 
 
@@ -505,6 +521,19 @@ EXPECTED_DEPTH_COUNTS = {0: 30, 1: 55, 2: 15}
 def verify_distribution(agents: list[dict]) -> dict:
     cash = Counter(agent["ini_cash"] for agent in agents)
     depth = Counter(agent["news_depth"] for agent in agents)
+    post_permissions = Counter(
+        int(agent.get("can_post_community", 0))
+        for agent in agents
+    )
+    invalid_post_permissions = [
+        str(agent["agent_id"])
+        for agent in agents
+        if int(agent.get("can_post_community", 0)) not in {0, 1}
+        or (
+            int(agent.get("can_post_community", 0)) == 1
+            and int(agent["news_depth"]) not in {1, 2}
+        )
+    ]
     prompt_errors = [
         agent["agent_id"]
         for agent in agents
@@ -521,10 +550,13 @@ def verify_distribution(agents: list[dict]) -> dict:
         "count": len(agents),
         "cash": dict(cash),
         "news_depth": dict(depth),
+        "community_post_permission": dict(post_permissions),
         "distribution_pass": dict(cash) == EXPECTED_CASH_COUNTS
         and dict(depth) == EXPECTED_DEPTH_COUNTS
+        and not invalid_post_permissions
         and not prompt_errors,
         "prompt_errors": prompt_errors,
+        "invalid_community_post_permission_agents": invalid_post_permissions,
         "segment_avg_scores": {
             key: round(sum(values) / len(values), 3) for key, values in sorted(segment_scores.items())
         },

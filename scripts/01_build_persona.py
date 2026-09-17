@@ -53,6 +53,7 @@ def validate_existing_baseline(
             "ordinal": ordinal,
             "agent_id": str(agent["agent_id"]),
             "news_depth": int(agent["news_depth"]),
+            "can_post_community": int(agent["can_post_community"]),
             "initial_cash": int(agent["ini_cash"]),
             "structured_persona_sha256": structured_persona_sha256(agent),
             "persona_sha256": str(agent["persona_prompt_sha256"]),
@@ -66,6 +67,7 @@ def validate_existing_baseline(
             "ordinal": int(row["ordinal"]),
             "agent_id": str(row["agent_id"]),
             "news_depth": int(row["news_depth"]),
+            "can_post_community": int(row["can_post_community"]),
             "initial_cash": int(row["initial_cash"]),
             "persona_sha256": str(row["persona_sha256"]),
         }
@@ -78,6 +80,7 @@ def validate_existing_baseline(
                 "ordinal",
                 "agent_id",
                 "news_depth",
+                "can_post_community",
                 "initial_cash",
                 "persona_sha256",
             )

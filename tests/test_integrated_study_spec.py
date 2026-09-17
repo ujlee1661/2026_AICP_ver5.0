@@ -153,6 +153,17 @@ class IntegratedStudySpecTests(unittest.TestCase):
         ):
             self._validate(self.sealed_root, changed)
 
+    def test_rejects_structured_community_post_permission_mismatch(self) -> None:
+        changed = [dict(agent) for agent in self.agents]
+        changed[0]["can_post_community"] = 1 - int(
+            changed[0]["can_post_community"]
+        )
+        with self.assertRaisesRegex(
+            IntegratedStudySpecError,
+            "can_post_community",
+        ):
+            self._validate(self.sealed_root, changed)
+
     def test_rejects_non_prompt_matching_metadata_drift(self) -> None:
         changed = [dict(agent) for agent in self.agents]
         changed[0]["match_score"] = int(changed[0]["match_score"]) + 1
@@ -223,6 +234,12 @@ class IntegratedStudySpecTests(unittest.TestCase):
                 "initial_cash_counts": dict(
                     Counter(
                         str(row["initial_cash"])
+                        for row in cohort["agents"]
+                    )
+                ),
+                "community_post_permission_counts": dict(
+                    Counter(
+                        str(row["can_post_community"])
                         for row in cohort["agents"]
                     )
                 ),

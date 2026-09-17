@@ -8,7 +8,7 @@ import sqlite3
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
 
 from twinmarket_kr.agents.memory_agent import MemoryAgent
 from twinmarket_kr.community.agent import CommunityAgent
@@ -24,6 +24,7 @@ from twinmarket_kr.community.thinking import _format_best_posts, _format_posts_r
 from twinmarket_kr.llm.belief import load_prompt, render_prompt
 from twinmarket_kr.community.validation import (
     CommunityValidationError,
+    can_author_community_post,
     expected_selective_read_limit,
     validate_post_body,
     validate_selective_read_limits,
@@ -33,7 +34,10 @@ from twinmarket_kr.run_logger import (
     finalize_community_delivery_counts,
 )
 from twinmarket_kr.run_integrity import validate_community_artifacts
-from twinmarket_kr.simulation import validate_community_runtime_policy
+from twinmarket_kr.simulation import (
+    post_trade_posting_phase,
+    validate_community_runtime_policy,
+)
 
 
 class CommunityPolicyTests(unittest.TestCase):
@@ -117,9 +121,37 @@ class CommunityPolicyTests(unittest.TestCase):
             ],
             best_rows=[best_row],
             selection_rows=[],
+            post_permission_by_agent={"D0": False, "D1": True, "D2": True},
         )
 
         self.assertEqual(errors, [])
+
+    def test_explicit_post_permission_is_fail_closed_and_independent_of_reading(self) -> None:
+        self.assertTrue(
+            can_author_community_post(
+                {"news_depth": 1, "can_post_community": 1}
+            )
+        )
+        for agent in (
+            {"news_depth": 1, "can_post_community": 0},
+            {"news_depth": 2},
+            {"news_depth": 0, "can_post_community": 1},
+        ):
+            with self.subTest(agent=agent):
+                self.assertFalse(can_author_community_post(agent))
+
+        errors = validate_community_artifacts(
+            community_mode="on",
+            agent_ids=["D1"],
+            depth_by_agent={"D1": 1},
+            community_rows=[],
+            post_rows=[{"agent_id": "D1", "content": "권한 없는 글"}],
+            interaction_rows=[],
+            best_rows=[],
+            selection_rows=[],
+            post_permission_by_agent={"D1": False},
+        )
+        self.assertIn("ineligible community post author=D1", errors)
 
     def test_integrity_contract_rejects_d0_post_and_title_only_best(self) -> None:
         errors = validate_community_artifacts(
@@ -227,6 +259,45 @@ class CommunityPolicyTests(unittest.TestCase):
         self.assertEqual(validate_post_body(body), body)
         with self.assertRaisesRegex(CommunityValidationError, "500 characters"):
             validate_post_body("가" * 501)
+
+
+class CommunityPostingPermissionRuntimeTests(unittest.IsolatedAsyncioTestCase):
+    async def test_posting_llm_is_called_only_for_explicitly_permitted_agents(self) -> None:
+        permitted = {
+            "agent_id": "A001",
+            "news_depth": 1,
+            "can_post_community": 1,
+        }
+        blocked = {
+            "agent_id": "A002",
+            "news_depth": 2,
+            "can_post_community": 0,
+        }
+        turn_results = [
+            {"agent": permitted, "ltb": {"ltb_id": "l1"}},
+            {"agent": blocked, "ltb": {"ltb_id": "l2"}},
+        ]
+        execution_by_agent = {
+            "A001": {"fill": {"fill_id": "f1"}},
+            "A002": {"fill": {"fill_id": "f2"}},
+        }
+        decision = AsyncMock(return_value=None)
+        with patch(
+            "twinmarket_kr.simulation.posting_decision",
+            decision,
+        ):
+            await post_trade_posting_phase(
+                turn_results=turn_results,
+                community_agent=object(),
+                execution_by_agent=execution_by_agent,
+                turn=2,
+                date="2026-02-27",
+                client=object(),
+                concurrency=2,
+            )
+
+        self.assertEqual(decision.await_count, 1)
+        self.assertEqual(decision.await_args.args[0]["agent_id"], "A001")
 
     def test_legacy_database_write_rechecks_post_body_limit(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

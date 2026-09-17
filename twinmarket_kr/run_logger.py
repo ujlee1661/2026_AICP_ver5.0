@@ -956,6 +956,7 @@ class SimulationLogger:
             "gender",
             "strategy",
             "news_depth",
+            "can_post_community",
             "segment_key",
         ]
         return {key: agent.get(key) for key in keys}

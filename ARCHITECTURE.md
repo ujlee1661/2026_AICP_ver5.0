@@ -792,17 +792,18 @@ OFF에서 빈 community 파일이 생길 수는 있지만 과학 상태나 STB �
 | Depth | 작성 | PM 선택 읽기 | 다음 AM Best |
 | --- | --- | --- | --- |
 | D0 | 불가 | 불가 | 자기 글 문제가 없는 Best 본문 전체 |
-| D1 | 가능 | 최대 5개, 선택 0개 허용 | Best 본문 전체 |
-| D2 | 가능 | 최대 5개, 선택 0개 허용 | Best 본문 전체 + 동결 상세 profile |
+| D1 | `can_post_community=1`만 가능 | 최대 5개, 선택 0개 허용 | Best 본문 전체 |
+| D2 | `can_post_community=1`만 가능 | 최대 5개, 선택 0개 허용 | Best 본문 전체 + 동결 상세 profile |
 
-D1+D2가 70명이므로 능동 작성·선택·반응 가능 인원은 70명이다. D0도 Best
-본문은 읽지만 글쓰기와 PM 선택·반응은 하지 않는다.
+D1+D2 70명 모두 선택·반응할 수 있지만, 작성 판단은 구조화 persona DB에서
+`can_post_community=1`로 봉인된 14명만 수행한다. D0도 Best 본문은 읽지만
+글쓰기와 PM 선택·반응은 하지 않는다.
 
 ### 12.3 PM lifecycle
 
 ```mermaid
 flowchart TD
-    A["PM fill + post-fill LTB 확정"] --> B["D1/D2 posting decision<br/>0개 또는 최대 1개"]
+    A["PM fill + post-fill LTB 확정"] --> B["게시 권한이 봉인된 D1/D2만 posting decision<br/>0개 또는 최대 1개"]
     B --> C["agent_id 순 post 저장"]
     C --> D["당일 candidate board 동결"]
     D --> E["reader별 자기 글 제외"]
@@ -817,7 +818,8 @@ flowchart TD
 
 ### 12.4 게시글
 
-- D1/D2만 게시 여부를 판단한다.
+- D1/D2 중 persona DB의 `can_post_community=1`인 agent만 게시 여부를 판단한다.
+- 이 권한은 cohort와 run signature에 함께 봉인하며, 읽기·반응 권한과 분리한다.
 - 작성은 강제하지 않는다.
 - 한 agent가 한 PM에 최대 한 글을 쓴다. 이 제약은 제어흐름만 믿지 않고
   `community_posts`의 unique index `idx_community_posts_agent_date(agent_id, date)`로

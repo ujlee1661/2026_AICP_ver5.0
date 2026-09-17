@@ -28,6 +28,7 @@ from twinmarket_kr.community.agent import CommunityAgent
 from twinmarket_kr.community.posting import posting_decision
 from twinmarket_kr.community.reading import community_reading_react, community_reading_select
 from twinmarket_kr.community.validation import (
+    can_author_community_post,
     expected_selective_read_limit,
     validate_selective_read_limits,
 )
@@ -442,6 +443,10 @@ async def run_simulation(
                 "community_reading": bool(community_enabled and config.ENABLE_COMMUNITY_READING),
                 "agent_ids": [agent["agent_id"] for agent in agents],
                 "agent_depths": {agent["agent_id"]: int(agent.get("news_depth") or 0) for agent in agents},
+                "community_post_permissions": {
+                    agent["agent_id"]: can_author_community_post(agent)
+                    for agent in agents
+                },
                 "persona_prompt_source": "structured_sys_100_projection",
                 "persona_prompt_regenerated_count": sum(
                     bool(agent.get("persona_prompt_regenerated"))
@@ -1344,7 +1349,7 @@ async def post_trade_posting_phase(
     active_results = [
         result
         for result in turn_results
-        if int(result.get("agent", {}).get("news_depth") or 0) >= 1
+        if can_author_community_post(result.get("agent", {}))
     ]
     if not active_results:
         return

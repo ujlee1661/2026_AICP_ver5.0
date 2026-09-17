@@ -220,6 +220,7 @@ def build_persona_projection(
                 "ordinal": ordinal,
                 "agent_id": str(row["agent_id"]),
                 "news_depth": int(row["news_depth"]),
+                "can_post_community": int(row["can_post_community"]),
                 "initial_cash": int(row["ini_cash"]),
                 "structured_persona_sha256": structured_persona_sha256(
                     row
@@ -231,7 +232,7 @@ def build_persona_projection(
         )
     return {
         "artifact_type": "persona_projection_manifest",
-        "version": "integrated-persona-projection-v1",
+        "version": "integrated-persona-projection-v2",
         "source_db_sha256": file_sha256(sys_db),
         "renderer": {
             "id": PERSONA_RENDERER_ID,
@@ -263,11 +264,12 @@ def build_cohort(persona_projection: dict, slots_csv: Path) -> dict:
             "ordinal": ordinal,
             "agent_id": aid,
             "news_depth": int(meta[aid]["news_depth"]),
+            "can_post_community": int(meta[aid]["can_post_community"]),
             "initial_cash": int(meta[aid]["initial_cash"]),
             "persona_sha256": str(meta[aid]["persona_sha256"]),
             "fixed_slot_sha256": slot_sha.get(aid, _digest(f"{aid}-slot")),
         })
-    return {"artifact_type": "cohort_registry", "version": "cohort-v1", "agents": agents}
+    return {"artifact_type": "cohort_registry", "version": "cohort-v2", "agents": agents}
 
 
 def load_agent_ids(path: Path | None) -> list[str] | None:
@@ -377,6 +379,10 @@ def build_spec(
         "next_am_delivery_not_before": "08:00:00", "next_am_delivery_not_after": "09:00:00",
     }
     depth_counts = Counter(str(a["news_depth"]) for a in cohort_obj["agents"])
+    post_permission_counts = Counter(
+        str(a["can_post_community"])
+        for a in cohort_obj["agents"]
+    )
     cash_counts = Counter(str(a["initial_cash"]) for a in cohort_obj["agents"])
     commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=PROJECT_ROOT).decode().strip()
     return {
@@ -395,7 +401,11 @@ def build_spec(
         # 한도의 정본은 config 하나다. 여기에 literal을 다시 적으면 config를
         # 바꿔도 봉인 spec이 따라오지 않는다.
         "belief_limits": dict(config.BELIEF_LIMITS),
-        "cohort_assertions": {"depth_counts": dict(depth_counts), "initial_cash_counts": dict(cash_counts)},
+        "cohort_assertions": {
+            "depth_counts": dict(depth_counts),
+            "initial_cash_counts": dict(cash_counts),
+            "community_post_permission_counts": dict(post_permission_counts),
+        },
         "condition_treatments": {
             "RN_COMM_OFF": {"community_mode": "off", "news_treatment": "real_only"},
             "RN_COMM_ON": {"community_mode": "on", "news_treatment": "real_only"},
@@ -417,7 +427,9 @@ def build_spec(
         "news_exposure_policy": news_exposure_policy,
         "community_policy": {
             "best_k": 5, "best_selection_policy": "top_k_or_fewer_available_no_forced_posting",
-            "permissions_from_cohort_depth_map": True, "depth1_selective_read_cap": 5,
+            "posting_permission_from_cohort_flag": "can_post_community",
+            "reading_permissions_from_cohort_depth_map": True,
+            "depth1_selective_read_cap": 5,
             "depth2_selective_read_cap": 5, "best_payload": "title_plus_full_frozen_body",
             "visibility": "next_approved_am_decision_event",
         },

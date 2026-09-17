@@ -203,10 +203,11 @@ def _validate_cohort(
     expected_count: int,
     expected_depth_counts: Mapping[int, int],
     expected_cash_counts: Mapping[int, int],
+    expected_post_permission_counts: Mapping[int, int],
     instrument_name: str,
 ) -> tuple[str, ...]:
     _expect(cohort.get("artifact_type"), "cohort_registry", "cohort.artifact_type")
-    _expect(cohort.get("version"), "cohort-v1", "cohort.version")
+    _expect(cohort.get("version"), "cohort-v2", "cohort.version")
     rows = _sequence(cohort.get("agents"), "cohort.agents")
     if len(rows) != expected_count:
         raise IntegratedStudySpecError(
@@ -215,6 +216,7 @@ def _validate_cohort(
     observed_ids: set[str] = set()
     depth_counts: Counter[int] = Counter()
     cash_counts: Counter[int] = Counter()
+    post_permission_counts: Counter[int] = Counter()
     runtime_by_id = {str(agent["agent_id"]): agent for agent in agents}
     if len(runtime_by_id) != len(agents):
         raise IntegratedStudySpecError(
@@ -237,12 +239,22 @@ def _validate_cohort(
             )
         runtime = runtime_by_id[agent_id]
         depth = int(row.get("news_depth"))
+        can_post = int(row.get("can_post_community"))
         cash = int(row.get("initial_cash"))
         _expect(
             int(runtime.get("news_depth")),
             depth,
             f"cohort[{agent_id}].news_depth",
         )
+        _expect(
+            int(runtime.get("can_post_community")),
+            can_post,
+            f"cohort[{agent_id}].can_post_community",
+        )
+        if can_post not in {0, 1} or (can_post == 1 and depth not in {1, 2}):
+            raise IntegratedStudySpecError(
+                f"cohort[{agent_id}] has invalid community posting permission"
+            )
         _expect(
             int(runtime.get("ini_cash")),
             cash,
@@ -261,6 +273,7 @@ def _validate_cohort(
         )
         depth_counts[depth] += 1
         cash_counts[cash] += 1
+        post_permission_counts[can_post] += 1
     _expect(
         dict(sorted(depth_counts.items())),
         dict(sorted(expected_depth_counts.items())),
@@ -270,6 +283,11 @@ def _validate_cohort(
         dict(sorted(cash_counts.items())),
         dict(sorted(expected_cash_counts.items())),
         "cohort initial-cash counts",
+    )
+    _expect(
+        dict(sorted(post_permission_counts.items())),
+        dict(sorted(expected_post_permission_counts.items())),
+        "cohort community-post permission counts",
     )
     return tuple(ordered_ids)
 
@@ -290,7 +308,7 @@ def _validate_persona_projection(
     )
     _expect(
         projection.get("version"),
-        "integrated-persona-projection-v1",
+        "integrated-persona-projection-v2",
         "persona projection version",
     )
     renderer = _mapping(
@@ -336,6 +354,7 @@ def _validate_persona_projection(
                 "ordinal": ordinal,
                 "agent_id": agent_id,
                 "news_depth": int(runtime["news_depth"]),
+                "can_post_community": int(runtime["can_post_community"]),
                 "initial_cash": int(runtime["ini_cash"]),
                 "structured_persona_sha256": structured_persona_sha256(
                     dict(runtime)
@@ -448,6 +467,16 @@ def _validate_policy(
     _expect(community.get("best_k"), 5, "community best_k")
     _expect(community.get("depth1_selective_read_cap"), 5, "community D1 cap")
     _expect(community.get("depth2_selective_read_cap"), 5, "community D2 cap")
+    _expect(
+        community.get("posting_permission_from_cohort_flag"),
+        "can_post_community",
+        "community posting permission source",
+    )
+    _expect(
+        community.get("reading_permissions_from_cohort_depth_map"),
+        True,
+        "community reading permission source",
+    )
     _expect(
         community.get("best_payload"),
         "title_plus_full_frozen_body",
@@ -585,12 +614,22 @@ def validate_integrated_study_profile(
         label="cohort_assertions.initial_cash_counts",
         expected_total=required_agent_count,
     )
+    post_permission_counts = _count_assertion(
+        assertions.get("community_post_permission_counts"),
+        label="cohort_assertions.community_post_permission_counts",
+        expected_total=required_agent_count,
+    )
+    if not set(post_permission_counts).issubset({0, 1}):
+        raise IntegratedStudySpecError(
+            "community post permission assertions may contain only 0/1"
+        )
     agent_ids = _validate_cohort(
         cohort,
         agents=agents,
         expected_count=required_agent_count,
         expected_depth_counts=depth_counts,
         expected_cash_counts=cash_counts,
+        expected_post_permission_counts=post_permission_counts,
         instrument_name=instrument_name,
     )
     _expect(

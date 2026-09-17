@@ -1,5 +1,0 @@
-﻿run_id,date,turn,agent_id,post_id,source_ltb_id,source_fill_id,source_decision_id,post_type,title,content
-simulation_20260730_141747_450867_68176,2026-02-27,2,A001,1,ltb_A001_t002,fill_A001_t002,decision_A001_t002,impression,오늘 삼성전자 흐름 메모,가격 흐름과 뉴스가 엇갈려 보입니다. 무리하지 않고 수량을 제한해 대응하겠습니다.
-simulation_20260730_141747_450867_68176,2026-02-27,2,A003,2,ltb_A003_t002,fill_A003_t002,decision_A003_t002,impression,오늘 삼성전자 흐름 메모,가격 흐름과 뉴스가 엇갈려 보입니다. 무리하지 않고 수량을 제한해 대응하겠습니다.
-simulation_20260730_141747_450867_68176,2026-03-03,4,A001,3,ltb_A001_t004,fill_A001_t004,decision_A001_t004,impression,오늘 삼성전자 흐름 메모,가격 흐름과 뉴스가 엇갈려 보입니다. 무리하지 않고 수량을 제한해 대응하겠습니다.
-simulation_20260730_141747_450867_68176,2026-03-03,4,A003,4,ltb_A003_t004,fill_A003_t004,decision_A003_t004,impression,오늘 삼성전자 흐름 메모,가격 흐름과 뉴스가 엇갈려 보입니다. 무리하지 않고 수량을 제한해 대응하겠습니다.

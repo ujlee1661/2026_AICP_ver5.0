@@ -1,8 +1,0 @@
-{
-  "checkpoint_status": "paused",
-  "error": "3 agent turn(s) failed after all parallel tasks settled: APIAuditIntegrityError: No exact provider response can bind accepted journal response llm:98f85b66a37104084e33b8c1d19e7891b02f1e775a990327fd7c92aaf170c0ea; APIAuditIntegrityError: No exact provider response can bind accepted journal response llm:735d6ccac7d8a5d742d95e9195e554fe14ae109ad1bb176b1c636f3f9af4ca24; APIAuditIntegrityError: No exact provider response can bind accepted journal response llm:30ef06b8e5b4093e154b29eed73a9f97a7c64a375cade108197ae412526ace38",
-  "error_type": "ParallelTaskError",
-  "event_id": "2026-03-03/AM",
-  "restart_command": "rerun the identical command with --resume and --run-dir /Users/sujinjung/Desktop/felab/aicp/2026_AICP_ver3.0/outputs/logs/rn_ab_ver6_45day_20260826/RN_COMM_ON",
-  "status": "paused"
-}

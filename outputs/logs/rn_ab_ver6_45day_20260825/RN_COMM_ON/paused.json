@@ -1,8 +1,0 @@
-{
-  "checkpoint_status": "paused",
-  "error": "1 agent turn(s) failed after all parallel tasks settled: CommunityValidationError: community thinking did not satisfy the structured claim contract after 10 attempts",
-  "error_type": "ParallelTaskError",
-  "event_id": "2026-03-23/AM",
-  "restart_command": "rerun the identical command with --resume and --run-dir /Users/sujinjung/Desktop/felab/aicp/2026_AICP_ver3.0/outputs/logs/rn_ab_ver6_45day_20260825/RN_COMM_ON",
-  "status": "paused"
-}

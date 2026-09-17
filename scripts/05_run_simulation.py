@@ -19,6 +19,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 import config
 from twinmarket_kr.agents.news_agent import SealedNewsBundle
+from twinmarket_kr.community.validation import can_author_community_post
 from twinmarket_kr.experiment_runtime import (
     EventCheckpointRuntime,
     ExperimentCheckpointError,
@@ -296,6 +297,10 @@ def _build_signature(
         "agent_ids": [str(agent["agent_id"]) for agent in agents],
         "agent_depths": {
             str(agent["agent_id"]): int(agent.get("news_depth") or 0)
+            for agent in agents
+        },
+        "community_post_permissions": {
+            str(agent["agent_id"]): can_author_community_post(agent)
             for agent in agents
         },
         "seed": int(args.seed),

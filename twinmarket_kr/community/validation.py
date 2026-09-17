@@ -10,6 +10,17 @@ class CommunityValidationError(LLMValidationError):
     pass
 
 
+def can_author_community_post(agent: dict) -> bool:
+    """Apply the structured posting permission without widening on bad data."""
+
+    try:
+        depth = int(agent.get("news_depth"))
+        permission = int(agent.get("can_post_community"))
+    except (TypeError, ValueError):
+        return False
+    return depth in {1, 2} and permission == 1
+
+
 def expected_selective_read_limit(depth: int) -> int:
     """Return the approved baseline body-read cap for one community depth."""
 

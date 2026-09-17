@@ -66,6 +66,7 @@ def validate_community_artifacts(
     interaction_rows: list[dict[str, str]],
     best_rows: list[dict[str, str]],
     selection_rows: list[dict[str, str]],
+    post_permission_by_agent: Mapping[str, bool] | None = None,
 ) -> list[str]:
     """Validate the analysis-visible community contract without DB access."""
     artifacts = {
@@ -87,10 +88,24 @@ def validate_community_artifacts(
     if set(depth_by_agent) != cohort:
         errors.append("community depth map differs from the run cohort")
         return errors
+    effective_post_permissions = (
+        {
+            agent_id: depth_by_agent.get(agent_id) in {1, 2}
+            for agent_id in agent_ids
+        }
+        if post_permission_by_agent is None
+        else {
+            str(agent_id): bool(allowed)
+            for agent_id, allowed in post_permission_by_agent.items()
+        }
+    )
+    if set(effective_post_permissions) != cohort:
+        errors.append("community post permission map differs from the run cohort")
+        return errors
 
     for row in post_rows:
         agent_id = str(row.get("agent_id") or "")
-        if depth_by_agent.get(agent_id, -1) not in {1, 2}:
+        if not effective_post_permissions.get(agent_id, False):
             errors.append(f"ineligible community post author={agent_id}")
         content = str(row.get("content") or "")
         if not content.strip() or len(content) > 500:
@@ -805,6 +820,7 @@ def validate_log_bundle(
     community_mode: str,
     sealed_news_bundle: Path | str | None = None,
     stock_code: str = config.STOCK_CODE,
+    post_permission_by_agent: Mapping[str, bool] | None = None,
 ) -> dict[str, Any]:
     """Fail fast when a chunk or merged run is incomplete or temporally inconsistent."""
     root = Path(run_dir)
@@ -1105,6 +1121,7 @@ def validate_log_bundle(
             interaction_rows=community_interaction_rows,
             best_rows=community_best_rows,
             selection_rows=community_selection_rows,
+            post_permission_by_agent=post_permission_by_agent,
         )
     )
 
@@ -1165,6 +1182,7 @@ def _validate_canonical_database(
     *,
     agent_ids: Sequence[str],
     depth_by_agent: Mapping[str, int],
+    post_permission_by_agent: Mapping[str, bool],
     completed_events: Sequence[Mapping[str, Any]],
     community_mode: str,
     full_schedule: bool,
@@ -1352,7 +1370,7 @@ def _validate_canonical_database(
                 body = str(post["content"] or "")
                 if (
                     author not in cohort
-                    or int(depth_by_agent.get(author, -1)) not in {1, 2}
+                    or not post_permission_by_agent.get(author, False)
                     or turn not in pm_turns
                     or not body.strip()
                     or len(body) > 500
@@ -2136,6 +2154,7 @@ def validate_canonical_run(
     event_ids = parameters.get("event_ids")
     agent_ids = parameters.get("agent_ids")
     raw_depths = parameters.get("agent_depths")
+    raw_post_permissions = parameters.get("community_post_permissions")
     if (
         not isinstance(event_ids, list)
         or not event_ids
@@ -2161,6 +2180,33 @@ def validate_canonical_run(
         raise CanonicalRunValidationError(
             "Run signature depth map differs from the cohort"
         )
+    if raw_post_permissions is None:
+        # Compatibility reader for runs created before posting permission was
+        # separated from depth. New signatures always bind the explicit map.
+        post_permission_by_agent = {
+            agent_id: depth_by_agent[agent_id] in {1, 2}
+            for agent_id in agent_ids
+        }
+    elif not isinstance(raw_post_permissions, dict):
+        raise CanonicalRunValidationError(
+            "Run signature has an invalid community post permission map"
+        )
+    else:
+        if any(
+            not isinstance(permission, bool)
+            for permission in raw_post_permissions.values()
+        ):
+            raise CanonicalRunValidationError(
+                "Run signature community post permissions must be booleans"
+            )
+        post_permission_by_agent = {
+            str(agent_id): permission
+            for agent_id, permission in raw_post_permissions.items()
+        }
+        if set(post_permission_by_agent) != set(agent_ids):
+            raise CanonicalRunValidationError(
+                "Run signature community post permission map differs from the cohort"
+            )
     completed = checkpoint.get("completed_events")
     if completed != event_ids or checkpoint.get("inflight_event") is not None:
         raise CanonicalRunValidationError(
@@ -2335,6 +2381,7 @@ def validate_canonical_run(
         committed_db,
         agent_ids=agent_ids,
         depth_by_agent=depth_by_agent,
+        post_permission_by_agent=post_permission_by_agent,
         completed_events=completed_events,
         community_mode=community_mode,
         full_schedule=full_schedule,
@@ -2357,6 +2404,7 @@ def validate_canonical_run(
                 community_mode=community_mode,
                 sealed_news_bundle=news_path,
                 stock_code=str(parameters.get("stock_code") or ""),
+                post_permission_by_agent=post_permission_by_agent,
             )
         except RuntimeError as exc:
             raise CanonicalRunValidationError(

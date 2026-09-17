@@ -61,6 +61,10 @@ class IntegratedStudySealerTests(unittest.TestCase):
             Counter(int(row["news_depth"]) for row in rows),
             Counter({1: 55, 0: 30, 2: 15}),
         )
+        self.assertEqual(
+            Counter(int(row["can_post_community"]) for row in rows),
+            Counter({0: 86, 1: 14}),
+        )
         self.assertTrue(
             all(
                 len(str(row["structured_persona_sha256"])) == 64

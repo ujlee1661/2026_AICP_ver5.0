@@ -1,122 +1,81 @@
 # TwinMarket Korea
 
-> 상태: **무과금 P0 리팩터링·재봉인·검증 PASS — live canary·45일 본실험은 별도 승인 전 NO-GO**
->
-> 현 code·prompt·persona projection으로 StudySpec을 다시 봉인했고, 전체
-> 무과금 회귀·sealed profile 검증·1 agent/45거래일 OFF/ON 실제 중단·재개 offline
-> 검증·PDF fixture 시각 검수를 마쳤다. 유료 API canary와 본실험은 승인·실행하지 않았으므로
-> paper run은 여전히 NO-GO다.
+삼성전자 실제 가격을 외생적으로 고정하고, 개인투자자 에이전트의 거래와
+커뮤니티 정보 노출 효과를 비교하는 시뮬레이션입니다.
 
-삼성전자 실제 가격을 외생적으로 고정하고, LLM 개인투자자 에이전트의 거래
-방향과 정보환경 효과를 연구하는 시뮬레이션이다. 현재 목표는 검증된 실제뉴스
-기능을 기존 번호형 파이프라인 하나에서 재현 가능하게 실행하는 것이다.
+## 현재 상태
 
-## 현재 기준과 Git 근거
+- 기본 실행기는 `scripts/05_run_simulation.py -> twinmarket_kr/simulation.py`
+  한 경로입니다.
+- 실제뉴스 baseline은 Community OFF/ON 두 조건입니다.
+- 현재 persona는 `data/sys_100_ko_ver5.db`의 100명이며 depth 분포는
+  D0/D1/D2 = 30/55/15입니다.
+- 커뮤니티 글쓰기는 depth만으로 허용하지 않습니다.
+  `can_post_community=1`인 D1/D2 14명만 게시 여부를 판단합니다.
+- 커뮤니티 읽기는 종전대로 D1/D2가 수행하며 각 event 최대 5개입니다.
+- 로컬 `.env`는 기본적으로 `TWINMARKET_OFFLINE_LLM=1`이므로 외부 API를
+  호출하지 않습니다.
+- 유료 live 실행은 명시적 승인, API key, reasoning-off canary, 전체 테스트와
+  offline E2E 통과 전에는 실행하지 않습니다.
 
-- 원격 저장소: `sujin809/2026_AICP_ver3.0`
-- 기준 브랜치: `sujin_0727`
-- 확인된 기준 커밋: `f4e17956f39e0cb0d94974cb03684d68f5e53ce7`
-- 커밋 작성자: `sujinjung <e62974347@gmail.com>`
-- 커밋 제목: `RN Community A/B: 뉴스 재구축, 입력 봉인, D2 후보 풀 재정의`
-- Git이 추적하는 실제뉴스 정본:
-  `preparation/rn_ab_sealed_v1/news.json`
+최근 로컬 검증에서는 커뮤니티·persona 관련 테스트 52개가 통과했습니다.
+전체 테스트는 207개 통과, 기존 회귀 2개 실패 상태이므로 현재 상태를 live
+본실험 GO로 해석하면 안 됩니다. 실패 항목은 LTB prompt 기대값 1건과 퇴역한
+cohort builder의 `momentum_contrarian` 기대값 1건입니다.
 
-따라서 sujin이 만든 최신 봉인 뉴스가 현재 기준 입력이라는 점은 Git에서 확인할
-수 있다. 현 profile은 이 뉴스 파일을 바꾸지 않은 채 current code·prompt·persona
-projection으로 다시 봉인하고 검증했다. 이후 code·prompt·입력을 바꾸면 새
-candidate profile에서 같은 절차를 다시 수행한다.
-
-## 유일한 목표 실행 흐름
+## 실행 구조
 
 ```text
-scripts/00_* … scripts/04_*
+scripts/00_* ... scripts/04_*
   -> scripts/05_run_simulation.py
      -> twinmarket_kr/simulation.py
-        -> twinmarket_kr/core + agents + community
-           -> canonical DB/journal
-              -> validator -> report
+        -> core / agents / community
+           -> canonical DB + event journal
+              -> validator + report
 ```
 
-새 실험은 이 번호형 흐름만 사용한다. 과거 RN 전용 09/12 실행기와
-`twinmarket_kr/rn_ab` runtime은 공통 본류로 필요한 기능을 옮긴 뒤
-working tree에서 제거했다. 과거 잘못된 실행 흐름은 별도 archive runtime으로
-복제하지 않고 Git history로만 복구한다.
-
-통합 엔진의 event 순서는 다음과 같이 고정한다.
+event 순서는 다음과 같습니다.
 
 ```text
-사용 가능한 과거 성과와 다음 AM community 노출 확정
+도래한 과거 성과와 AM 커뮤니티 노출 확정
   -> 현재 STB
   -> 이전 LTB + 현재 STB로 analysis/decision
   -> 잔고·보유량 제약을 반영한 실제 fill
-  -> 이전 LTB + 현재 STB + 실제 fill + 사용 가능한 과거 성과로 post-fill LTB
-  -> PM이면 community phase
+  -> post-fill LTB
+  -> PM community
 ```
 
-`decision`은 의도이고 `fill`은 실제 체결이다. 둘을 합치거나 실제 체결 전에
-LTB를 갱신하지 않는다.
+`decision`은 거래 의도이고 `fill`은 실제 체결입니다. 새 실험은 별도 RN
+runtime이나 과거 compatibility runner를 사용하지 않습니다.
 
-핵심 정책값은 다음과 같다.
+## 정본 입력
 
-- 실제뉴스 event 목표: 종목 5·섹터 3·경제 2, 합계 최대 10개
-- 카테고리 부족: 다른 카테고리 기사로 backfill하지 않고 실제 전달 수와
-  shortage를 기록한 채 계속 실행
-- community 선택 읽기: D1 최대 5개, D2 최대 5개
-- 전역 Best: 최대 5개
-- 뉴스 D2 추가 검색: 최근 7일의 cutoff-safe 후보 중 최대 5건
-- 게시글 본문: 최대 500자, 501자는 거부하고 자동 절단하지 않음
-- 게시 횟수: agent-PM당 최대 1개, `community_posts` unique index로 DB 강제
-- 작성자 평판 badge: 없음. legacy 동적 badge 3종은 제거했고 저자 쪽 노출은
-  익명 닉네임과 D2 동결 profile뿐 (근거: `ARCHITECTURE.md` §12.9)
-- Best 전달: 작성자 자기 글 제외, 6위 글로 backfill하지 않음
-- 거래 outcome: `next_turn`, `H1`, `H5`; due 이후 post-fill LTB에서만 반영
+현재 baseline profile은 `preparation/rn_ab_sealed_v1/`입니다.
 
-## STB·LTB production prompt
+| 파일 | 역할 |
+| --- | --- |
+| `study_spec.json` | 실험 정책, 입력·prompt hash, 모델·거래 정책 |
+| `cohort.json` | 고정 100명 cohort와 depth |
+| `news.json` | event별 실제뉴스 제목·요약과 shortage 기록 |
+| `calendar.json` | 거래일과 AM/PM event |
+| `prices.json` | event별 체결 가격 |
+| `stage_inputs.json` | 실행 단계별 봉인 입력 |
 
-STB와 LTB는 별도 prompt를 사용하며, 이름만 나뉜 같은 호출이 아니다.
+뉴스 정본 hash는 다음과 같습니다.
 
-| 단계 | production prompt | 입력 경계 | 사용 시점 |
-| --- | --- | --- | --- |
-| STB | `prompts/update_short_term_belief.txt` | 현재 event의 허용 뉴스·D2 검색·실제로 읽은 community claim과 persona | analysis·decision 전 |
-| LTB | `prompts/update_long_term_belief.txt` | 이전 LTB, 현재 STB, 실제 decision/fill, 그 event에 성숙한 과거 outcome과 persona | 실제 fill 뒤, 다음 event 전 |
+- bundle:
+  `a6fb61900c27071b2a79781478592d99d914482fbba0f4ecaafa73edcb8ab707`
+- file:
+  `cf3561dbe9f9fa360b716970e8352022fa8cbcd4d824c1ef249880d1ee7e5f55`
 
-두 prompt 모두 기존 `dim_1`~`dim_6` 스키마를 유지한다. 거래는
-`belief_summary`가 아니라 이전 LTB 6차원과 현재 STB 6차원을 분리 입력으로
-받아 비교·종합한다. LTB는 `maintain` 한 단어 또는 이전 문장 복사를 허용하지
-않고 매 event 여섯 차원을 모두 다시 쓴다. 자세한 causal 순서는
-[`ARCHITECTURE.md`](ARCHITECTURE.md)의 STB/LTB 절을 따른다.
+에이전트는 기사 본문을 받지 않습니다. D0는 제목만 보고, D1은 event 기사
+요약까지, D2는 여기에 최근 7일 cutoff-safe 검색 요약 최대 5건을 추가로
+받습니다. 과거 `outputs/` 결과와 `archive/legacy_inputs/` 자료는 새 실행의
+입력으로 사용하지 않습니다.
 
-## 입력 정본과 격리 경계
+## 로컬 환경 준비
 
-baseline의 뉴스·달력·가격·cohort 기준은
-`preparation/rn_ab_sealed_v1/`의 봉인 묶음이다. 현 `study_spec.json`은 현재
-production prompt와 persona projection을 반영해 다시 봉인했으며, 검증 중
-`news.json`의 바이트·5/3/2 quota·no-backfill 정책은 그대로 유지됐다. 이 사실은
-유료 provider의 reasoning-off telemetry나 본실험 승인을 뜻하지 않는다.
-
-- `study_spec.json`: 연구 정책과 입력 hash
-- `calendar.json`: 거래일과 AM/PM event
-- `cohort.json`: 고정 에이전트와 depth
-- `news.json`: 실제뉴스 title·summary·version·slot·shortage 기록
-- `prices.json`, `stage_inputs.json`: event별 실행 입력
-- `known_injection.json`, `review.json`: fake 격리와 누수 검토
-- `prompts/`: 해당 봉인 묶음의 재현용 prompt 사본
-
-다음은 신규 실행 입력으로 사용하지 않는다.
-
-- `archive/legacy_inputs/rn_ab_source_candidate_v1/input_candidates/`
-- 과거 legacy selected-news CSV
-- `outputs/` 아래의 과거 run 결과
-- 날짜별 복구 스크립트나 특정 과거 run 경로
-
-뉴스 목표 수를 채우지 못한 event는 안전하지 않은 기사, 중복 기사, 합성 기사로
-메우지 않는다. 실제 전달 수와 부족 사유를 봉인하고 두 조건에서 같은 묶음을
-사용한 채 계속 실행한다. 상세 연구 계약은
-[`EXPERIMENT_DESIGN.md`](EXPERIMENT_DESIGN.md)에 있다.
-
-## 환경 준비
-
-Python 3.12 환경을 권장한다.
+Python 3.12를 사용합니다.
 
 ```bash
 python3.12 -m venv .venv
@@ -124,59 +83,150 @@ source .venv/bin/activate
 python -m pip install -r requirements.txt
 ```
 
-유료 실행에 필요한 키·모델·provider 설정은 승인된 run에서만 사용한다.
-일반 smoke test와 정적 검사는 외부 API 없이 먼저 수행한다.
+이 작업 폴더에는 다음 gitignored 로컬 파일이 준비되어 있습니다.
 
-`05`는 유일한 simulation 진입점이지만 live 실행에는
-`--allow-paid-api`와 사전 reasoning-off canary audit가 모두 필요하다.
-RN `09/12`와 별도 checkpoint runner는 제거됐다. 안전한 검사 순서,
-Go/No-Go 기준, 재개·완료·리포트 계약은
-[`RUNBOOK_AND_PREFLIGHT.md`](RUNBOOK_AND_PREFLIGHT.md)를 따른다.
+- `.env`: offline stub 기본값과 비어 있는 `OPENROUTER_API_KEY`
+- `.venv/`: Python 3.12 가상환경
+- `outputs/experiment_base_sim.db`: 새 run이 복사해 쓰는 turn-zero DB
+- `outputs/experiment_base_sim.report.json`: base DB 검증 기록
 
-## 결과와 재현성
+다른 컴퓨터에서 clone했다면 `.env`를 직접 만들고 base DB를 생성합니다.
 
-신규 run은 run ID가 있는 독립 디렉터리에 아래 정보를 남겨야 한다.
+```bash
+python scripts/02_prepare_news.py
+python scripts/03_load_stock_data.py
+python scripts/04_build_experiment_base.py --force
+```
 
-- resolved StudySpec과 모든 입력·prompt·코드 hash
-- STB, analysis, decision, fill, post-fill LTB의 provenance
-- community 게시·제목 노출·본문 노출·반응·Best 전달 기록
-- logical call, physical attempt, validation, commit/rollback journal
-- checkpoint와 resume 기록
-- 완료 marker와 integrity 결과; validator·CSV·PDF는 외부 파생물 경로에 생성
+`03`은 기본적으로 읽기 전용 검증이며, source DB를 갱신하려면 문서화된
+`--write` 인수를 모두 명시해야 합니다.
 
-CSV와 PDF는 canonical DB/journal에서 생성하는 파생물이다. signed run directory
-밖의 명시적 `derived/<condition>/`에만 생성하며, 파생물을 runtime 입력으로
-사용하거나 같은 사실을 두 원장에 따로 쓰지 않는다.
+## 먼저 실행할 무과금 smoke test
 
-팀원이 결과를 확인할 때는 다음 순서로 본다.
+현재 cohort에서 D2와 게시 권한 보유자를 함께 포함하려면 최소 23명을 사용합니다.
 
-| 확인 목적 | 먼저 볼 것 |
+```bash
+source .venv/bin/activate
+python scripts/05_run_simulation.py \
+  --max-agents 23 \
+  --max-days 1 \
+  --community-mode on \
+  --run-dir outputs/logs/local_offline_smoke
+```
+
+같은 run을 중단 지점부터 이어갈 때는 다른 조건을 바꾸지 않고
+`--resume`만 추가합니다.
+
+```bash
+python scripts/05_run_simulation.py \
+  --max-agents 23 \
+  --max-days 1 \
+  --community-mode on \
+  --run-dir outputs/logs/local_offline_smoke \
+  --resume
+```
+
+## OFF/ON paired baseline
+
+`.env`의 offline 설정을 유지한 아래 명령은 유료 API 없이 실행 구조와
+artifact를 검증합니다.
+
+```bash
+python scripts/08_run_six_conditions.py \
+  --conditions RN_COMM_OFF RN_COMM_ON \
+  --output-root outputs/logs/rn_ab_local_offline
+```
+
+실제 유료 실험은 다음 조건을 모두 만족해야 합니다.
+
+1. 전체 테스트와 OFF/ON offline E2E가 통과한다.
+2. `.env`에서 `TWINMARKET_OFFLINE_LLM=0`으로 바꾸고
+   `OPENROUTER_API_KEY`를 설정한다.
+3. 현재 코드·prompt·persona에 대응하는 reasoning-off canary audit를 만든다.
+4. 실행 명령에 `--allow-paid-api`와
+   `--reasoning-off-canary-audit <audit.jsonl>`를 함께 지정한다.
+
+`--allow-paid-api`만으로 canary 검증을 우회할 수 없습니다. 유료 canary와
+본실험은 비용이 발생하므로 명시적 승인 없이 실행하지 않습니다. 상세 절차와
+중단·재개 기준은 [RUNBOOK_AND_PREFLIGHT.md](RUNBOOK_AND_PREFLIGHT.md)를
+따릅니다.
+
+## 결과 검증과 보고서
+
+run 완료 후 파생물은 run 디렉터리 밖에 생성합니다.
+
+```bash
+python scripts/99_validate.py \
+  --run-dir <run-dir> \
+  --output <pair-root>/derived/<condition>/run_validation.json
+
+python validation/validate_trading_direction.py \
+  --run-dir <run-dir> \
+  --output-dir <pair-root>/derived/<condition>/direction_validation \
+  --skip-initial-days 3
+
+python scripts/generate_run_report_pdf.py \
+  --run-dir <run-dir> \
+  --output <pair-root>/derived/<condition>/run_report.pdf
+
+python scripts/generate_community_report_pdf.py \
+  --run-dir <community-on-run-dir> \
+  --output <pair-root>/derived/RN_COMM_ON/community_report.pdf
+```
+
+주요 결과는 다음 순서로 확인합니다.
+
+| 확인 목적 | artifact |
 | --- | --- |
-| 완료·재개 상태 | `run_complete.json`, `.runtime/checkpoint.json`, `run_metadata.json` |
-| 실제 거래 | `exchange_fills.csv`; 의도는 `submitted_orders.csv`와 분리 |
-| STB/LTB 계보 | `.runtime/committed.db`, `memory_lineage.jsonl`, `agent_turns.jsonl` |
-| 뉴스 수·부족 | `run_metadata.json`의 bundle hash와 sealed `news.json` coverage |
-| 게시글 원문·source | `community_posts.csv` |
-| 제목만 봄 vs 본문 읽음 | `community_interactions.csv`의 `exposure_level` |
-| Best 원문·rank·자기 글 제외 | `community_best_posts.csv` |
-| API retry·reasoning-off | response journal, `openrouter_calls.jsonl`, canary audit |
-| 무결성 | `python scripts/99_validate.py --run-dir <run-dir> --output <pair-root>/derived/<condition>/run_validation.json` |
-| 행동 방향 | `python validation/validate_trading_direction.py --run-dir <run-dir> --output-dir <pair-root>/derived/<condition>/direction_validation --skip-initial-days 3` |
-| PDF | `python scripts/generate_run_report_pdf.py --run-dir <run-dir> --output <pair-root>/derived/<condition>/run_report.pdf`; ON arm은 community PDF도 같은 방식 |
+| 완료 상태 | `run_complete.json`, `run_metadata.json` |
+| 재개 상태 | `.runtime/checkpoint.json` |
+| 실제 체결 | `exchange_fills.csv` |
+| 거래 의도 | `submitted_orders.csv` |
+| STB/LTB 계보 | `memory_lineage.jsonl`, `agent_turns.jsonl` |
+| 게시글 | `community_posts.csv` |
+| title-only/full-body 노출 | `community_interactions.csv` |
+| Best와 자기 글 제외 | `community_best_posts.csv` |
+| canonical DB | `.runtime/committed.db` |
 
-## 팀 정본 문서
+## 보존된 과거 로그
+
+`outputs/logs/`에는 현재 아래 폴더만 보존합니다.
+
+```text
+outputs/logs/rn_ab_ver6_45day_20260826/
+  RN_COMM_OFF/
+  RN_COMM_ON/
+  RN_COMM_OFF.console.log
+  RN_COMM_ON.console.log
+  matrix_manifest.json
+```
+
+잘못 생성된 `RN_COMM_ON.corrupted_20260826_1314`와 대응 console log를 포함한
+나머지 오래된 로그는 삭제했습니다. OFF/ON 각각에는 완료 marker가 있지만 상위
+`matrix_manifest.json`은 `running` 상태로 남아 있으므로, 이 폴더는 보존된
+과거 결과일 뿐 새 실험 입력이나 현재 GO 판정으로 사용하지 않습니다.
+
+## 커뮤니티 핵심 정책
+
+- 게시: `can_post_community=1`인 D1/D2만 판단, agent-PM당 최대 1개
+- 읽기: D0 0개, D1 최대 5개, D2 최대 5개
+- 선택: persona를 받은 LLM이 제목 후보 화면에서 선택하며 빈 선택도 허용
+- 본문: 최대 500자, 501자는 거부하며 자동으로 자르지 않음
+- 노출: 미선택 후보는 `title_only`, 실제 읽은 글만 `full_body`
+- 반응: `like`, `unlike`, `none`
+- Best: `like_count - unlike_count`, 최대 5개
+- Best 전달: 작성자 자기 글 제외, 6위 글로 보충하지 않음
+- D2 저자 정보: 후보 보드 시점의 포트폴리오와 최근 거래 snapshot 사용
+- 작성자 평판 badge: 사용하지 않음
+
+## 문서
 
 | 문서 | 역할 |
 | --- | --- |
-| [`README.md`](README.md) | 저장소 입구, 기준 입력, 단일 실행 구조 |
-| [`ARCHITECTURE.md`](ARCHITECTURE.md) | 모듈·schema·계보·현재 구현 상태·격리·남은 gate |
-| [`EXPERIMENT_DESIGN.md`](EXPERIMENT_DESIGN.md) | 연구질문·조건·정책·분석 계약 |
-| [`RUNBOOK_AND_PREFLIGHT.md`](RUNBOOK_AND_PREFLIGHT.md) | 준비, preflight, 실행, 재개, 검증, 보고 |
+| [README.md](README.md) | 설치, 빠른 시작, 현재 상태와 결과 위치 |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | 엔진, STB/LTB, 거래, 커뮤니티, artifact 구조 |
+| [EXPERIMENT_DESIGN.md](EXPERIMENT_DESIGN.md) | 연구 질문, 조건, 정책과 분석 계약 |
+| [RUNBOOK_AND_PREFLIGHT.md](RUNBOOK_AND_PREFLIGHT.md) | preflight, 실행, resume, 검증, 보고 |
 
-위 네 파일만 팀의 현재형 정본이다. `AGENTS.md`는 문서 정본이 아니라 별도의
-작업 지침이므로 유지한다. 삭제하면 안 되는 과거 연구자료는
-`archive/legacy_docs/`, 과거 분석·검증 결과는
-`archive/legacy_results/`에 보존하되 현재 정책이나 실행 명령으로 사용하지 않는다.
-`analysis/`, `outputs/`, `preparation/`, `prompts/`, `validation/`,
-`News_Scraper/`의 Markdown은 결과·데이터·도구 sidecar이며 팀 정본이 아니다.
-사용자 데이터와 이전 run 결과는 문서 정리 명목으로 삭제하지 않는다.
+`AGENTS.md`는 작업 지침입니다. 그 밖의 Markdown과 archive 자료는 역사·결과
+sidecar일 수 있으며 현재 실행 명령의 정본으로 사용하지 않습니다.

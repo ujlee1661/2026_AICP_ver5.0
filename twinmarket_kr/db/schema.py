@@ -21,7 +21,11 @@ CREATE TABLE IF NOT EXISTS agents (
     news_depth INTEGER NOT NULL DEFAULT 1,
     segment_key TEXT NOT NULL,
     match_score INTEGER NOT NULL,
-    persona_prompt TEXT NOT NULL
+    persona_prompt TEXT NOT NULL,
+    momentum_contrarian TEXT NOT NULL DEFAULT 'neutral'
+        CHECK(momentum_contrarian IN ('momentum', 'contrarian', 'neutral')),
+    can_post_community INTEGER NOT NULL DEFAULT 0
+        CHECK(can_post_community IN (0, 1))
 );
 """
 
