@@ -164,6 +164,7 @@ class SimulationOutcomeLifecycleTests(unittest.TestCase):
         turn: int,
         outcome_ids: list[str],
         outcome_relation: str = "support",
+        ignored_outcome_ids: list[str] | None = None,
     ) -> tuple[str, str, str, str]:
         event = self.schedule.events[turn - 1]
         evidence_id = f"sealed-current:{event['event_id']}"
@@ -227,6 +228,7 @@ class SimulationOutcomeLifecycleTests(unittest.TestCase):
                 outcome_ids=outcome_ids,
                 outcome_relation=outcome_relation,
             ),
+            ignored_outcome_ids=ignored_outcome_ids or [],
             belief_summary=f"human log {turn}",
             view_change={"turn": turn},
         )
@@ -279,6 +281,33 @@ class SimulationOutcomeLifecycleTests(unittest.TestCase):
                 "FROM simulation_outcome_consumptions"
             ).fetchone()["count"]
         self.assertEqual(statuses, {"matured": 1, "right_censored": 5})
+        self.assertEqual(consumption_count, 1)
+
+    def test_ignored_outcome_is_consumed_without_becoming_evidence(self) -> None:
+        self.memory.mature_outcomes_for_event("2026-02-27/AM")
+        self._record_event(turn=1, outcome_ids=[])
+        matured = self.memory.mature_outcomes_for_event("2026-02-27/PM")
+
+        self._record_event(
+            turn=2,
+            outcome_ids=[],
+            ignored_outcome_ids=list(matured),
+        )
+
+        self.assertEqual(
+            self.memory.eligible_outcomes("agent-1", "2026-02-27/PM"),
+            [],
+        )
+        with connect(self.db_path, read_only=True) as connection:
+            row = connection.execute(
+                "SELECT integration_evidence_json FROM simulation_ltb_states WHERE turn = 2"
+            ).fetchone()
+            consumption_count = connection.execute(
+                "SELECT COUNT(*) AS count FROM simulation_outcome_consumptions"
+            ).fetchone()["count"]
+        evidence = json.loads(row["integration_evidence_json"])
+        self.assertEqual(evidence["dim_6"]["support"], [])
+        self.assertEqual(evidence["dim_6"]["contradict"], [])
         self.assertEqual(consumption_count, 1)
 
     def test_agent_may_choose_either_relation_for_a_negative_markout(

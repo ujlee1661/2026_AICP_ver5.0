@@ -804,7 +804,7 @@ class HierarchicalBeliefValidationTests(unittest.IsolatedAsyncioTestCase):
             [outcome_id],
         )
 
-    async def test_ltb_accepts_neutral_verdict_for_flat_outcome(self) -> None:
+    async def test_ltb_ignores_neutral_verdict_for_flat_outcome(self) -> None:
         outcome_id = "outcome:fill-flat:h1"
         client = _SequenceClient(
             [
@@ -844,12 +844,11 @@ class HierarchicalBeliefValidationTests(unittest.IsolatedAsyncioTestCase):
             seed=2,
             validation_attempts=1,
         )
-        self.assertEqual(
-            result["integration_evidence"]["dim_6"]["support"],
-            [outcome_id],
-        )
+        self.assertEqual(result["integration_evidence"]["dim_6"]["support"], [])
+        self.assertEqual(result["integration_evidence"]["dim_6"]["contradict"], [])
+        self.assertEqual(result["ignored_outcome_ids"], [outcome_id])
 
-    async def test_ltb_rejects_neutral_verdict_for_nonflat_outcome(self) -> None:
+    async def test_ltb_ignores_neutral_verdict_for_nonflat_outcome(self) -> None:
         outcome_id = "outcome:fill-nonflat:h1"
         def response(verdict: str) -> dict[str, object]:
             return {
@@ -857,7 +856,7 @@ class HierarchicalBeliefValidationTests(unittest.IsolatedAsyncioTestCase):
                 "integration_evidence": _evidence(),
                 "outcome_verdicts": [verdict],
             }
-        client = _SequenceClient([response("neutral"), response("contradict")])
+        client = _SequenceClient([response("neutral")])
         result = await update_long_term_belief(
             {"agent_id": "agent-1", "news_depth": 1, "persona_prompt": "persona"},
             event={
@@ -878,13 +877,12 @@ class HierarchicalBeliefValidationTests(unittest.IsolatedAsyncioTestCase):
             }],
             client=client,
             seed=2,
-            validation_attempts=2,
+            validation_attempts=1,
         )
-        self.assertEqual(result["generation_attempts"], 2)
-        self.assertEqual(
-            result["integration_evidence"]["dim_6"]["contradict"],
-            [outcome_id],
-        )
+        self.assertEqual(result["generation_attempts"], 1)
+        self.assertEqual(result["integration_evidence"]["dim_6"]["support"], [])
+        self.assertEqual(result["integration_evidence"]["dim_6"]["contradict"], [])
+        self.assertEqual(result["ignored_outcome_ids"], [outcome_id])
 
     async def test_ltb_generator_retries_relation_flips_and_accepts_exact_polarity(
         self,

@@ -1116,6 +1116,7 @@ class MemoryAgent:
         integration_evidence: Mapping[str, Any],
         belief_summary: str,
         view_change: Any,
+        ignored_outcome_ids: Iterable[str] = (),
         ltb_id: str | None = None,
     ) -> str:
         """Persist LTB_t only after the same-turn decision and full fill exist."""
@@ -1168,6 +1169,9 @@ class MemoryAgent:
             normalized_integration_evidence,
             label="post-fill LTB integration_evidence",
         )
+        normalized_ignored_outcome_ids = tuple(
+            sorted({str(item) for item in ignored_outcome_ids})
+        )
         # 차원별 문장 유지는 정당하다. 관점이 안 변한 차원에 새 표현을 강제하면
         # 임베딩 기반 deviation 측정에 억지 패러프레이즈 노이즈가 깔린다.
         # 퇴행적 전체 복사만 막는다. 같은 정책이 생성 경계(llm/belief.py)와
@@ -1203,6 +1207,7 @@ class MemoryAgent:
                 "source_fill_sha256": fill["scientific_sha256"],
                 "dimensions": belief,
                 "integration_evidence": normalized_integration_evidence,
+                "ignored_outcome_ids": list(normalized_ignored_outcome_ids),
             },
             label="post-fill LTB scientific state",
         )
@@ -1256,6 +1261,7 @@ class MemoryAgent:
                     event_id=scheduled_event_id,
                     stb=stb,
                     integration_evidence=normalized_integration_evidence,
+                    ignored_outcome_ids=normalized_ignored_outcome_ids,
                 )
             else:
                 self._validate_ltb_integration_evidence(
@@ -2116,6 +2122,7 @@ class MemoryAgent:
         event_id: str,
         stb: Mapping[str, Any],
         integration_evidence: Mapping[str, Any],
+        ignored_outcome_ids: Iterable[str] = (),
     ) -> tuple[str, ...]:
         due_rows = self._due_outcome_rows_for_agent_event(
             connection,
@@ -2129,11 +2136,17 @@ class MemoryAgent:
             integration_evidence=integration_evidence,
             due_rows=due_rows,
         )
-        if supplied_outcomes != due_ids:
+        ignored = {str(item) for item in ignored_outcome_ids}
+        if supplied_outcomes & ignored:
+            raise ValueError(
+                "ignored outcome IDs must not also appear in LTB evidence"
+            )
+        accounted_outcomes = supplied_outcomes | ignored
+        if accounted_outcomes != due_ids:
             raise ValueError(
                 "post-fill LTB must consume every and only matured outcome "
-                f"due at this event: missing={sorted(due_ids - supplied_outcomes)}, "
-                f"extra={sorted(supplied_outcomes - due_ids)}"
+                f"due at this event: missing={sorted(due_ids - accounted_outcomes)}, "
+                f"extra={sorted(accounted_outcomes - due_ids)}"
             )
         return tuple(sorted(due_ids))
 

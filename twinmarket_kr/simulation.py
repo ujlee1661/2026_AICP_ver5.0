@@ -1080,6 +1080,7 @@ async def _run_subturn(
             fill_id=str(execution["fill_id"]),
             dimensions=generated_ltb_dimensions,
             integration_evidence=generated_ltb["integration_evidence"],
+            ignored_outcome_ids=generated_ltb.get("ignored_outcome_ids") or [],
             belief_summary=str(generated_ltb["belief_summary"]),
             view_change=generated_ltb["view_change"],
         )

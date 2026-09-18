@@ -206,7 +206,6 @@ async def _generate_hierarchical_belief(
     previous_dimensions: Mapping[str, str] | None = None,
     required_dim_6_outcome_ids: set[str] | None = None,
     ordered_outcome_ids: list[str] | None = None,
-    neutral_outcome_ids: set[str] | None = None,
     fixed_relations_by_dimension: Mapping[
         str,
         Mapping[str, set[str]],
@@ -221,12 +220,10 @@ async def _generate_hierarchical_belief(
         json.dumps(prompt_payload, ensure_ascii=False, indent=2),
     )
     ordered_outcome_ids = list(ordered_outcome_ids or [])
-    neutral_outcome_ids = set(neutral_outcome_ids or set())
     if ordered_outcome_ids:
         outcome_contract = (
             "- outcome_verdicts: 입력의 가격 결과와 같은 순서·개수의 배열. "
-            '각 값은 "support", "contradict", "neutral" 중 하나이며, '
-            '가격 변화가 사실상 0이면 "neutral"을 사용하세요.\n'
+            '각 값은 "support" 또는 "contradict" 중 하나입니다.\n'
         )
         prompt = prompt.replace(
             "입력 정보(JSON):",
@@ -253,7 +250,7 @@ async def _generate_hierarchical_belief(
         seed_schedule=seeds,
         max_tokens=max_tokens,
         validation_attempts=validation_attempts,
-        validation_procedure_version=f"{audit_label}-validator-v5",
+        validation_procedure_version=f"{audit_label}-validator-v6",
         response_format={"type": "json_object"},
         semantic_inputs={
             "evidence_field": evidence_field,
@@ -270,7 +267,6 @@ async def _generate_hierarchical_belief(
                 required_dim_6_outcome_ids or set()
             ),
             "ordered_outcome_ids": list(ordered_outcome_ids),
-            "neutral_outcome_ids": sorted(neutral_outcome_ids),
             "fixed_relations_by_dimension": {
                 dimension: {
                     relation: sorted(ids)
@@ -378,22 +374,16 @@ async def _generate_hierarchical_belief(
                     f"got={len(verdicts)}:expected={len(ordered_outcome_ids)}"
                 )
             else:
-                allowed_verdicts = (*BELIEF_EVIDENCE_RELATIONS, "neutral")
                 bad = [
                     index + 1
-                    for index, (outcome_id, verdict) in enumerate(
-                        zip(ordered_outcome_ids, verdicts)
-                    )
-                    if verdict not in allowed_verdicts
-                    or (
-                        verdict == "neutral"
-                        and outcome_id not in neutral_outcome_ids
-                    )
+                    for index, verdict in enumerate(verdicts)
+                    if verdict not in BELIEF_EVIDENCE_RELATIONS
+                    and verdict != "neutral"
                 ]
                 if bad:
                     errors.append(
                         f"outcome_verdicts:invalid_at_positions:{bad}:"
-                        f"allowed={list(allowed_verdicts)}"
+                        f"allowed={list(BELIEF_EVIDENCE_RELATIONS)}"
                     )
                 elif evidence:
                     # 검증을 통과했으면 시스템이 실제 ID를 채워 넣는다.
@@ -404,15 +394,9 @@ async def _generate_hierarchical_belief(
                     for outcome_id, verdict in zip(
                         ordered_outcome_ids, verdicts
                     ):
-                        # integration_evidence의 기존 저장 schema는 binary다.
-                        # neutral은 객관적 markout=0과 raw verdict에 보존되며,
-                        # outcome 소비 lineage를 잃지 않기 위한 compatibility
-                        # container로 support 배열에만 넣는다. 이 배치를 성과
-                        # 방향으로 해석하지 말고 원장의 markout과 함께 읽는다.
-                        storage_relation = (
-                            "support" if verdict == "neutral" else verdict
-                        )
-                        dim_6.setdefault(storage_relation, []).append(outcome_id)
+                        if verdict == "neutral":
+                            continue
+                        dim_6.setdefault(verdict, []).append(outcome_id)
         return dimensions, evidence, errors
 
     if journal_call is not None and journal_call.replay is not None:
@@ -478,6 +462,14 @@ async def _generate_hierarchical_belief(
             return {
                 **dimensions,
                 evidence_field: evidence,
+                "ignored_outcome_ids": [
+                    outcome_id
+                    for outcome_id, verdict in zip(
+                        ordered_outcome_ids,
+                        (raw or {}).get("outcome_verdicts") or [],
+                    )
+                    if verdict == "neutral"
+                ],
                 "generation_attempts": attempt,
             }
         if journal_call is not None:
@@ -531,9 +523,7 @@ async def _generate_hierarchical_belief(
                 + (
                     " 가격 결과는 outcome_verdicts 배열로만 판정합니다."
                     f" 입력의 가격 결과 {len(ordered_outcome_ids)}건과 같은"
-                    " 순서로, 각각 \"support\", \"contradict\", \"neutral\" 중"
-                    " 하나만 사용하고 가격 변화가 사실상 0이면 \"neutral\"을"
-                    " 사용해"
+                    " 순서로, 각각 \"support\" 또는 \"contradict\" 문자열만"
                     f" 담아 길이 {len(ordered_outcome_ids)}인 배열을 내세요."
                     " 가격 결과의 ID를 "
                     f"{evidence_field}에 넣지 마세요."
@@ -728,19 +718,14 @@ async def update_long_term_belief(
     # action_aligned_markout은 simulation_trade_outcomes에 그대로 남으므로,
     # 연구자는 사후에 "에이전트가 자기 성패를 얼마나 정확히 인식했는가"를
     # 두 값의 비교로 측정할 수 있다.
-    neutral_outcome_ids: set[str] = set()
     for outcome in outcomes:
         outcome_id = str(outcome["outcome_id"]).strip()
         try:
-            relation = outcome_evidence_relation(
-                outcome.get("action_aligned_markout")
-            )
+            outcome_evidence_relation(outcome.get("action_aligned_markout"))
         except OutcomeScheduleError as exc:
             raise BeliefValidationError(
                 f"{outcome_id} has invalid action_aligned_markout"
             ) from exc
-        if relation is None:
-            neutral_outcome_ids.add(outcome_id)
     payload = {
         "schema_version": "simulation-post-fill-ltb-input-v1",
         "persona": {
@@ -775,7 +760,6 @@ async def update_long_term_belief(
         previous_dimensions=previous_dimensions,
         required_dim_6_outcome_ids=outcome_ids,
         ordered_outcome_ids=outcome_id_list,
-        neutral_outcome_ids=neutral_outcome_ids,
         fixed_relations_by_dimension=fixed_relations_by_dimension,
     )
     summary, view_change = render_ltb_human_log(
