@@ -1,0 +1,3 @@
+﻿run_id,date,turn,subturn,stock_code,submitted_orders,announced_price,close_price,volume,fill_count
+RN_COMM_ON_20260917_v2,2026-02-27,1,am,005930,100,210000.0,210000.0,40294,100
+RN_COMM_ON_20260917_v2,2026-02-27,2,pm,005930,100,216500.0,216500.0,27203,100

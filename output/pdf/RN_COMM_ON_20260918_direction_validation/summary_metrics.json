@@ -1,0 +1,1816 @@
+{
+  "run_id": "RN_COMM_ON_20260918",
+  "run_dir": "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/RN_COMM_ON_20260918",
+  "actual_value": "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/validation/data_trading_value.csv",
+  "actual_volume": "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/validation/data_trading_volume.csv",
+  "generated_at": "2026-09-19T15:37:21",
+  "information_mode": "pre_close_cutoff",
+  "limit_only_orders": null,
+  "validation_start_date": null,
+  "validation_end_date": null,
+  "skip_initial_days": 3,
+  "approved_trading_days": 45,
+  "approved_trading_dates": [
+    "2026-02-27",
+    "2026-03-03",
+    "2026-03-04",
+    "2026-03-05",
+    "2026-03-06",
+    "2026-03-09",
+    "2026-03-10",
+    "2026-03-11",
+    "2026-03-12",
+    "2026-03-13",
+    "2026-03-16",
+    "2026-03-17",
+    "2026-03-18",
+    "2026-03-19",
+    "2026-03-20",
+    "2026-03-23",
+    "2026-03-24",
+    "2026-03-25",
+    "2026-03-26",
+    "2026-03-27",
+    "2026-03-30",
+    "2026-03-31",
+    "2026-04-01",
+    "2026-04-02",
+    "2026-04-03",
+    "2026-04-06",
+    "2026-04-07",
+    "2026-04-08",
+    "2026-04-09",
+    "2026-04-10",
+    "2026-04-13",
+    "2026-04-14",
+    "2026-04-15",
+    "2026-04-16",
+    "2026-04-17",
+    "2026-04-20",
+    "2026-04-21",
+    "2026-04-22",
+    "2026-04-23",
+    "2026-04-24",
+    "2026-04-27",
+    "2026-04-28",
+    "2026-04-29",
+    "2026-04-30",
+    "2026-05-04"
+  ],
+  "evaluation_days": 42,
+  "evaluation_dates": [
+    "2026-03-05",
+    "2026-03-06",
+    "2026-03-09",
+    "2026-03-10",
+    "2026-03-11",
+    "2026-03-12",
+    "2026-03-13",
+    "2026-03-16",
+    "2026-03-17",
+    "2026-03-18",
+    "2026-03-19",
+    "2026-03-20",
+    "2026-03-23",
+    "2026-03-24",
+    "2026-03-25",
+    "2026-03-26",
+    "2026-03-27",
+    "2026-03-30",
+    "2026-03-31",
+    "2026-04-01",
+    "2026-04-02",
+    "2026-04-03",
+    "2026-04-06",
+    "2026-04-07",
+    "2026-04-08",
+    "2026-04-09",
+    "2026-04-10",
+    "2026-04-13",
+    "2026-04-14",
+    "2026-04-15",
+    "2026-04-16",
+    "2026-04-17",
+    "2026-04-20",
+    "2026-04-21",
+    "2026-04-22",
+    "2026-04-23",
+    "2026-04-24",
+    "2026-04-27",
+    "2026-04-28",
+    "2026-04-29",
+    "2026-04-30",
+    "2026-05-04"
+  ],
+  "evaluation_policy": "approved_calendar_then_fixed_burn_in_mask",
+  "primary_trade_aggregation": "daily_am_plus_pm_gross_signed_fill",
+  "fill_completeness": {
+    "agent_count": 100,
+    "expected_fill_count": 9000,
+    "observed_fill_count": 9000,
+    "exact_agent_date_subturn_keys": true,
+    "fee_policy": "zero"
+  },
+  "skipped_value_dates": [
+    "2026-02-27",
+    "2026-03-03",
+    "2026-03-04"
+  ],
+  "skipped_volume_dates": [
+    "2026-02-27",
+    "2026-03-03",
+    "2026-03-04"
+  ],
+  "value": {
+    "metric": "value",
+    "overlap_days": 42,
+    "primary_metrics": {
+      "direction_match_rate": 0.7143,
+      "buy_recall": 0.64,
+      "sell_recall": 0.8235,
+      "balanced_accuracy": 0.7318
+    },
+    "reference_metrics": {
+      "pearson_daily": 0.46574414281953425,
+      "pearson_cumulative": -0.00618179908217688,
+      "note": "누적 Pearson은 상승장 + 단일가 체결 구조상 구조적 역전이 발생할 수 있음"
+    },
+    "llm_vs_individuals": {
+      "days": 42,
+      "direction_match_rate": 0.7142857142857143,
+      "nonzero_direction_match_rate": 0.7142857142857143,
+      "buy_recall": 0.64,
+      "sell_recall": 0.8235294117647058,
+      "sell_day_recall": 0.8235294117647058,
+      "balanced_accuracy": 0.7317647058823529,
+      "confusion_matrix": {
+        "actual_buy": {
+          "pred_buy": 16,
+          "pred_sell": 9,
+          "pred_flat": 0
+        },
+        "actual_sell": {
+          "pred_buy": 3,
+          "pred_sell": 14,
+          "pred_flat": 0
+        },
+        "actual_flat": {
+          "pred_buy": 0,
+          "pred_sell": 0,
+          "pred_flat": 0
+        }
+      },
+      "actual_direction_counts": {
+        "buy": 25,
+        "sell": 17,
+        "flat": 0
+      },
+      "predicted_direction_counts": {
+        "buy": 19,
+        "sell": 23,
+        "flat": 0
+      },
+      "pearson_correlation": 0.46574414281953425,
+      "cosine_similarity": 0.4532036110832727,
+      "max_abs_normalized": {
+        "pearson_correlation": 0.46574414281953425,
+        "cosine_similarity": 0.4532036110832726
+      },
+      "z_score_normalized": {
+        "pearson_correlation": 0.4657441428195342,
+        "cosine_similarity": 0.4657441428195342
+      },
+      "cumulative_max_abs_normalized": {
+        "pearson_correlation": -0.00618179908217688,
+        "cosine_similarity": -0.8466372797604105
+      }
+    },
+    "baselines_vs_individuals": {
+      "always_buy": {
+        "direction_match_rate": 0.5952380952380952,
+        "nonzero_direction_match_rate": 0.5952380952380952,
+        "buy_recall": 1.0,
+        "sell_recall": 0.0,
+        "sell_day_recall": 0.0,
+        "balanced_accuracy": 0.5,
+        "confusion_matrix": {
+          "actual_buy": {
+            "pred_buy": 25,
+            "pred_sell": 0,
+            "pred_flat": 0
+          },
+          "actual_sell": {
+            "pred_buy": 17,
+            "pred_sell": 0,
+            "pred_flat": 0
+          },
+          "actual_flat": {
+            "pred_buy": 0,
+            "pred_sell": 0,
+            "pred_flat": 0
+          }
+        },
+        "actual_direction_counts": {
+          "buy": 25,
+          "sell": 17,
+          "flat": 0
+        },
+        "predicted_direction_counts": {
+          "buy": 42,
+          "sell": 0,
+          "flat": 0
+        }
+      },
+      "always_sell": {
+        "direction_match_rate": 0.40476190476190477,
+        "nonzero_direction_match_rate": 0.40476190476190477,
+        "buy_recall": 0.0,
+        "sell_recall": 1.0,
+        "sell_day_recall": 1.0,
+        "balanced_accuracy": 0.5,
+        "confusion_matrix": {
+          "actual_buy": {
+            "pred_buy": 0,
+            "pred_sell": 25,
+            "pred_flat": 0
+          },
+          "actual_sell": {
+            "pred_buy": 0,
+            "pred_sell": 17,
+            "pred_flat": 0
+          },
+          "actual_flat": {
+            "pred_buy": 0,
+            "pred_sell": 0,
+            "pred_flat": 0
+          }
+        },
+        "actual_direction_counts": {
+          "buy": 25,
+          "sell": 17,
+          "flat": 0
+        },
+        "predicted_direction_counts": {
+          "buy": 0,
+          "sell": 42,
+          "flat": 0
+        }
+      },
+      "random_50_50": {
+        "direction_match_rate": 0.5238095238095238,
+        "nonzero_direction_match_rate": 0.5238095238095238,
+        "buy_recall": 0.52,
+        "sell_recall": 0.5294117647058824,
+        "sell_day_recall": 0.5294117647058824,
+        "balanced_accuracy": 0.5247058823529411,
+        "confusion_matrix": {
+          "actual_buy": {
+            "pred_buy": 13,
+            "pred_sell": 12,
+            "pred_flat": 0
+          },
+          "actual_sell": {
+            "pred_buy": 8,
+            "pred_sell": 9,
+            "pred_flat": 0
+          },
+          "actual_flat": {
+            "pred_buy": 0,
+            "pred_sell": 0,
+            "pred_flat": 0
+          }
+        },
+        "actual_direction_counts": {
+          "buy": 25,
+          "sell": 17,
+          "flat": 0
+        },
+        "predicted_direction_counts": {
+          "buy": 21,
+          "sell": 21,
+          "flat": 0
+        }
+      },
+      "actual_ratio_random": {
+        "direction_match_rate": 0.6428571428571429,
+        "nonzero_direction_match_rate": 0.6428571428571429,
+        "buy_recall": 0.68,
+        "sell_recall": 0.5882352941176471,
+        "sell_day_recall": 0.5882352941176471,
+        "balanced_accuracy": 0.6341176470588236,
+        "confusion_matrix": {
+          "actual_buy": {
+            "pred_buy": 17,
+            "pred_sell": 8,
+            "pred_flat": 0
+          },
+          "actual_sell": {
+            "pred_buy": 7,
+            "pred_sell": 10,
+            "pred_flat": 0
+          },
+          "actual_flat": {
+            "pred_buy": 0,
+            "pred_sell": 0,
+            "pred_flat": 0
+          }
+        },
+        "actual_direction_counts": {
+          "buy": 25,
+          "sell": 17,
+          "flat": 0
+        },
+        "predicted_direction_counts": {
+          "buy": 24,
+          "sell": 18,
+          "flat": 0
+        }
+      },
+      "previous_day_individual_direction": {
+        "direction_match_rate": 0.4523809523809524,
+        "nonzero_direction_match_rate": 0.4523809523809524,
+        "buy_recall": 0.56,
+        "sell_recall": 0.29411764705882354,
+        "sell_day_recall": 0.29411764705882354,
+        "balanced_accuracy": 0.4270588235294118,
+        "confusion_matrix": {
+          "actual_buy": {
+            "pred_buy": 14,
+            "pred_sell": 11,
+            "pred_flat": 0
+          },
+          "actual_sell": {
+            "pred_buy": 12,
+            "pred_sell": 5,
+            "pred_flat": 0
+          },
+          "actual_flat": {
+            "pred_buy": 0,
+            "pred_sell": 0,
+            "pred_flat": 0
+          }
+        },
+        "actual_direction_counts": {
+          "buy": 25,
+          "sell": 17,
+          "flat": 0
+        },
+        "predicted_direction_counts": {
+          "buy": 26,
+          "sell": 16,
+          "flat": 0
+        }
+      },
+      "previous_day_market_return_direction": {
+        "direction_match_rate": 0.5952380952380952,
+        "nonzero_direction_match_rate": 0.5952380952380952,
+        "buy_recall": 0.56,
+        "sell_recall": 0.6470588235294118,
+        "sell_day_recall": 0.6470588235294118,
+        "balanced_accuracy": 0.6035294117647059,
+        "confusion_matrix": {
+          "actual_buy": {
+            "pred_buy": 14,
+            "pred_sell": 11,
+            "pred_flat": 0
+          },
+          "actual_sell": {
+            "pred_buy": 6,
+            "pred_sell": 11,
+            "pred_flat": 0
+          },
+          "actual_flat": {
+            "pred_buy": 0,
+            "pred_sell": 0,
+            "pred_flat": 0
+          }
+        },
+        "actual_direction_counts": {
+          "buy": 25,
+          "sell": 17,
+          "flat": 0
+        },
+        "predicted_direction_counts": {
+          "buy": 20,
+          "sell": 22,
+          "flat": 0
+        }
+      }
+    }
+  },
+  "volume": {
+    "metric": "volume",
+    "overlap_days": 42,
+    "primary_metrics": {
+      "direction_match_rate": 0.7143,
+      "buy_recall": 0.64,
+      "sell_recall": 0.8235,
+      "balanced_accuracy": 0.7318
+    },
+    "reference_metrics": {
+      "pearson_daily": 0.4955856244609117,
+      "pearson_cumulative": -0.044753991887672116,
+      "note": "누적 Pearson은 상승장 + 단일가 체결 구조상 구조적 역전이 발생할 수 있음"
+    },
+    "llm_vs_individuals": {
+      "days": 42,
+      "direction_match_rate": 0.7142857142857143,
+      "nonzero_direction_match_rate": 0.7142857142857143,
+      "buy_recall": 0.64,
+      "sell_recall": 0.8235294117647058,
+      "sell_day_recall": 0.8235294117647058,
+      "balanced_accuracy": 0.7317647058823529,
+      "confusion_matrix": {
+        "actual_buy": {
+          "pred_buy": 16,
+          "pred_sell": 9,
+          "pred_flat": 0
+        },
+        "actual_sell": {
+          "pred_buy": 3,
+          "pred_sell": 14,
+          "pred_flat": 0
+        },
+        "actual_flat": {
+          "pred_buy": 0,
+          "pred_sell": 0,
+          "pred_flat": 0
+        }
+      },
+      "actual_direction_counts": {
+        "buy": 25,
+        "sell": 17,
+        "flat": 0
+      },
+      "predicted_direction_counts": {
+        "buy": 19,
+        "sell": 23,
+        "flat": 0
+      },
+      "pearson_correlation": 0.4955856244609117,
+      "cosine_similarity": 0.47891726896714043,
+      "max_abs_normalized": {
+        "pearson_correlation": 0.49558562446091176,
+        "cosine_similarity": 0.4789172689671404
+      },
+      "z_score_normalized": {
+        "pearson_correlation": 0.49558562446091176,
+        "cosine_similarity": 0.49558562446091176
+      },
+      "cumulative_max_abs_normalized": {
+        "pearson_correlation": -0.044753991887672116,
+        "cosine_similarity": -0.8560678633342714
+      }
+    },
+    "baselines_vs_individuals": {
+      "always_buy": {
+        "direction_match_rate": 0.5952380952380952,
+        "nonzero_direction_match_rate": 0.5952380952380952,
+        "buy_recall": 1.0,
+        "sell_recall": 0.0,
+        "sell_day_recall": 0.0,
+        "balanced_accuracy": 0.5,
+        "confusion_matrix": {
+          "actual_buy": {
+            "pred_buy": 25,
+            "pred_sell": 0,
+            "pred_flat": 0
+          },
+          "actual_sell": {
+            "pred_buy": 17,
+            "pred_sell": 0,
+            "pred_flat": 0
+          },
+          "actual_flat": {
+            "pred_buy": 0,
+            "pred_sell": 0,
+            "pred_flat": 0
+          }
+        },
+        "actual_direction_counts": {
+          "buy": 25,
+          "sell": 17,
+          "flat": 0
+        },
+        "predicted_direction_counts": {
+          "buy": 42,
+          "sell": 0,
+          "flat": 0
+        }
+      },
+      "always_sell": {
+        "direction_match_rate": 0.40476190476190477,
+        "nonzero_direction_match_rate": 0.40476190476190477,
+        "buy_recall": 0.0,
+        "sell_recall": 1.0,
+        "sell_day_recall": 1.0,
+        "balanced_accuracy": 0.5,
+        "confusion_matrix": {
+          "actual_buy": {
+            "pred_buy": 0,
+            "pred_sell": 25,
+            "pred_flat": 0
+          },
+          "actual_sell": {
+            "pred_buy": 0,
+            "pred_sell": 17,
+            "pred_flat": 0
+          },
+          "actual_flat": {
+            "pred_buy": 0,
+            "pred_sell": 0,
+            "pred_flat": 0
+          }
+        },
+        "actual_direction_counts": {
+          "buy": 25,
+          "sell": 17,
+          "flat": 0
+        },
+        "predicted_direction_counts": {
+          "buy": 0,
+          "sell": 42,
+          "flat": 0
+        }
+      },
+      "random_50_50": {
+        "direction_match_rate": 0.5238095238095238,
+        "nonzero_direction_match_rate": 0.5238095238095238,
+        "buy_recall": 0.52,
+        "sell_recall": 0.5294117647058824,
+        "sell_day_recall": 0.5294117647058824,
+        "balanced_accuracy": 0.5247058823529411,
+        "confusion_matrix": {
+          "actual_buy": {
+            "pred_buy": 13,
+            "pred_sell": 12,
+            "pred_flat": 0
+          },
+          "actual_sell": {
+            "pred_buy": 8,
+            "pred_sell": 9,
+            "pred_flat": 0
+          },
+          "actual_flat": {
+            "pred_buy": 0,
+            "pred_sell": 0,
+            "pred_flat": 0
+          }
+        },
+        "actual_direction_counts": {
+          "buy": 25,
+          "sell": 17,
+          "flat": 0
+        },
+        "predicted_direction_counts": {
+          "buy": 21,
+          "sell": 21,
+          "flat": 0
+        }
+      },
+      "actual_ratio_random": {
+        "direction_match_rate": 0.6428571428571429,
+        "nonzero_direction_match_rate": 0.6428571428571429,
+        "buy_recall": 0.68,
+        "sell_recall": 0.5882352941176471,
+        "sell_day_recall": 0.5882352941176471,
+        "balanced_accuracy": 0.6341176470588236,
+        "confusion_matrix": {
+          "actual_buy": {
+            "pred_buy": 17,
+            "pred_sell": 8,
+            "pred_flat": 0
+          },
+          "actual_sell": {
+            "pred_buy": 7,
+            "pred_sell": 10,
+            "pred_flat": 0
+          },
+          "actual_flat": {
+            "pred_buy": 0,
+            "pred_sell": 0,
+            "pred_flat": 0
+          }
+        },
+        "actual_direction_counts": {
+          "buy": 25,
+          "sell": 17,
+          "flat": 0
+        },
+        "predicted_direction_counts": {
+          "buy": 24,
+          "sell": 18,
+          "flat": 0
+        }
+      },
+      "previous_day_individual_direction": {
+        "direction_match_rate": 0.4523809523809524,
+        "nonzero_direction_match_rate": 0.4523809523809524,
+        "buy_recall": 0.56,
+        "sell_recall": 0.29411764705882354,
+        "sell_day_recall": 0.29411764705882354,
+        "balanced_accuracy": 0.4270588235294118,
+        "confusion_matrix": {
+          "actual_buy": {
+            "pred_buy": 14,
+            "pred_sell": 11,
+            "pred_flat": 0
+          },
+          "actual_sell": {
+            "pred_buy": 12,
+            "pred_sell": 5,
+            "pred_flat": 0
+          },
+          "actual_flat": {
+            "pred_buy": 0,
+            "pred_sell": 0,
+            "pred_flat": 0
+          }
+        },
+        "actual_direction_counts": {
+          "buy": 25,
+          "sell": 17,
+          "flat": 0
+        },
+        "predicted_direction_counts": {
+          "buy": 26,
+          "sell": 16,
+          "flat": 0
+        }
+      },
+      "previous_day_market_return_direction": {
+        "direction_match_rate": 0.5952380952380952,
+        "nonzero_direction_match_rate": 0.5952380952380952,
+        "buy_recall": 0.56,
+        "sell_recall": 0.6470588235294118,
+        "sell_day_recall": 0.6470588235294118,
+        "balanced_accuracy": 0.6035294117647059,
+        "confusion_matrix": {
+          "actual_buy": {
+            "pred_buy": 14,
+            "pred_sell": 11,
+            "pred_flat": 0
+          },
+          "actual_sell": {
+            "pred_buy": 6,
+            "pred_sell": 11,
+            "pred_flat": 0
+          },
+          "actual_flat": {
+            "pred_buy": 0,
+            "pred_sell": 0,
+            "pred_flat": 0
+          }
+        },
+        "actual_direction_counts": {
+          "buy": 25,
+          "sell": 17,
+          "flat": 0
+        },
+        "predicted_direction_counts": {
+          "buy": 20,
+          "sell": 22,
+          "flat": 0
+        }
+      }
+    }
+  },
+  "exploratory_subturns": {
+    "warning": "AM/PM별 실제 개인수급 target이 없으므로 각 subturn을 일일 Individuals 방향과 비교한 탐색 지표다.",
+    "am_value": {
+      "metric": "am_value_exploratory",
+      "overlap_days": 42,
+      "primary_metrics": {
+        "direction_match_rate": 0.5,
+        "buy_recall": 0.44,
+        "sell_recall": 0.5882,
+        "balanced_accuracy": 0.5141
+      },
+      "reference_metrics": {
+        "pearson_daily": 0.19296040812914306,
+        "pearson_cumulative": -0.09602259390362822,
+        "note": "누적 Pearson은 상승장 + 단일가 체결 구조상 구조적 역전이 발생할 수 있음"
+      },
+      "llm_vs_individuals": {
+        "days": 42,
+        "direction_match_rate": 0.5,
+        "nonzero_direction_match_rate": 0.5,
+        "buy_recall": 0.44,
+        "sell_recall": 0.5882352941176471,
+        "sell_day_recall": 0.5882352941176471,
+        "balanced_accuracy": 0.5141176470588236,
+        "confusion_matrix": {
+          "actual_buy": {
+            "pred_buy": 11,
+            "pred_sell": 14,
+            "pred_flat": 0
+          },
+          "actual_sell": {
+            "pred_buy": 7,
+            "pred_sell": 10,
+            "pred_flat": 0
+          },
+          "actual_flat": {
+            "pred_buy": 0,
+            "pred_sell": 0,
+            "pred_flat": 0
+          }
+        },
+        "actual_direction_counts": {
+          "buy": 25,
+          "sell": 17,
+          "flat": 0
+        },
+        "predicted_direction_counts": {
+          "buy": 18,
+          "sell": 24,
+          "flat": 0
+        },
+        "pearson_correlation": 0.19296040812914306,
+        "cosine_similarity": 0.17157511977182352,
+        "max_abs_normalized": {
+          "pearson_correlation": 0.19296040812914309,
+          "cosine_similarity": 0.1715751197718235
+        },
+        "z_score_normalized": {
+          "pearson_correlation": 0.19296040812914309,
+          "cosine_similarity": 0.19296040812914309
+        },
+        "cumulative_max_abs_normalized": {
+          "pearson_correlation": -0.09602259390362822,
+          "cosine_similarity": -0.839341736404785
+        }
+      },
+      "baselines_vs_individuals": {
+        "always_buy": {
+          "direction_match_rate": 0.5952380952380952,
+          "nonzero_direction_match_rate": 0.5952380952380952,
+          "buy_recall": 1.0,
+          "sell_recall": 0.0,
+          "sell_day_recall": 0.0,
+          "balanced_accuracy": 0.5,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 25,
+              "pred_sell": 0,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 17,
+              "pred_sell": 0,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 42,
+            "sell": 0,
+            "flat": 0
+          }
+        },
+        "always_sell": {
+          "direction_match_rate": 0.40476190476190477,
+          "nonzero_direction_match_rate": 0.40476190476190477,
+          "buy_recall": 0.0,
+          "sell_recall": 1.0,
+          "sell_day_recall": 1.0,
+          "balanced_accuracy": 0.5,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 0,
+              "pred_sell": 25,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 0,
+              "pred_sell": 17,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 0,
+            "sell": 42,
+            "flat": 0
+          }
+        },
+        "random_50_50": {
+          "direction_match_rate": 0.5238095238095238,
+          "nonzero_direction_match_rate": 0.5238095238095238,
+          "buy_recall": 0.52,
+          "sell_recall": 0.5294117647058824,
+          "sell_day_recall": 0.5294117647058824,
+          "balanced_accuracy": 0.5247058823529411,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 13,
+              "pred_sell": 12,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 8,
+              "pred_sell": 9,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 21,
+            "sell": 21,
+            "flat": 0
+          }
+        },
+        "actual_ratio_random": {
+          "direction_match_rate": 0.6428571428571429,
+          "nonzero_direction_match_rate": 0.6428571428571429,
+          "buy_recall": 0.68,
+          "sell_recall": 0.5882352941176471,
+          "sell_day_recall": 0.5882352941176471,
+          "balanced_accuracy": 0.6341176470588236,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 17,
+              "pred_sell": 8,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 7,
+              "pred_sell": 10,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 24,
+            "sell": 18,
+            "flat": 0
+          }
+        },
+        "previous_day_individual_direction": {
+          "direction_match_rate": 0.4523809523809524,
+          "nonzero_direction_match_rate": 0.4523809523809524,
+          "buy_recall": 0.56,
+          "sell_recall": 0.29411764705882354,
+          "sell_day_recall": 0.29411764705882354,
+          "balanced_accuracy": 0.4270588235294118,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 14,
+              "pred_sell": 11,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 12,
+              "pred_sell": 5,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 26,
+            "sell": 16,
+            "flat": 0
+          }
+        },
+        "previous_day_market_return_direction": {
+          "direction_match_rate": 0.5952380952380952,
+          "nonzero_direction_match_rate": 0.5952380952380952,
+          "buy_recall": 0.56,
+          "sell_recall": 0.6470588235294118,
+          "sell_day_recall": 0.6470588235294118,
+          "balanced_accuracy": 0.6035294117647059,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 14,
+              "pred_sell": 11,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 6,
+              "pred_sell": 11,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 20,
+            "sell": 22,
+            "flat": 0
+          }
+        }
+      }
+    },
+    "pm_value": {
+      "metric": "pm_value_exploratory",
+      "overlap_days": 42,
+      "primary_metrics": {
+        "direction_match_rate": 0.7857,
+        "buy_recall": 0.76,
+        "sell_recall": 0.8235,
+        "balanced_accuracy": 0.7918
+      },
+      "reference_metrics": {
+        "pearson_daily": 0.467183680710334,
+        "pearson_cumulative": 0.15782169376063837,
+        "note": "누적 Pearson은 상승장 + 단일가 체결 구조상 구조적 역전이 발생할 수 있음"
+      },
+      "llm_vs_individuals": {
+        "days": 42,
+        "direction_match_rate": 0.7857142857142857,
+        "nonzero_direction_match_rate": 0.7857142857142857,
+        "buy_recall": 0.76,
+        "sell_recall": 0.8235294117647058,
+        "sell_day_recall": 0.8235294117647058,
+        "balanced_accuracy": 0.7917647058823529,
+        "confusion_matrix": {
+          "actual_buy": {
+            "pred_buy": 19,
+            "pred_sell": 6,
+            "pred_flat": 0
+          },
+          "actual_sell": {
+            "pred_buy": 3,
+            "pred_sell": 14,
+            "pred_flat": 0
+          },
+          "actual_flat": {
+            "pred_buy": 0,
+            "pred_sell": 0,
+            "pred_flat": 0
+          }
+        },
+        "actual_direction_counts": {
+          "buy": 25,
+          "sell": 17,
+          "flat": 0
+        },
+        "predicted_direction_counts": {
+          "buy": 22,
+          "sell": 20,
+          "flat": 0
+        },
+        "pearson_correlation": 0.467183680710334,
+        "cosine_similarity": 0.4688760423029013,
+        "max_abs_normalized": {
+          "pearson_correlation": 0.467183680710334,
+          "cosine_similarity": 0.4688760423029013
+        },
+        "z_score_normalized": {
+          "pearson_correlation": 0.4671836807103339,
+          "cosine_similarity": 0.4671836807103339
+        },
+        "cumulative_max_abs_normalized": {
+          "pearson_correlation": 0.15782169376063837,
+          "cosine_similarity": 0.379827916695349
+        }
+      },
+      "baselines_vs_individuals": {
+        "always_buy": {
+          "direction_match_rate": 0.5952380952380952,
+          "nonzero_direction_match_rate": 0.5952380952380952,
+          "buy_recall": 1.0,
+          "sell_recall": 0.0,
+          "sell_day_recall": 0.0,
+          "balanced_accuracy": 0.5,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 25,
+              "pred_sell": 0,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 17,
+              "pred_sell": 0,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 42,
+            "sell": 0,
+            "flat": 0
+          }
+        },
+        "always_sell": {
+          "direction_match_rate": 0.40476190476190477,
+          "nonzero_direction_match_rate": 0.40476190476190477,
+          "buy_recall": 0.0,
+          "sell_recall": 1.0,
+          "sell_day_recall": 1.0,
+          "balanced_accuracy": 0.5,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 0,
+              "pred_sell": 25,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 0,
+              "pred_sell": 17,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 0,
+            "sell": 42,
+            "flat": 0
+          }
+        },
+        "random_50_50": {
+          "direction_match_rate": 0.5238095238095238,
+          "nonzero_direction_match_rate": 0.5238095238095238,
+          "buy_recall": 0.52,
+          "sell_recall": 0.5294117647058824,
+          "sell_day_recall": 0.5294117647058824,
+          "balanced_accuracy": 0.5247058823529411,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 13,
+              "pred_sell": 12,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 8,
+              "pred_sell": 9,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 21,
+            "sell": 21,
+            "flat": 0
+          }
+        },
+        "actual_ratio_random": {
+          "direction_match_rate": 0.6428571428571429,
+          "nonzero_direction_match_rate": 0.6428571428571429,
+          "buy_recall": 0.68,
+          "sell_recall": 0.5882352941176471,
+          "sell_day_recall": 0.5882352941176471,
+          "balanced_accuracy": 0.6341176470588236,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 17,
+              "pred_sell": 8,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 7,
+              "pred_sell": 10,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 24,
+            "sell": 18,
+            "flat": 0
+          }
+        },
+        "previous_day_individual_direction": {
+          "direction_match_rate": 0.4523809523809524,
+          "nonzero_direction_match_rate": 0.4523809523809524,
+          "buy_recall": 0.56,
+          "sell_recall": 0.29411764705882354,
+          "sell_day_recall": 0.29411764705882354,
+          "balanced_accuracy": 0.4270588235294118,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 14,
+              "pred_sell": 11,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 12,
+              "pred_sell": 5,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 26,
+            "sell": 16,
+            "flat": 0
+          }
+        },
+        "previous_day_market_return_direction": {
+          "direction_match_rate": 0.5952380952380952,
+          "nonzero_direction_match_rate": 0.5952380952380952,
+          "buy_recall": 0.56,
+          "sell_recall": 0.6470588235294118,
+          "sell_day_recall": 0.6470588235294118,
+          "balanced_accuracy": 0.6035294117647059,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 14,
+              "pred_sell": 11,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 6,
+              "pred_sell": 11,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 20,
+            "sell": 22,
+            "flat": 0
+          }
+        }
+      }
+    },
+    "am_volume": {
+      "metric": "am_volume_exploratory",
+      "overlap_days": 42,
+      "primary_metrics": {
+        "direction_match_rate": 0.5,
+        "buy_recall": 0.44,
+        "sell_recall": 0.5882,
+        "balanced_accuracy": 0.5141
+      },
+      "reference_metrics": {
+        "pearson_daily": 0.22932568017935406,
+        "pearson_cumulative": -0.1938734740872131,
+        "note": "누적 Pearson은 상승장 + 단일가 체결 구조상 구조적 역전이 발생할 수 있음"
+      },
+      "llm_vs_individuals": {
+        "days": 42,
+        "direction_match_rate": 0.5,
+        "nonzero_direction_match_rate": 0.5,
+        "buy_recall": 0.44,
+        "sell_recall": 0.5882352941176471,
+        "sell_day_recall": 0.5882352941176471,
+        "balanced_accuracy": 0.5141176470588236,
+        "confusion_matrix": {
+          "actual_buy": {
+            "pred_buy": 11,
+            "pred_sell": 14,
+            "pred_flat": 0
+          },
+          "actual_sell": {
+            "pred_buy": 7,
+            "pred_sell": 10,
+            "pred_flat": 0
+          },
+          "actual_flat": {
+            "pred_buy": 0,
+            "pred_sell": 0,
+            "pred_flat": 0
+          }
+        },
+        "actual_direction_counts": {
+          "buy": 25,
+          "sell": 17,
+          "flat": 0
+        },
+        "predicted_direction_counts": {
+          "buy": 18,
+          "sell": 24,
+          "flat": 0
+        },
+        "pearson_correlation": 0.22932568017935406,
+        "cosine_similarity": 0.2006122484796583,
+        "max_abs_normalized": {
+          "pearson_correlation": 0.2293256801793541,
+          "cosine_similarity": 0.20061224847965833
+        },
+        "z_score_normalized": {
+          "pearson_correlation": 0.2293256801793541,
+          "cosine_similarity": 0.2293256801793541
+        },
+        "cumulative_max_abs_normalized": {
+          "pearson_correlation": -0.1938734740872131,
+          "cosine_similarity": -0.8613963872169174
+        }
+      },
+      "baselines_vs_individuals": {
+        "always_buy": {
+          "direction_match_rate": 0.5952380952380952,
+          "nonzero_direction_match_rate": 0.5952380952380952,
+          "buy_recall": 1.0,
+          "sell_recall": 0.0,
+          "sell_day_recall": 0.0,
+          "balanced_accuracy": 0.5,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 25,
+              "pred_sell": 0,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 17,
+              "pred_sell": 0,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 42,
+            "sell": 0,
+            "flat": 0
+          }
+        },
+        "always_sell": {
+          "direction_match_rate": 0.40476190476190477,
+          "nonzero_direction_match_rate": 0.40476190476190477,
+          "buy_recall": 0.0,
+          "sell_recall": 1.0,
+          "sell_day_recall": 1.0,
+          "balanced_accuracy": 0.5,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 0,
+              "pred_sell": 25,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 0,
+              "pred_sell": 17,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 0,
+            "sell": 42,
+            "flat": 0
+          }
+        },
+        "random_50_50": {
+          "direction_match_rate": 0.5238095238095238,
+          "nonzero_direction_match_rate": 0.5238095238095238,
+          "buy_recall": 0.52,
+          "sell_recall": 0.5294117647058824,
+          "sell_day_recall": 0.5294117647058824,
+          "balanced_accuracy": 0.5247058823529411,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 13,
+              "pred_sell": 12,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 8,
+              "pred_sell": 9,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 21,
+            "sell": 21,
+            "flat": 0
+          }
+        },
+        "actual_ratio_random": {
+          "direction_match_rate": 0.6428571428571429,
+          "nonzero_direction_match_rate": 0.6428571428571429,
+          "buy_recall": 0.68,
+          "sell_recall": 0.5882352941176471,
+          "sell_day_recall": 0.5882352941176471,
+          "balanced_accuracy": 0.6341176470588236,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 17,
+              "pred_sell": 8,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 7,
+              "pred_sell": 10,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 24,
+            "sell": 18,
+            "flat": 0
+          }
+        },
+        "previous_day_individual_direction": {
+          "direction_match_rate": 0.4523809523809524,
+          "nonzero_direction_match_rate": 0.4523809523809524,
+          "buy_recall": 0.56,
+          "sell_recall": 0.29411764705882354,
+          "sell_day_recall": 0.29411764705882354,
+          "balanced_accuracy": 0.4270588235294118,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 14,
+              "pred_sell": 11,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 12,
+              "pred_sell": 5,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 26,
+            "sell": 16,
+            "flat": 0
+          }
+        },
+        "previous_day_market_return_direction": {
+          "direction_match_rate": 0.5952380952380952,
+          "nonzero_direction_match_rate": 0.5952380952380952,
+          "buy_recall": 0.56,
+          "sell_recall": 0.6470588235294118,
+          "sell_day_recall": 0.6470588235294118,
+          "balanced_accuracy": 0.6035294117647059,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 14,
+              "pred_sell": 11,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 6,
+              "pred_sell": 11,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 20,
+            "sell": 22,
+            "flat": 0
+          }
+        }
+      }
+    },
+    "pm_volume": {
+      "metric": "pm_volume_exploratory",
+      "overlap_days": 42,
+      "primary_metrics": {
+        "direction_match_rate": 0.7857,
+        "buy_recall": 0.76,
+        "sell_recall": 0.8235,
+        "balanced_accuracy": 0.7918
+      },
+      "reference_metrics": {
+        "pearson_daily": 0.48282692009790046,
+        "pearson_cumulative": 0.2554252078048389,
+        "note": "누적 Pearson은 상승장 + 단일가 체결 구조상 구조적 역전이 발생할 수 있음"
+      },
+      "llm_vs_individuals": {
+        "days": 42,
+        "direction_match_rate": 0.7857142857142857,
+        "nonzero_direction_match_rate": 0.7857142857142857,
+        "buy_recall": 0.76,
+        "sell_recall": 0.8235294117647058,
+        "sell_day_recall": 0.8235294117647058,
+        "balanced_accuracy": 0.7917647058823529,
+        "confusion_matrix": {
+          "actual_buy": {
+            "pred_buy": 19,
+            "pred_sell": 6,
+            "pred_flat": 0
+          },
+          "actual_sell": {
+            "pred_buy": 3,
+            "pred_sell": 14,
+            "pred_flat": 0
+          },
+          "actual_flat": {
+            "pred_buy": 0,
+            "pred_sell": 0,
+            "pred_flat": 0
+          }
+        },
+        "actual_direction_counts": {
+          "buy": 25,
+          "sell": 17,
+          "flat": 0
+        },
+        "predicted_direction_counts": {
+          "buy": 22,
+          "sell": 20,
+          "flat": 0
+        },
+        "pearson_correlation": 0.48282692009790046,
+        "cosine_similarity": 0.4845757098093102,
+        "max_abs_normalized": {
+          "pearson_correlation": 0.4828269200979005,
+          "cosine_similarity": 0.48457570980931014
+        },
+        "z_score_normalized": {
+          "pearson_correlation": 0.4828269200979005,
+          "cosine_similarity": 0.4828269200979005
+        },
+        "cumulative_max_abs_normalized": {
+          "pearson_correlation": 0.2554252078048389,
+          "cosine_similarity": 0.4743404410580102
+        }
+      },
+      "baselines_vs_individuals": {
+        "always_buy": {
+          "direction_match_rate": 0.5952380952380952,
+          "nonzero_direction_match_rate": 0.5952380952380952,
+          "buy_recall": 1.0,
+          "sell_recall": 0.0,
+          "sell_day_recall": 0.0,
+          "balanced_accuracy": 0.5,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 25,
+              "pred_sell": 0,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 17,
+              "pred_sell": 0,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 42,
+            "sell": 0,
+            "flat": 0
+          }
+        },
+        "always_sell": {
+          "direction_match_rate": 0.40476190476190477,
+          "nonzero_direction_match_rate": 0.40476190476190477,
+          "buy_recall": 0.0,
+          "sell_recall": 1.0,
+          "sell_day_recall": 1.0,
+          "balanced_accuracy": 0.5,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 0,
+              "pred_sell": 25,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 0,
+              "pred_sell": 17,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 0,
+            "sell": 42,
+            "flat": 0
+          }
+        },
+        "random_50_50": {
+          "direction_match_rate": 0.5238095238095238,
+          "nonzero_direction_match_rate": 0.5238095238095238,
+          "buy_recall": 0.52,
+          "sell_recall": 0.5294117647058824,
+          "sell_day_recall": 0.5294117647058824,
+          "balanced_accuracy": 0.5247058823529411,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 13,
+              "pred_sell": 12,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 8,
+              "pred_sell": 9,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 21,
+            "sell": 21,
+            "flat": 0
+          }
+        },
+        "actual_ratio_random": {
+          "direction_match_rate": 0.6428571428571429,
+          "nonzero_direction_match_rate": 0.6428571428571429,
+          "buy_recall": 0.68,
+          "sell_recall": 0.5882352941176471,
+          "sell_day_recall": 0.5882352941176471,
+          "balanced_accuracy": 0.6341176470588236,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 17,
+              "pred_sell": 8,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 7,
+              "pred_sell": 10,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 24,
+            "sell": 18,
+            "flat": 0
+          }
+        },
+        "previous_day_individual_direction": {
+          "direction_match_rate": 0.4523809523809524,
+          "nonzero_direction_match_rate": 0.4523809523809524,
+          "buy_recall": 0.56,
+          "sell_recall": 0.29411764705882354,
+          "sell_day_recall": 0.29411764705882354,
+          "balanced_accuracy": 0.4270588235294118,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 14,
+              "pred_sell": 11,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 12,
+              "pred_sell": 5,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 26,
+            "sell": 16,
+            "flat": 0
+          }
+        },
+        "previous_day_market_return_direction": {
+          "direction_match_rate": 0.5952380952380952,
+          "nonzero_direction_match_rate": 0.5952380952380952,
+          "buy_recall": 0.56,
+          "sell_recall": 0.6470588235294118,
+          "sell_day_recall": 0.6470588235294118,
+          "balanced_accuracy": 0.6035294117647059,
+          "confusion_matrix": {
+            "actual_buy": {
+              "pred_buy": 14,
+              "pred_sell": 11,
+              "pred_flat": 0
+            },
+            "actual_sell": {
+              "pred_buy": 6,
+              "pred_sell": 11,
+              "pred_flat": 0
+            },
+            "actual_flat": {
+              "pred_buy": 0,
+              "pred_sell": 0,
+              "pred_flat": 0
+            }
+          },
+          "actual_direction_counts": {
+            "buy": 25,
+            "sell": 17,
+            "flat": 0
+          },
+          "predicted_direction_counts": {
+            "buy": 20,
+            "sell": 22,
+            "flat": 0
+          }
+        }
+      }
+    }
+  },
+  "primary_metrics": {
+    "value": {
+      "direction_match_rate": 0.7143,
+      "buy_recall": 0.64,
+      "sell_recall": 0.8235,
+      "balanced_accuracy": 0.7318
+    },
+    "volume": {
+      "direction_match_rate": 0.7143,
+      "buy_recall": 0.64,
+      "sell_recall": 0.8235,
+      "balanced_accuracy": 0.7318
+    }
+  },
+  "reference_metrics": {
+    "value": {
+      "pearson_daily": 0.46574414281953425,
+      "pearson_cumulative": -0.00618179908217688,
+      "note": "누적 Pearson은 상승장 + 단일가 체결 구조상 구조적 역전이 발생할 수 있음"
+    },
+    "volume": {
+      "pearson_daily": 0.4955856244609117,
+      "pearson_cumulative": -0.044753991887672116,
+      "note": "누적 Pearson은 상승장 + 단일가 체결 구조상 구조적 역전이 발생할 수 있음"
+    },
+    "note": "누적 Pearson은 상승장 + 단일가 체결 구조상 구조적 역전이 발생할 수 있음"
+  }
+}

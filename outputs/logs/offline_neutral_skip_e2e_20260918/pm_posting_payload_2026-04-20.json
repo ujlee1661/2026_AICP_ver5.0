@@ -1,0 +1,1574 @@
+{
+  "turn_results": [
+    {
+      "agent": {
+        "agent_id": "A001",
+        "source_user_id": "10484770445",
+        "user_type": "ordinary",
+        "gender": "남성",
+        "age": 0,
+        "age_group": "미사용",
+        "location": "미사용",
+        "bh_disposition_effect_category": "medium",
+        "bh_lottery_preference_category": "low",
+        "bh_total_return_category": "high",
+        "bh_underdiversification_category": "medium",
+        "strategy": "value",
+        "trad_pro": 0,
+        "fol_ind": "[\"삼성전자\"]",
+        "ini_cash": 100000000,
+        "news_depth": 1,
+        "segment_key": "미사용",
+        "match_score": 0,
+        "persona_prompt": "당신은 한국의 삼성전자 개인투자자입니다.\n당신은 팔로워가 많지 않은 평범한 개인 투자자다.\n당신은 보유 자산이 10% 이상 오르면 매도를 고려하고, 20% 오르면 전량 정리해 이익을 확정하는 편이다. 보유 자산이 하락하면 즉시 분석해서 한번 걸어보며 물타기를 계속할지 아니면 손절매할지를 판단한다.\n시장에는 최근 급등한 '복권형' 자산이 이따금 등장하지만, 그런 자산은 당신의 투자 판단에 거의 영향을 주지 않는다.\n당신의 포트폴리오는 과거에 뛰어난 성과를 냈고, 총투자수익률이 시장 평균을 웃돈다.\n당신은 여러 종목에 투자를 분산해 위험을 낮추는 편이다.\n기본적 분석 투자자로서 당신은 자산의 내재가치와 성장성을 파악하는 데 집중한다. 당신의 목표는 종목이 저평가되었을 때 매수하고 고평가되었을 때 매도하는 것이다. 당신은 기술적 지표에는 거의 주의를 기울이지 않는다.\n당신은 신규 매수를 결정할 때 최근 가격이 하락한 국면을 선호합니다. 가격 하락이 과도해 향후 반등할 가능성이 있다고 판단되면 신규 매수합니다. 반대로 최근 가격이 크게 상승한 국면은 과열되었다고 보아 추격 매수를 피합니다.\n뉴스는 각 AM/PM 거래 판단 시점에 제공된 기본 뉴스의 기사 제목(헤드라인)과 그에 연결된 기사 요약을 모두 확인하는 요약 전독형입니다.\n이번 실험에서는 삼성전자 단일 자산만 거래하며, 초기에는 주식 없이 현금 100,000,000원만 보유한 상태로 시장에 진입합니다.\n",
+        "momentum_contrarian": "contrarian",
+        "can_post_community": 0,
+        "source_persona_prompt_sha256": "6e382522880e5da596baa2176eae11069c1fbbd1a4789130b64dcf8326d5c8cb",
+        "persona_prompt_sha256": "f2f036dbc6c2b9293dcd1e49a15ffbeb3450eaad1f90d5fdc966bf41fad94912",
+        "persona_prompt_regenerated": true
+      },
+      "analysis_id": "analysis_A001_t072",
+      "decision": {
+        "action": "sell",
+        "requested_quantity": 10,
+        "quantity": 10,
+        "order_type": "announced_price",
+        "price": 214500.0,
+        "reason": "두 belief와 실행 제약을 함께 고려한 제한적 거래다.",
+        "risk_control": "현금과 보유량 제약 안에서 수량을 제한한다.",
+        "order_corrections": [],
+        "validation_errors": [],
+        "valid": true,
+        "decision_attempts": 1,
+        "decision_retry_count": 0,
+        "decision_origin": "llm_first_response",
+        "available_cash": 393400.0,
+        "current_quantity": 527,
+        "max_buy_quantity": 0,
+        "max_sell_quantity": 527,
+        "selected_action_max_quantity": 527,
+        "one_share_reason": "not_one_share",
+        "deterministic_fallback_used": false,
+        "invalid_attempt_errors": []
+      },
+      "decision_id": "decision_A001_t072",
+      "stb_id": "stb_A001_t072",
+      "fill_id": "fill_A001_t072",
+      "fill": {
+        "fill_id": "fill_A001_t072",
+        "agent_id": "A001",
+        "turn": 72,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "stock_code": "005930",
+        "action": "sell",
+        "requested_quantity": 10,
+        "filled_quantity": 10,
+        "executed_price": 214500.0,
+        "fee": 0.0,
+        "source_ltb_id": "ltb_A001_t071",
+        "source_stb_id": "stb_A001_t072",
+        "decision_id": "decision_A001_t072",
+        "pre_portfolio": {
+          "cash": 393400.0,
+          "quantity": 527,
+          "stock_code": "005930"
+        },
+        "post_portfolio": {
+          "cash": 2538400.0,
+          "quantity": 517,
+          "realized_pnl": 769334.6798526666,
+          "stock_code": "005930",
+          "total_return_rate": 0.134349,
+          "total_value": 113434900.0
+        },
+        "scientific_sha256": "2cd3383043a37f2bb48837275fc26e152c0fe33fc28501f7ebb8480d65dfb50d"
+      },
+      "ltb_id": "ltb_A001_t072",
+      "ltb": {
+        "ltb_id": "ltb_A001_t072",
+        "agent_id": "A001",
+        "turn": 72,
+        "visible_from_turn": 73,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "parent_ltb_id": "ltb_A001_t071",
+        "source_stb_id": "stb_A001_t072",
+        "source_decision_id": "decision_A001_t072",
+        "source_fill_id": "fill_A001_t072",
+        "dimensions": {
+          "dim_1": "72번째 정보까지 통합해 한 달 방향을 신중하게 본다.",
+          "dim_2": "72번째 판단에서도 밸류에이션 확신을 제한한다.",
+          "dim_3": "72번째 갱신 후에도 거시와 업황 확인을 이어간다.",
+          "dim_4": "72번째 갱신에서 시장 심리를 혼조로 본다.",
+          "dim_5": "72번째 새 정보를 누적 관점에 선별적으로 반영한다.",
+          "dim_6": "72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다."
+        },
+        "integration_evidence": {
+          "dim_1": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_2": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_3": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_4": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_5": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_6": {
+            "contradict": [
+              "outcome:fill_A001_t062:h5",
+              "outcome:fill_A001_t070:h1"
+            ],
+            "support": [
+              "news_20260420_경제_da978416",
+              "outcome:fill_A001_t071:next_turn"
+            ]
+          }
+        },
+        "scientific_sha256": "7b3fbf1e19ff6f707f0e36a077c40585c2930f4cd28d05a34c3a373482e6f59e",
+        "belief_summary": "dim_1: 72번째 정보까지 통합해 한 달 방향을 신중하게 본다.\ndim_2: 72번째 판단에서도 밸류에이션 확신을 제한한다.\ndim_3: 72번째 갱신 후에도 거시와 업황 확인을 이어간다.\ndim_4: 72번째 갱신에서 시장 심리를 혼조로 본다.\ndim_5: 72번째 새 정보를 누적 관점에 선별적으로 반영한다.\ndim_6: 72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다.",
+        "view_change": {
+          "dim_1": {
+            "after": "72번째 정보까지 통합해 한 달 방향을 신중하게 본다.",
+            "before": "71번째 정보까지 통합해 한 달 방향을 신중하게 본다."
+          },
+          "dim_2": {
+            "after": "72번째 판단에서도 밸류에이션 확신을 제한한다.",
+            "before": "71번째 판단에서도 밸류에이션 확신을 제한한다."
+          },
+          "dim_3": {
+            "after": "72번째 갱신 후에도 거시와 업황 확인을 이어간다.",
+            "before": "71번째 갱신 후에도 거시와 업황 확인을 이어간다."
+          },
+          "dim_4": {
+            "after": "72번째 갱신에서 시장 심리를 혼조로 본다.",
+            "before": "71번째 갱신에서 시장 심리를 혼조로 본다."
+          },
+          "dim_5": {
+            "after": "72번째 새 정보를 누적 관점에 선별적으로 반영한다.",
+            "before": "71번째 새 정보를 누적 관점에 선별적으로 반영한다."
+          },
+          "dim_6": {
+            "after": "72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다.",
+            "before": "71번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다."
+          }
+        },
+        "human_log_sha256": "84c7f75e6961ab0e565a211543dd5977199eabca6f01a1222eb306faae07717e"
+      }
+    },
+    {
+      "agent": {
+        "agent_id": "A002",
+        "source_user_id": "10810341339",
+        "user_type": "ordinary",
+        "gender": "남성",
+        "age": 0,
+        "age_group": "미사용",
+        "location": "미사용",
+        "bh_disposition_effect_category": "medium",
+        "bh_lottery_preference_category": "low",
+        "bh_total_return_category": "low",
+        "bh_underdiversification_category": "low",
+        "strategy": "technical",
+        "trad_pro": 0,
+        "fol_ind": "[\"삼성전자\"]",
+        "ini_cash": 100000000,
+        "news_depth": 1,
+        "segment_key": "미사용",
+        "match_score": 0,
+        "persona_prompt": "당신은 한국의 삼성전자 개인투자자입니다.\n당신은 팔로워가 많지 않은 평범한 개인 투자자다.\n당신은 보유 자산이 10% 이상 오르면 매도를 고려하고, 20% 오르면 전량 정리해 이익을 확정하는 편이다. 보유 자산이 하락하면 즉시 분석해서 한번 걸어보며 물타기를 계속할지 아니면 손절매할지를 판단한다.\n시장에는 최근 급등한 '복권형' 자산이 이따금 등장하지만, 그런 자산은 당신의 투자 판단에 거의 영향을 주지 않는다.\n당신의 포트폴리오는 과거 총투자수익률이 다소 낮아 시장 평균에 이르지 못했다.\n당신은 투자를 집중해 유망하다고 보는 특정 종목에 크게 베팅하는 편이며, 그래야만 두둑한 수익을 얻을 수 있다고 믿는다.\n기술적 분석 투자자로서 당신은 단기 시장 변동에서 이익을 얻는 데 집중한다. 당신의 목표는 기술적 지표 분석과 시장 추세 예측을 통해 빠르고 효율적인 매매 판단을 내리는 것이다.\n당신은 신규 매수를 결정할 때 최근 가격의 상승·하락 추세 자체보다 기업의 가치와 이용 가능한 정보가 투자 판단을 뒷받침하는지를 우선 검토합니다. 최근 가격 흐름만을 이유로 신규 매수나 추격 매수를 결정하지 않습니다.\n뉴스는 각 AM/PM 거래 판단 시점에 제공된 기본 뉴스의 기사 제목(헤드라인)과 그에 연결된 기사 요약을 모두 확인하는 요약 전독형입니다.\n이번 실험에서는 삼성전자 단일 자산만 거래하며, 초기에는 주식 없이 현금 100,000,000원만 보유한 상태로 시장에 진입합니다.\n",
+        "momentum_contrarian": "neutral",
+        "can_post_community": 0,
+        "source_persona_prompt_sha256": "c0644589112dce5fb2aa567f6846d51b3571e7665e2b3fbf900e54bcc4ba87f2",
+        "persona_prompt_sha256": "6a00bf1b63d72ec274f4a5bec4f0a136b850e8254e5b1bc9573e7ac8540b4f48",
+        "persona_prompt_regenerated": true
+      },
+      "analysis_id": "analysis_A002_t072",
+      "decision": {
+        "action": "sell",
+        "requested_quantity": 10,
+        "quantity": 10,
+        "order_type": "announced_price",
+        "price": 214500.0,
+        "reason": "두 belief와 실행 제약을 함께 고려한 제한적 거래다.",
+        "risk_control": "현금과 보유량 제약 안에서 수량을 제한한다.",
+        "order_corrections": [],
+        "validation_errors": [],
+        "valid": true,
+        "decision_attempts": 1,
+        "decision_retry_count": 0,
+        "decision_origin": "llm_first_response",
+        "available_cash": 393400.0,
+        "current_quantity": 527,
+        "max_buy_quantity": 0,
+        "max_sell_quantity": 527,
+        "selected_action_max_quantity": 527,
+        "one_share_reason": "not_one_share",
+        "deterministic_fallback_used": false,
+        "invalid_attempt_errors": []
+      },
+      "decision_id": "decision_A002_t072",
+      "stb_id": "stb_A002_t072",
+      "fill_id": "fill_A002_t072",
+      "fill": {
+        "fill_id": "fill_A002_t072",
+        "agent_id": "A002",
+        "turn": 72,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "stock_code": "005930",
+        "action": "sell",
+        "requested_quantity": 10,
+        "filled_quantity": 10,
+        "executed_price": 214500.0,
+        "fee": 0.0,
+        "source_ltb_id": "ltb_A002_t071",
+        "source_stb_id": "stb_A002_t072",
+        "decision_id": "decision_A002_t072",
+        "pre_portfolio": {
+          "cash": 393400.0,
+          "quantity": 527,
+          "stock_code": "005930"
+        },
+        "post_portfolio": {
+          "cash": 2538400.0,
+          "quantity": 517,
+          "realized_pnl": 769334.6798526666,
+          "stock_code": "005930",
+          "total_return_rate": 0.134349,
+          "total_value": 113434900.0
+        },
+        "scientific_sha256": "578e66735e772c599e69b365af27040ffa672150138df862cd4c919fb86f71b7"
+      },
+      "ltb_id": "ltb_A002_t072",
+      "ltb": {
+        "ltb_id": "ltb_A002_t072",
+        "agent_id": "A002",
+        "turn": 72,
+        "visible_from_turn": 73,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "parent_ltb_id": "ltb_A002_t071",
+        "source_stb_id": "stb_A002_t072",
+        "source_decision_id": "decision_A002_t072",
+        "source_fill_id": "fill_A002_t072",
+        "dimensions": {
+          "dim_1": "72번째 정보까지 통합해 한 달 방향을 신중하게 본다.",
+          "dim_2": "72번째 판단에서도 밸류에이션 확신을 제한한다.",
+          "dim_3": "72번째 갱신 후에도 거시와 업황 확인을 이어간다.",
+          "dim_4": "72번째 갱신에서 시장 심리를 혼조로 본다.",
+          "dim_5": "72번째 새 정보를 누적 관점에 선별적으로 반영한다.",
+          "dim_6": "72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다."
+        },
+        "integration_evidence": {
+          "dim_1": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_2": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_3": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_4": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_5": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_6": {
+            "contradict": [
+              "outcome:fill_A002_t062:h5",
+              "outcome:fill_A002_t070:h1"
+            ],
+            "support": [
+              "news_20260420_경제_da978416",
+              "outcome:fill_A002_t071:next_turn"
+            ]
+          }
+        },
+        "scientific_sha256": "492c2ac416bac2ec9c925377bc3e4deb0c33bb5eef9e8519051716327761e7a1",
+        "belief_summary": "dim_1: 72번째 정보까지 통합해 한 달 방향을 신중하게 본다.\ndim_2: 72번째 판단에서도 밸류에이션 확신을 제한한다.\ndim_3: 72번째 갱신 후에도 거시와 업황 확인을 이어간다.\ndim_4: 72번째 갱신에서 시장 심리를 혼조로 본다.\ndim_5: 72번째 새 정보를 누적 관점에 선별적으로 반영한다.\ndim_6: 72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다.",
+        "view_change": {
+          "dim_1": {
+            "after": "72번째 정보까지 통합해 한 달 방향을 신중하게 본다.",
+            "before": "71번째 정보까지 통합해 한 달 방향을 신중하게 본다."
+          },
+          "dim_2": {
+            "after": "72번째 판단에서도 밸류에이션 확신을 제한한다.",
+            "before": "71번째 판단에서도 밸류에이션 확신을 제한한다."
+          },
+          "dim_3": {
+            "after": "72번째 갱신 후에도 거시와 업황 확인을 이어간다.",
+            "before": "71번째 갱신 후에도 거시와 업황 확인을 이어간다."
+          },
+          "dim_4": {
+            "after": "72번째 갱신에서 시장 심리를 혼조로 본다.",
+            "before": "71번째 갱신에서 시장 심리를 혼조로 본다."
+          },
+          "dim_5": {
+            "after": "72번째 새 정보를 누적 관점에 선별적으로 반영한다.",
+            "before": "71번째 새 정보를 누적 관점에 선별적으로 반영한다."
+          },
+          "dim_6": {
+            "after": "72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다.",
+            "before": "71번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다."
+          }
+        },
+        "human_log_sha256": "84c7f75e6961ab0e565a211543dd5977199eabca6f01a1222eb306faae07717e"
+      }
+    },
+    {
+      "agent": {
+        "agent_id": "A003",
+        "source_user_id": "10969908370",
+        "user_type": "ordinary",
+        "gender": "남성",
+        "age": 0,
+        "age_group": "미사용",
+        "location": "미사용",
+        "bh_disposition_effect_category": "high",
+        "bh_lottery_preference_category": "high",
+        "bh_total_return_category": "high",
+        "bh_underdiversification_category": "low",
+        "strategy": "technical",
+        "trad_pro": 0,
+        "fol_ind": "[\"삼성전자\"]",
+        "ini_cash": 100000000,
+        "news_depth": 0,
+        "segment_key": "미사용",
+        "match_score": 0,
+        "persona_prompt": "당신은 한국의 삼성전자 개인투자자입니다.\n당신은 팔로워가 많지 않은 평범한 개인 투자자다.\n당신은 보유 자산이 10% 넘게 오르면 곧바로 팔아 이익을 확정한다. 반대로 보유 자산이 하락하면 한번 걸어보는 쪽을 택해, 스스로 유망하다고 본 자산에 대해서는 포지션 위험을 무시하고 떨어질수록 더 사들인다.\n당신은 '복권형' 자산에 투자하기를 특히 좋아해서, 위험이 크지만 잠재 수익이 막대한 자산, 그중에서도 최근 급등한 자산을 고르는 경향이 있으며 하룻밤에 큰돈을 벌기를 기대한다.\n당신의 포트폴리오는 과거에 뛰어난 성과를 냈고, 총투자수익률이 시장 평균을 웃돈다.\n당신은 투자를 집중해 유망하다고 보는 특정 종목에 크게 베팅하는 편이며, 그래야만 두둑한 수익을 얻을 수 있다고 믿는다.\n기술적 분석 투자자로서 당신은 단기 시장 변동에서 이익을 얻는 데 집중한다. 당신의 목표는 기술적 지표 분석과 시장 추세 예측을 통해 빠르고 효율적인 매매 판단을 내리는 것이다.\n당신은 신규 매수를 결정할 때 최근 가격이 하락한 국면을 선호합니다. 가격 하락이 과도해 향후 반등할 가능성이 있다고 판단되면 신규 매수합니다. 반대로 최근 가격이 크게 상승한 국면은 과열되었다고 보아 추격 매수를 피합니다.\n뉴스는 각 AM/PM 거래 판단 시점에 제공된 기본 뉴스의 기사 제목(헤드라인)을 모두 확인하고, 기사 요약은 확인하지 않는 헤드라인 스캔형입니다.\n이번 실험에서는 삼성전자 단일 자산만 거래하며, 초기에는 주식 없이 현금 100,000,000원만 보유한 상태로 시장에 진입합니다.\n",
+        "momentum_contrarian": "contrarian",
+        "can_post_community": 0,
+        "source_persona_prompt_sha256": "3b89a9b995e35734934d454320402c9883d68dd75b15dfc528377307b9bbe5c6",
+        "persona_prompt_sha256": "edfb0de6f29135a2191cb658528b1d6186cd7bcd82453c5625d477a8203f24ac",
+        "persona_prompt_regenerated": true
+      },
+      "analysis_id": "analysis_A003_t072",
+      "decision": {
+        "action": "sell",
+        "requested_quantity": 10,
+        "quantity": 10,
+        "order_type": "announced_price",
+        "price": 214500.0,
+        "reason": "두 belief와 실행 제약을 함께 고려한 제한적 거래다.",
+        "risk_control": "현금과 보유량 제약 안에서 수량을 제한한다.",
+        "order_corrections": [],
+        "validation_errors": [],
+        "valid": true,
+        "decision_attempts": 1,
+        "decision_retry_count": 0,
+        "decision_origin": "llm_first_response",
+        "available_cash": 393400.0,
+        "current_quantity": 527,
+        "max_buy_quantity": 0,
+        "max_sell_quantity": 527,
+        "selected_action_max_quantity": 527,
+        "one_share_reason": "not_one_share",
+        "deterministic_fallback_used": false,
+        "invalid_attempt_errors": []
+      },
+      "decision_id": "decision_A003_t072",
+      "stb_id": "stb_A003_t072",
+      "fill_id": "fill_A003_t072",
+      "fill": {
+        "fill_id": "fill_A003_t072",
+        "agent_id": "A003",
+        "turn": 72,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "stock_code": "005930",
+        "action": "sell",
+        "requested_quantity": 10,
+        "filled_quantity": 10,
+        "executed_price": 214500.0,
+        "fee": 0.0,
+        "source_ltb_id": "ltb_A003_t071",
+        "source_stb_id": "stb_A003_t072",
+        "decision_id": "decision_A003_t072",
+        "pre_portfolio": {
+          "cash": 393400.0,
+          "quantity": 527,
+          "stock_code": "005930"
+        },
+        "post_portfolio": {
+          "cash": 2538400.0,
+          "quantity": 517,
+          "realized_pnl": 769334.6798526666,
+          "stock_code": "005930",
+          "total_return_rate": 0.134349,
+          "total_value": 113434900.0
+        },
+        "scientific_sha256": "ccd685163a6c2071329aff4ca2d1959296e4bf139e0351e9cd66ea90347214c4"
+      },
+      "ltb_id": "ltb_A003_t072",
+      "ltb": {
+        "ltb_id": "ltb_A003_t072",
+        "agent_id": "A003",
+        "turn": 72,
+        "visible_from_turn": 73,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "parent_ltb_id": "ltb_A003_t071",
+        "source_stb_id": "stb_A003_t072",
+        "source_decision_id": "decision_A003_t072",
+        "source_fill_id": "fill_A003_t072",
+        "dimensions": {
+          "dim_1": "72번째 정보까지 통합해 한 달 방향을 신중하게 본다.",
+          "dim_2": "72번째 판단에서도 밸류에이션 확신을 제한한다.",
+          "dim_3": "72번째 갱신 후에도 거시와 업황 확인을 이어간다.",
+          "dim_4": "72번째 갱신에서 시장 심리를 혼조로 본다.",
+          "dim_5": "72번째 새 정보를 누적 관점에 선별적으로 반영한다.",
+          "dim_6": "72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다."
+        },
+        "integration_evidence": {
+          "dim_1": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_2": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_3": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_4": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_5": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_6": {
+            "contradict": [
+              "outcome:fill_A003_t062:h5",
+              "outcome:fill_A003_t070:h1"
+            ],
+            "support": [
+              "news_20260420_경제_da978416",
+              "outcome:fill_A003_t071:next_turn"
+            ]
+          }
+        },
+        "scientific_sha256": "5cd46401834097be0b3e48d7eedaf45b7aa52e8d6790c70b9ed4484f350af8d6",
+        "belief_summary": "dim_1: 72번째 정보까지 통합해 한 달 방향을 신중하게 본다.\ndim_2: 72번째 판단에서도 밸류에이션 확신을 제한한다.\ndim_3: 72번째 갱신 후에도 거시와 업황 확인을 이어간다.\ndim_4: 72번째 갱신에서 시장 심리를 혼조로 본다.\ndim_5: 72번째 새 정보를 누적 관점에 선별적으로 반영한다.\ndim_6: 72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다.",
+        "view_change": {
+          "dim_1": {
+            "after": "72번째 정보까지 통합해 한 달 방향을 신중하게 본다.",
+            "before": "71번째 정보까지 통합해 한 달 방향을 신중하게 본다."
+          },
+          "dim_2": {
+            "after": "72번째 판단에서도 밸류에이션 확신을 제한한다.",
+            "before": "71번째 판단에서도 밸류에이션 확신을 제한한다."
+          },
+          "dim_3": {
+            "after": "72번째 갱신 후에도 거시와 업황 확인을 이어간다.",
+            "before": "71번째 갱신 후에도 거시와 업황 확인을 이어간다."
+          },
+          "dim_4": {
+            "after": "72번째 갱신에서 시장 심리를 혼조로 본다.",
+            "before": "71번째 갱신에서 시장 심리를 혼조로 본다."
+          },
+          "dim_5": {
+            "after": "72번째 새 정보를 누적 관점에 선별적으로 반영한다.",
+            "before": "71번째 새 정보를 누적 관점에 선별적으로 반영한다."
+          },
+          "dim_6": {
+            "after": "72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다.",
+            "before": "71번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다."
+          }
+        },
+        "human_log_sha256": "84c7f75e6961ab0e565a211543dd5977199eabca6f01a1222eb306faae07717e"
+      }
+    },
+    {
+      "agent": {
+        "agent_id": "A004",
+        "source_user_id": "10971969507",
+        "user_type": "ordinary",
+        "gender": "남성",
+        "age": 0,
+        "age_group": "미사용",
+        "location": "미사용",
+        "bh_disposition_effect_category": "high",
+        "bh_lottery_preference_category": "high",
+        "bh_total_return_category": "high",
+        "bh_underdiversification_category": "medium",
+        "strategy": "technical",
+        "trad_pro": 0,
+        "fol_ind": "[\"삼성전자\"]",
+        "ini_cash": 100000000,
+        "news_depth": 1,
+        "segment_key": "미사용",
+        "match_score": 0,
+        "persona_prompt": "당신은 한국의 삼성전자 개인투자자입니다.\n당신은 팔로워가 많지 않은 평범한 개인 투자자다.\n당신은 보유 자산이 10% 넘게 오르면 곧바로 팔아 이익을 확정한다. 반대로 보유 자산이 하락하면 한번 걸어보는 쪽을 택해, 스스로 유망하다고 본 자산에 대해서는 포지션 위험을 무시하고 떨어질수록 더 사들인다.\n당신은 '복권형' 자산에 투자하기를 특히 좋아해서, 위험이 크지만 잠재 수익이 막대한 자산, 그중에서도 최근 급등한 자산을 고르는 경향이 있으며 하룻밤에 큰돈을 벌기를 기대한다.\n당신의 포트폴리오는 과거에 뛰어난 성과를 냈고, 총투자수익률이 시장 평균을 웃돈다.\n당신은 여러 종목에 투자를 분산해 위험을 낮추는 편이다.\n기술적 분석 투자자로서 당신은 단기 시장 변동에서 이익을 얻는 데 집중한다. 당신의 목표는 기술적 지표 분석과 시장 추세 예측을 통해 빠르고 효율적인 매매 판단을 내리는 것이다.\n당신은 신규 매수를 결정할 때 최근 가격이 하락한 국면을 선호합니다. 가격 하락이 과도해 향후 반등할 가능성이 있다고 판단되면 신규 매수합니다. 반대로 최근 가격이 크게 상승한 국면은 과열되었다고 보아 추격 매수를 피합니다.\n뉴스는 각 AM/PM 거래 판단 시점에 제공된 기본 뉴스의 기사 제목(헤드라인)과 그에 연결된 기사 요약을 모두 확인하는 요약 전독형입니다.\n이번 실험에서는 삼성전자 단일 자산만 거래하며, 초기에는 주식 없이 현금 100,000,000원만 보유한 상태로 시장에 진입합니다.\n",
+        "momentum_contrarian": "contrarian",
+        "can_post_community": 0,
+        "source_persona_prompt_sha256": "aada5d5942055bbfe987f43876781ea96252dfee73d4f3477d01c78be565c568",
+        "persona_prompt_sha256": "e46f6dd6f36f1acecdd860bccc5dd16971facda8f1bfcd38c92cba6ec50d2644",
+        "persona_prompt_regenerated": true
+      },
+      "analysis_id": "analysis_A004_t072",
+      "decision": {
+        "action": "sell",
+        "requested_quantity": 10,
+        "quantity": 10,
+        "order_type": "announced_price",
+        "price": 214500.0,
+        "reason": "두 belief와 실행 제약을 함께 고려한 제한적 거래다.",
+        "risk_control": "현금과 보유량 제약 안에서 수량을 제한한다.",
+        "order_corrections": [],
+        "validation_errors": [],
+        "valid": true,
+        "decision_attempts": 1,
+        "decision_retry_count": 0,
+        "decision_origin": "llm_first_response",
+        "available_cash": 393400.0,
+        "current_quantity": 527,
+        "max_buy_quantity": 0,
+        "max_sell_quantity": 527,
+        "selected_action_max_quantity": 527,
+        "one_share_reason": "not_one_share",
+        "deterministic_fallback_used": false,
+        "invalid_attempt_errors": []
+      },
+      "decision_id": "decision_A004_t072",
+      "stb_id": "stb_A004_t072",
+      "fill_id": "fill_A004_t072",
+      "fill": {
+        "fill_id": "fill_A004_t072",
+        "agent_id": "A004",
+        "turn": 72,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "stock_code": "005930",
+        "action": "sell",
+        "requested_quantity": 10,
+        "filled_quantity": 10,
+        "executed_price": 214500.0,
+        "fee": 0.0,
+        "source_ltb_id": "ltb_A004_t071",
+        "source_stb_id": "stb_A004_t072",
+        "decision_id": "decision_A004_t072",
+        "pre_portfolio": {
+          "cash": 393400.0,
+          "quantity": 527,
+          "stock_code": "005930"
+        },
+        "post_portfolio": {
+          "cash": 2538400.0,
+          "quantity": 517,
+          "realized_pnl": 769334.6798526666,
+          "stock_code": "005930",
+          "total_return_rate": 0.134349,
+          "total_value": 113434900.0
+        },
+        "scientific_sha256": "06d10624793c71088e86815b6b67113bde84d0c0ff01bee114ece0c6eeda8a6f"
+      },
+      "ltb_id": "ltb_A004_t072",
+      "ltb": {
+        "ltb_id": "ltb_A004_t072",
+        "agent_id": "A004",
+        "turn": 72,
+        "visible_from_turn": 73,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "parent_ltb_id": "ltb_A004_t071",
+        "source_stb_id": "stb_A004_t072",
+        "source_decision_id": "decision_A004_t072",
+        "source_fill_id": "fill_A004_t072",
+        "dimensions": {
+          "dim_1": "72번째 정보까지 통합해 한 달 방향을 신중하게 본다.",
+          "dim_2": "72번째 판단에서도 밸류에이션 확신을 제한한다.",
+          "dim_3": "72번째 갱신 후에도 거시와 업황 확인을 이어간다.",
+          "dim_4": "72번째 갱신에서 시장 심리를 혼조로 본다.",
+          "dim_5": "72번째 새 정보를 누적 관점에 선별적으로 반영한다.",
+          "dim_6": "72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다."
+        },
+        "integration_evidence": {
+          "dim_1": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_2": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_3": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_4": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_5": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_6": {
+            "contradict": [
+              "outcome:fill_A004_t062:h5",
+              "outcome:fill_A004_t070:h1"
+            ],
+            "support": [
+              "news_20260420_경제_da978416",
+              "outcome:fill_A004_t071:next_turn"
+            ]
+          }
+        },
+        "scientific_sha256": "4ec05b5168ce1f6668b6fc5458ea02abe2c57e6b89eede430d57039695dc9efe",
+        "belief_summary": "dim_1: 72번째 정보까지 통합해 한 달 방향을 신중하게 본다.\ndim_2: 72번째 판단에서도 밸류에이션 확신을 제한한다.\ndim_3: 72번째 갱신 후에도 거시와 업황 확인을 이어간다.\ndim_4: 72번째 갱신에서 시장 심리를 혼조로 본다.\ndim_5: 72번째 새 정보를 누적 관점에 선별적으로 반영한다.\ndim_6: 72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다.",
+        "view_change": {
+          "dim_1": {
+            "after": "72번째 정보까지 통합해 한 달 방향을 신중하게 본다.",
+            "before": "71번째 정보까지 통합해 한 달 방향을 신중하게 본다."
+          },
+          "dim_2": {
+            "after": "72번째 판단에서도 밸류에이션 확신을 제한한다.",
+            "before": "71번째 판단에서도 밸류에이션 확신을 제한한다."
+          },
+          "dim_3": {
+            "after": "72번째 갱신 후에도 거시와 업황 확인을 이어간다.",
+            "before": "71번째 갱신 후에도 거시와 업황 확인을 이어간다."
+          },
+          "dim_4": {
+            "after": "72번째 갱신에서 시장 심리를 혼조로 본다.",
+            "before": "71번째 갱신에서 시장 심리를 혼조로 본다."
+          },
+          "dim_5": {
+            "after": "72번째 새 정보를 누적 관점에 선별적으로 반영한다.",
+            "before": "71번째 새 정보를 누적 관점에 선별적으로 반영한다."
+          },
+          "dim_6": {
+            "after": "72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다.",
+            "before": "71번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다."
+          }
+        },
+        "human_log_sha256": "84c7f75e6961ab0e565a211543dd5977199eabca6f01a1222eb306faae07717e"
+      }
+    },
+    {
+      "agent": {
+        "agent_id": "A005",
+        "source_user_id": "13538988864",
+        "user_type": "ordinary",
+        "gender": "남성",
+        "age": 0,
+        "age_group": "미사용",
+        "location": "미사용",
+        "bh_disposition_effect_category": "high",
+        "bh_lottery_preference_category": "low",
+        "bh_total_return_category": "low",
+        "bh_underdiversification_category": "medium",
+        "strategy": "technical",
+        "trad_pro": 0,
+        "fol_ind": "[\"삼성전자\"]",
+        "ini_cash": 100000000,
+        "news_depth": 0,
+        "segment_key": "미사용",
+        "match_score": 0,
+        "persona_prompt": "당신은 한국의 삼성전자 개인투자자입니다.\n당신은 팔로워가 많지 않은 평범한 개인 투자자다.\n당신은 보유 자산이 10% 넘게 오르면 곧바로 팔아 이익을 확정한다. 반대로 보유 자산이 하락하면 한번 걸어보는 쪽을 택해, 스스로 유망하다고 본 자산에 대해서는 포지션 위험을 무시하고 떨어질수록 더 사들인다.\n시장에는 최근 급등한 '복권형' 자산이 이따금 등장하지만, 그런 자산은 당신의 투자 판단에 거의 영향을 주지 않는다.\n당신의 포트폴리오는 과거 총투자수익률이 다소 낮아 시장 평균에 이르지 못했다.\n당신은 여러 종목에 투자를 분산해 위험을 낮추는 편이다.\n기술적 분석 투자자로서 당신은 단기 시장 변동에서 이익을 얻는 데 집중한다. 당신의 목표는 기술적 지표 분석과 시장 추세 예측을 통해 빠르고 효율적인 매매 판단을 내리는 것이다.\n당신은 신규 매수를 결정할 때 최근 가격이 하락한 국면을 선호합니다. 가격 하락이 과도해 향후 반등할 가능성이 있다고 판단되면 신규 매수합니다. 반대로 최근 가격이 크게 상승한 국면은 과열되었다고 보아 추격 매수를 피합니다.\n뉴스는 각 AM/PM 거래 판단 시점에 제공된 기본 뉴스의 기사 제목(헤드라인)을 모두 확인하고, 기사 요약은 확인하지 않는 헤드라인 스캔형입니다.\n이번 실험에서는 삼성전자 단일 자산만 거래하며, 초기에는 주식 없이 현금 100,000,000원만 보유한 상태로 시장에 진입합니다.\n",
+        "momentum_contrarian": "contrarian",
+        "can_post_community": 0,
+        "source_persona_prompt_sha256": "5a95ba0aff730bf6156581998ce65d69a2b6f40af9491bef8de9accfa71d7d3a",
+        "persona_prompt_sha256": "3b14bc15d8e0bf0cbc252030fff65ed3ea7b360d75ae61df39623b9bf4cb7c6c",
+        "persona_prompt_regenerated": true
+      },
+      "analysis_id": "analysis_A005_t072",
+      "decision": {
+        "action": "sell",
+        "requested_quantity": 10,
+        "quantity": 10,
+        "order_type": "announced_price",
+        "price": 214500.0,
+        "reason": "두 belief와 실행 제약을 함께 고려한 제한적 거래다.",
+        "risk_control": "현금과 보유량 제약 안에서 수량을 제한한다.",
+        "order_corrections": [],
+        "validation_errors": [],
+        "valid": true,
+        "decision_attempts": 1,
+        "decision_retry_count": 0,
+        "decision_origin": "llm_first_response",
+        "available_cash": 393400.0,
+        "current_quantity": 527,
+        "max_buy_quantity": 0,
+        "max_sell_quantity": 527,
+        "selected_action_max_quantity": 527,
+        "one_share_reason": "not_one_share",
+        "deterministic_fallback_used": false,
+        "invalid_attempt_errors": []
+      },
+      "decision_id": "decision_A005_t072",
+      "stb_id": "stb_A005_t072",
+      "fill_id": "fill_A005_t072",
+      "fill": {
+        "fill_id": "fill_A005_t072",
+        "agent_id": "A005",
+        "turn": 72,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "stock_code": "005930",
+        "action": "sell",
+        "requested_quantity": 10,
+        "filled_quantity": 10,
+        "executed_price": 214500.0,
+        "fee": 0.0,
+        "source_ltb_id": "ltb_A005_t071",
+        "source_stb_id": "stb_A005_t072",
+        "decision_id": "decision_A005_t072",
+        "pre_portfolio": {
+          "cash": 393400.0,
+          "quantity": 527,
+          "stock_code": "005930"
+        },
+        "post_portfolio": {
+          "cash": 2538400.0,
+          "quantity": 517,
+          "realized_pnl": 769334.6798526666,
+          "stock_code": "005930",
+          "total_return_rate": 0.134349,
+          "total_value": 113434900.0
+        },
+        "scientific_sha256": "5158057416a74a3b5c5c0ec4794866f7430a578fd83fb0bb505cf1d98ded93b5"
+      },
+      "ltb_id": "ltb_A005_t072",
+      "ltb": {
+        "ltb_id": "ltb_A005_t072",
+        "agent_id": "A005",
+        "turn": 72,
+        "visible_from_turn": 73,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "parent_ltb_id": "ltb_A005_t071",
+        "source_stb_id": "stb_A005_t072",
+        "source_decision_id": "decision_A005_t072",
+        "source_fill_id": "fill_A005_t072",
+        "dimensions": {
+          "dim_1": "72번째 정보까지 통합해 한 달 방향을 신중하게 본다.",
+          "dim_2": "72번째 판단에서도 밸류에이션 확신을 제한한다.",
+          "dim_3": "72번째 갱신 후에도 거시와 업황 확인을 이어간다.",
+          "dim_4": "72번째 갱신에서 시장 심리를 혼조로 본다.",
+          "dim_5": "72번째 새 정보를 누적 관점에 선별적으로 반영한다.",
+          "dim_6": "72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다."
+        },
+        "integration_evidence": {
+          "dim_1": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_2": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_3": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_4": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_5": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_6": {
+            "contradict": [
+              "outcome:fill_A005_t062:h5",
+              "outcome:fill_A005_t070:h1"
+            ],
+            "support": [
+              "news_20260420_경제_da978416",
+              "outcome:fill_A005_t071:next_turn"
+            ]
+          }
+        },
+        "scientific_sha256": "dea9cabc7bb1d61d90ce9a34e6be78d0655285e74da4b11366e9da70baa837c3",
+        "belief_summary": "dim_1: 72번째 정보까지 통합해 한 달 방향을 신중하게 본다.\ndim_2: 72번째 판단에서도 밸류에이션 확신을 제한한다.\ndim_3: 72번째 갱신 후에도 거시와 업황 확인을 이어간다.\ndim_4: 72번째 갱신에서 시장 심리를 혼조로 본다.\ndim_5: 72번째 새 정보를 누적 관점에 선별적으로 반영한다.\ndim_6: 72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다.",
+        "view_change": {
+          "dim_1": {
+            "after": "72번째 정보까지 통합해 한 달 방향을 신중하게 본다.",
+            "before": "71번째 정보까지 통합해 한 달 방향을 신중하게 본다."
+          },
+          "dim_2": {
+            "after": "72번째 판단에서도 밸류에이션 확신을 제한한다.",
+            "before": "71번째 판단에서도 밸류에이션 확신을 제한한다."
+          },
+          "dim_3": {
+            "after": "72번째 갱신 후에도 거시와 업황 확인을 이어간다.",
+            "before": "71번째 갱신 후에도 거시와 업황 확인을 이어간다."
+          },
+          "dim_4": {
+            "after": "72번째 갱신에서 시장 심리를 혼조로 본다.",
+            "before": "71번째 갱신에서 시장 심리를 혼조로 본다."
+          },
+          "dim_5": {
+            "after": "72번째 새 정보를 누적 관점에 선별적으로 반영한다.",
+            "before": "71번째 새 정보를 누적 관점에 선별적으로 반영한다."
+          },
+          "dim_6": {
+            "after": "72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다.",
+            "before": "71번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다."
+          }
+        },
+        "human_log_sha256": "84c7f75e6961ab0e565a211543dd5977199eabca6f01a1222eb306faae07717e"
+      }
+    },
+    {
+      "agent": {
+        "agent_id": "A006",
+        "source_user_id": "13807252320",
+        "user_type": "ordinary",
+        "gender": "남성",
+        "age": 0,
+        "age_group": "미사용",
+        "location": "미사용",
+        "bh_disposition_effect_category": "high",
+        "bh_lottery_preference_category": "low",
+        "bh_total_return_category": "low",
+        "bh_underdiversification_category": "low",
+        "strategy": "technical",
+        "trad_pro": 0,
+        "fol_ind": "[\"삼성전자\"]",
+        "ini_cash": 100000000,
+        "news_depth": 1,
+        "segment_key": "미사용",
+        "match_score": 0,
+        "persona_prompt": "당신은 한국의 삼성전자 개인투자자입니다.\n당신은 팔로워가 많지 않은 평범한 개인 투자자다.\n당신은 보유 자산이 10% 넘게 오르면 곧바로 팔아 이익을 확정한다. 반대로 보유 자산이 하락하면 한번 걸어보는 쪽을 택해, 스스로 유망하다고 본 자산에 대해서는 포지션 위험을 무시하고 떨어질수록 더 사들인다.\n시장에는 최근 급등한 '복권형' 자산이 이따금 등장하지만, 그런 자산은 당신의 투자 판단에 거의 영향을 주지 않는다.\n당신의 포트폴리오는 과거 총투자수익률이 다소 낮아 시장 평균에 이르지 못했다.\n당신은 투자를 집중해 유망하다고 보는 특정 종목에 크게 베팅하는 편이며, 그래야만 두둑한 수익을 얻을 수 있다고 믿는다.\n기술적 분석 투자자로서 당신은 단기 시장 변동에서 이익을 얻는 데 집중한다. 당신의 목표는 기술적 지표 분석과 시장 추세 예측을 통해 빠르고 효율적인 매매 판단을 내리는 것이다.\n당신은 신규 매수를 결정할 때 최근 가격이 하락한 국면을 선호합니다. 가격 하락이 과도해 향후 반등할 가능성이 있다고 판단되면 신규 매수합니다. 반대로 최근 가격이 크게 상승한 국면은 과열되었다고 보아 추격 매수를 피합니다.\n뉴스는 각 AM/PM 거래 판단 시점에 제공된 기본 뉴스의 기사 제목(헤드라인)과 그에 연결된 기사 요약을 모두 확인하는 요약 전독형입니다.\n이번 실험에서는 삼성전자 단일 자산만 거래하며, 초기에는 주식 없이 현금 100,000,000원만 보유한 상태로 시장에 진입합니다.\n",
+        "momentum_contrarian": "contrarian",
+        "can_post_community": 0,
+        "source_persona_prompt_sha256": "8e12bfe2f72156f92a4448dafe5fc29cc862d0683c5367eb7d444c67fee2290b",
+        "persona_prompt_sha256": "857e47c9c6f8e219972d3563b71c27958b9760e961cf9bd1ce5f25552bf3f39a",
+        "persona_prompt_regenerated": true
+      },
+      "analysis_id": "analysis_A006_t072",
+      "decision": {
+        "action": "sell",
+        "requested_quantity": 10,
+        "quantity": 10,
+        "order_type": "announced_price",
+        "price": 214500.0,
+        "reason": "두 belief와 실행 제약을 함께 고려한 제한적 거래다.",
+        "risk_control": "현금과 보유량 제약 안에서 수량을 제한한다.",
+        "order_corrections": [],
+        "validation_errors": [],
+        "valid": true,
+        "decision_attempts": 1,
+        "decision_retry_count": 0,
+        "decision_origin": "llm_first_response",
+        "available_cash": 393400.0,
+        "current_quantity": 527,
+        "max_buy_quantity": 0,
+        "max_sell_quantity": 527,
+        "selected_action_max_quantity": 527,
+        "one_share_reason": "not_one_share",
+        "deterministic_fallback_used": false,
+        "invalid_attempt_errors": []
+      },
+      "decision_id": "decision_A006_t072",
+      "stb_id": "stb_A006_t072",
+      "fill_id": "fill_A006_t072",
+      "fill": {
+        "fill_id": "fill_A006_t072",
+        "agent_id": "A006",
+        "turn": 72,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "stock_code": "005930",
+        "action": "sell",
+        "requested_quantity": 10,
+        "filled_quantity": 10,
+        "executed_price": 214500.0,
+        "fee": 0.0,
+        "source_ltb_id": "ltb_A006_t071",
+        "source_stb_id": "stb_A006_t072",
+        "decision_id": "decision_A006_t072",
+        "pre_portfolio": {
+          "cash": 393400.0,
+          "quantity": 527,
+          "stock_code": "005930"
+        },
+        "post_portfolio": {
+          "cash": 2538400.0,
+          "quantity": 517,
+          "realized_pnl": 769334.6798526666,
+          "stock_code": "005930",
+          "total_return_rate": 0.134349,
+          "total_value": 113434900.0
+        },
+        "scientific_sha256": "1ceffd51a4f8a57c36624d2f74ea778206b4c6c11cf43a1438e637cd34adf034"
+      },
+      "ltb_id": "ltb_A006_t072",
+      "ltb": {
+        "ltb_id": "ltb_A006_t072",
+        "agent_id": "A006",
+        "turn": 72,
+        "visible_from_turn": 73,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "parent_ltb_id": "ltb_A006_t071",
+        "source_stb_id": "stb_A006_t072",
+        "source_decision_id": "decision_A006_t072",
+        "source_fill_id": "fill_A006_t072",
+        "dimensions": {
+          "dim_1": "72번째 정보까지 통합해 한 달 방향을 신중하게 본다.",
+          "dim_2": "72번째 판단에서도 밸류에이션 확신을 제한한다.",
+          "dim_3": "72번째 갱신 후에도 거시와 업황 확인을 이어간다.",
+          "dim_4": "72번째 갱신에서 시장 심리를 혼조로 본다.",
+          "dim_5": "72번째 새 정보를 누적 관점에 선별적으로 반영한다.",
+          "dim_6": "72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다."
+        },
+        "integration_evidence": {
+          "dim_1": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_2": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_3": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_4": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_5": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_6": {
+            "contradict": [
+              "outcome:fill_A006_t062:h5",
+              "outcome:fill_A006_t070:h1"
+            ],
+            "support": [
+              "news_20260420_경제_da978416",
+              "outcome:fill_A006_t071:next_turn"
+            ]
+          }
+        },
+        "scientific_sha256": "98b05282ed04d55800bdd27e7e5034ae10f7887835e65470c4864de01b62e7e0",
+        "belief_summary": "dim_1: 72번째 정보까지 통합해 한 달 방향을 신중하게 본다.\ndim_2: 72번째 판단에서도 밸류에이션 확신을 제한한다.\ndim_3: 72번째 갱신 후에도 거시와 업황 확인을 이어간다.\ndim_4: 72번째 갱신에서 시장 심리를 혼조로 본다.\ndim_5: 72번째 새 정보를 누적 관점에 선별적으로 반영한다.\ndim_6: 72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다.",
+        "view_change": {
+          "dim_1": {
+            "after": "72번째 정보까지 통합해 한 달 방향을 신중하게 본다.",
+            "before": "71번째 정보까지 통합해 한 달 방향을 신중하게 본다."
+          },
+          "dim_2": {
+            "after": "72번째 판단에서도 밸류에이션 확신을 제한한다.",
+            "before": "71번째 판단에서도 밸류에이션 확신을 제한한다."
+          },
+          "dim_3": {
+            "after": "72번째 갱신 후에도 거시와 업황 확인을 이어간다.",
+            "before": "71번째 갱신 후에도 거시와 업황 확인을 이어간다."
+          },
+          "dim_4": {
+            "after": "72번째 갱신에서 시장 심리를 혼조로 본다.",
+            "before": "71번째 갱신에서 시장 심리를 혼조로 본다."
+          },
+          "dim_5": {
+            "after": "72번째 새 정보를 누적 관점에 선별적으로 반영한다.",
+            "before": "71번째 새 정보를 누적 관점에 선별적으로 반영한다."
+          },
+          "dim_6": {
+            "after": "72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다.",
+            "before": "71번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다."
+          }
+        },
+        "human_log_sha256": "84c7f75e6961ab0e565a211543dd5977199eabca6f01a1222eb306faae07717e"
+      }
+    },
+    {
+      "agent": {
+        "agent_id": "A007",
+        "source_user_id": "14850654155",
+        "user_type": "ordinary",
+        "gender": "남성",
+        "age": 0,
+        "age_group": "미사용",
+        "location": "미사용",
+        "bh_disposition_effect_category": "high",
+        "bh_lottery_preference_category": "low",
+        "bh_total_return_category": "high",
+        "bh_underdiversification_category": "medium",
+        "strategy": "technical",
+        "trad_pro": 0,
+        "fol_ind": "[\"삼성전자\"]",
+        "ini_cash": 100000000,
+        "news_depth": 1,
+        "segment_key": "미사용",
+        "match_score": 0,
+        "persona_prompt": "당신은 한국의 삼성전자 개인투자자입니다.\n당신은 팔로워가 많지 않은 평범한 개인 투자자다.\n당신은 보유 자산이 10% 넘게 오르면 곧바로 팔아 이익을 확정한다. 반대로 보유 자산이 하락하면 한번 걸어보는 쪽을 택해, 스스로 유망하다고 본 자산에 대해서는 포지션 위험을 무시하고 떨어질수록 더 사들인다.\n시장에는 최근 급등한 '복권형' 자산이 이따금 등장하지만, 그런 자산은 당신의 투자 판단에 거의 영향을 주지 않는다.\n당신의 포트폴리오는 과거에 뛰어난 성과를 냈고, 총투자수익률이 시장 평균을 웃돈다.\n당신은 여러 종목에 투자를 분산해 위험을 낮추는 편이다.\n기술적 분석 투자자로서 당신은 단기 시장 변동에서 이익을 얻는 데 집중한다. 당신의 목표는 기술적 지표 분석과 시장 추세 예측을 통해 빠르고 효율적인 매매 판단을 내리는 것이다.\n당신은 신규 매수를 결정할 때 최근 가격이 하락한 국면을 선호합니다. 가격 하락이 과도해 향후 반등할 가능성이 있다고 판단되면 신규 매수합니다. 반대로 최근 가격이 크게 상승한 국면은 과열되었다고 보아 추격 매수를 피합니다.\n뉴스는 각 AM/PM 거래 판단 시점에 제공된 기본 뉴스의 기사 제목(헤드라인)과 그에 연결된 기사 요약을 모두 확인하는 요약 전독형입니다.\n이번 실험에서는 삼성전자 단일 자산만 거래하며, 초기에는 주식 없이 현금 100,000,000원만 보유한 상태로 시장에 진입합니다.\n",
+        "momentum_contrarian": "contrarian",
+        "can_post_community": 0,
+        "source_persona_prompt_sha256": "89b84678e61f78056a13b6c2382ce4825f95cce4268b75ea583b85360844c3b4",
+        "persona_prompt_sha256": "a2177b80c5cac754520fae5a81593c9ea3ca5277517c805cb2bb6d7a466fc630",
+        "persona_prompt_regenerated": true
+      },
+      "analysis_id": "analysis_A007_t072",
+      "decision": {
+        "action": "sell",
+        "requested_quantity": 10,
+        "quantity": 10,
+        "order_type": "announced_price",
+        "price": 214500.0,
+        "reason": "두 belief와 실행 제약을 함께 고려한 제한적 거래다.",
+        "risk_control": "현금과 보유량 제약 안에서 수량을 제한한다.",
+        "order_corrections": [],
+        "validation_errors": [],
+        "valid": true,
+        "decision_attempts": 1,
+        "decision_retry_count": 0,
+        "decision_origin": "llm_first_response",
+        "available_cash": 393400.0,
+        "current_quantity": 527,
+        "max_buy_quantity": 0,
+        "max_sell_quantity": 527,
+        "selected_action_max_quantity": 527,
+        "one_share_reason": "not_one_share",
+        "deterministic_fallback_used": false,
+        "invalid_attempt_errors": []
+      },
+      "decision_id": "decision_A007_t072",
+      "stb_id": "stb_A007_t072",
+      "fill_id": "fill_A007_t072",
+      "fill": {
+        "fill_id": "fill_A007_t072",
+        "agent_id": "A007",
+        "turn": 72,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "stock_code": "005930",
+        "action": "sell",
+        "requested_quantity": 10,
+        "filled_quantity": 10,
+        "executed_price": 214500.0,
+        "fee": 0.0,
+        "source_ltb_id": "ltb_A007_t071",
+        "source_stb_id": "stb_A007_t072",
+        "decision_id": "decision_A007_t072",
+        "pre_portfolio": {
+          "cash": 393400.0,
+          "quantity": 527,
+          "stock_code": "005930"
+        },
+        "post_portfolio": {
+          "cash": 2538400.0,
+          "quantity": 517,
+          "realized_pnl": 769334.6798526666,
+          "stock_code": "005930",
+          "total_return_rate": 0.134349,
+          "total_value": 113434900.0
+        },
+        "scientific_sha256": "b5d9ec867dfd5fbda93f52def4c2271860909ad14370012a2f0a39f3354231ab"
+      },
+      "ltb_id": "ltb_A007_t072",
+      "ltb": {
+        "ltb_id": "ltb_A007_t072",
+        "agent_id": "A007",
+        "turn": 72,
+        "visible_from_turn": 73,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "parent_ltb_id": "ltb_A007_t071",
+        "source_stb_id": "stb_A007_t072",
+        "source_decision_id": "decision_A007_t072",
+        "source_fill_id": "fill_A007_t072",
+        "dimensions": {
+          "dim_1": "72번째 정보까지 통합해 한 달 방향을 신중하게 본다.",
+          "dim_2": "72번째 판단에서도 밸류에이션 확신을 제한한다.",
+          "dim_3": "72번째 갱신 후에도 거시와 업황 확인을 이어간다.",
+          "dim_4": "72번째 갱신에서 시장 심리를 혼조로 본다.",
+          "dim_5": "72번째 새 정보를 누적 관점에 선별적으로 반영한다.",
+          "dim_6": "72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다."
+        },
+        "integration_evidence": {
+          "dim_1": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_2": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_3": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_4": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_5": {
+            "contradict": [],
+            "support": [
+              "news_20260420_경제_da978416"
+            ]
+          },
+          "dim_6": {
+            "contradict": [
+              "outcome:fill_A007_t062:h5",
+              "outcome:fill_A007_t070:h1"
+            ],
+            "support": [
+              "news_20260420_경제_da978416",
+              "outcome:fill_A007_t071:next_turn"
+            ]
+          }
+        },
+        "scientific_sha256": "fa792ad4a397ecd41fd58117294181a780f9e3d40127340178b9443f348e2450",
+        "belief_summary": "dim_1: 72번째 정보까지 통합해 한 달 방향을 신중하게 본다.\ndim_2: 72번째 판단에서도 밸류에이션 확신을 제한한다.\ndim_3: 72번째 갱신 후에도 거시와 업황 확인을 이어간다.\ndim_4: 72번째 갱신에서 시장 심리를 혼조로 본다.\ndim_5: 72번째 새 정보를 누적 관점에 선별적으로 반영한다.\ndim_6: 72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다.",
+        "view_change": {
+          "dim_1": {
+            "after": "72번째 정보까지 통합해 한 달 방향을 신중하게 본다.",
+            "before": "71번째 정보까지 통합해 한 달 방향을 신중하게 본다."
+          },
+          "dim_2": {
+            "after": "72번째 판단에서도 밸류에이션 확신을 제한한다.",
+            "before": "71번째 판단에서도 밸류에이션 확신을 제한한다."
+          },
+          "dim_3": {
+            "after": "72번째 갱신 후에도 거시와 업황 확인을 이어간다.",
+            "before": "71번째 갱신 후에도 거시와 업황 확인을 이어간다."
+          },
+          "dim_4": {
+            "after": "72번째 갱신에서 시장 심리를 혼조로 본다.",
+            "before": "71번째 갱신에서 시장 심리를 혼조로 본다."
+          },
+          "dim_5": {
+            "after": "72번째 새 정보를 누적 관점에 선별적으로 반영한다.",
+            "before": "71번째 새 정보를 누적 관점에 선별적으로 반영한다."
+          },
+          "dim_6": {
+            "after": "72번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다.",
+            "before": "71번째 실제 체결과 도래한 성과를 바탕으로 과신을 경계한다."
+          }
+        },
+        "human_log_sha256": "84c7f75e6961ab0e565a211543dd5977199eabca6f01a1222eb306faae07717e"
+      }
+    }
+  ],
+  "execution_by_agent": {
+    "A001": {
+      "fills": [
+        {
+          "user_id": "A001",
+          "stock_code": "005930",
+          "direction": "sell",
+          "quantity": 10,
+          "price": 214500.0,
+          "fee": 0.0
+        }
+      ],
+      "filled_quantity": 10,
+      "executed_price": 214500.0,
+      "fee": 0.0,
+      "fill_id": "fill_A001_t072",
+      "fill": {
+        "fill_id": "fill_A001_t072",
+        "agent_id": "A001",
+        "turn": 72,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "stock_code": "005930",
+        "action": "sell",
+        "requested_quantity": 10,
+        "filled_quantity": 10,
+        "executed_price": 214500.0,
+        "fee": 0.0,
+        "source_ltb_id": "ltb_A001_t071",
+        "source_stb_id": "stb_A001_t072",
+        "decision_id": "decision_A001_t072",
+        "pre_portfolio": {
+          "cash": 393400.0,
+          "quantity": 527,
+          "stock_code": "005930"
+        },
+        "post_portfolio": {
+          "cash": 2538400.0,
+          "quantity": 517,
+          "realized_pnl": 769334.6798526666,
+          "stock_code": "005930",
+          "total_return_rate": 0.134349,
+          "total_value": 113434900.0
+        },
+        "scientific_sha256": "2cd3383043a37f2bb48837275fc26e152c0fe33fc28501f7ebb8480d65dfb50d"
+      },
+      "ltb_id": "ltb_A001_t072"
+    },
+    "A002": {
+      "fills": [
+        {
+          "user_id": "A002",
+          "stock_code": "005930",
+          "direction": "sell",
+          "quantity": 10,
+          "price": 214500.0,
+          "fee": 0.0
+        }
+      ],
+      "filled_quantity": 10,
+      "executed_price": 214500.0,
+      "fee": 0.0,
+      "fill_id": "fill_A002_t072",
+      "fill": {
+        "fill_id": "fill_A002_t072",
+        "agent_id": "A002",
+        "turn": 72,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "stock_code": "005930",
+        "action": "sell",
+        "requested_quantity": 10,
+        "filled_quantity": 10,
+        "executed_price": 214500.0,
+        "fee": 0.0,
+        "source_ltb_id": "ltb_A002_t071",
+        "source_stb_id": "stb_A002_t072",
+        "decision_id": "decision_A002_t072",
+        "pre_portfolio": {
+          "cash": 393400.0,
+          "quantity": 527,
+          "stock_code": "005930"
+        },
+        "post_portfolio": {
+          "cash": 2538400.0,
+          "quantity": 517,
+          "realized_pnl": 769334.6798526666,
+          "stock_code": "005930",
+          "total_return_rate": 0.134349,
+          "total_value": 113434900.0
+        },
+        "scientific_sha256": "578e66735e772c599e69b365af27040ffa672150138df862cd4c919fb86f71b7"
+      },
+      "ltb_id": "ltb_A002_t072"
+    },
+    "A003": {
+      "fills": [
+        {
+          "user_id": "A003",
+          "stock_code": "005930",
+          "direction": "sell",
+          "quantity": 10,
+          "price": 214500.0,
+          "fee": 0.0
+        }
+      ],
+      "filled_quantity": 10,
+      "executed_price": 214500.0,
+      "fee": 0.0,
+      "fill_id": "fill_A003_t072",
+      "fill": {
+        "fill_id": "fill_A003_t072",
+        "agent_id": "A003",
+        "turn": 72,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "stock_code": "005930",
+        "action": "sell",
+        "requested_quantity": 10,
+        "filled_quantity": 10,
+        "executed_price": 214500.0,
+        "fee": 0.0,
+        "source_ltb_id": "ltb_A003_t071",
+        "source_stb_id": "stb_A003_t072",
+        "decision_id": "decision_A003_t072",
+        "pre_portfolio": {
+          "cash": 393400.0,
+          "quantity": 527,
+          "stock_code": "005930"
+        },
+        "post_portfolio": {
+          "cash": 2538400.0,
+          "quantity": 517,
+          "realized_pnl": 769334.6798526666,
+          "stock_code": "005930",
+          "total_return_rate": 0.134349,
+          "total_value": 113434900.0
+        },
+        "scientific_sha256": "ccd685163a6c2071329aff4ca2d1959296e4bf139e0351e9cd66ea90347214c4"
+      },
+      "ltb_id": "ltb_A003_t072"
+    },
+    "A004": {
+      "fills": [
+        {
+          "user_id": "A004",
+          "stock_code": "005930",
+          "direction": "sell",
+          "quantity": 10,
+          "price": 214500.0,
+          "fee": 0.0
+        }
+      ],
+      "filled_quantity": 10,
+      "executed_price": 214500.0,
+      "fee": 0.0,
+      "fill_id": "fill_A004_t072",
+      "fill": {
+        "fill_id": "fill_A004_t072",
+        "agent_id": "A004",
+        "turn": 72,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "stock_code": "005930",
+        "action": "sell",
+        "requested_quantity": 10,
+        "filled_quantity": 10,
+        "executed_price": 214500.0,
+        "fee": 0.0,
+        "source_ltb_id": "ltb_A004_t071",
+        "source_stb_id": "stb_A004_t072",
+        "decision_id": "decision_A004_t072",
+        "pre_portfolio": {
+          "cash": 393400.0,
+          "quantity": 527,
+          "stock_code": "005930"
+        },
+        "post_portfolio": {
+          "cash": 2538400.0,
+          "quantity": 517,
+          "realized_pnl": 769334.6798526666,
+          "stock_code": "005930",
+          "total_return_rate": 0.134349,
+          "total_value": 113434900.0
+        },
+        "scientific_sha256": "06d10624793c71088e86815b6b67113bde84d0c0ff01bee114ece0c6eeda8a6f"
+      },
+      "ltb_id": "ltb_A004_t072"
+    },
+    "A005": {
+      "fills": [
+        {
+          "user_id": "A005",
+          "stock_code": "005930",
+          "direction": "sell",
+          "quantity": 10,
+          "price": 214500.0,
+          "fee": 0.0
+        }
+      ],
+      "filled_quantity": 10,
+      "executed_price": 214500.0,
+      "fee": 0.0,
+      "fill_id": "fill_A005_t072",
+      "fill": {
+        "fill_id": "fill_A005_t072",
+        "agent_id": "A005",
+        "turn": 72,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "stock_code": "005930",
+        "action": "sell",
+        "requested_quantity": 10,
+        "filled_quantity": 10,
+        "executed_price": 214500.0,
+        "fee": 0.0,
+        "source_ltb_id": "ltb_A005_t071",
+        "source_stb_id": "stb_A005_t072",
+        "decision_id": "decision_A005_t072",
+        "pre_portfolio": {
+          "cash": 393400.0,
+          "quantity": 527,
+          "stock_code": "005930"
+        },
+        "post_portfolio": {
+          "cash": 2538400.0,
+          "quantity": 517,
+          "realized_pnl": 769334.6798526666,
+          "stock_code": "005930",
+          "total_return_rate": 0.134349,
+          "total_value": 113434900.0
+        },
+        "scientific_sha256": "5158057416a74a3b5c5c0ec4794866f7430a578fd83fb0bb505cf1d98ded93b5"
+      },
+      "ltb_id": "ltb_A005_t072"
+    },
+    "A006": {
+      "fills": [
+        {
+          "user_id": "A006",
+          "stock_code": "005930",
+          "direction": "sell",
+          "quantity": 10,
+          "price": 214500.0,
+          "fee": 0.0
+        }
+      ],
+      "filled_quantity": 10,
+      "executed_price": 214500.0,
+      "fee": 0.0,
+      "fill_id": "fill_A006_t072",
+      "fill": {
+        "fill_id": "fill_A006_t072",
+        "agent_id": "A006",
+        "turn": 72,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "stock_code": "005930",
+        "action": "sell",
+        "requested_quantity": 10,
+        "filled_quantity": 10,
+        "executed_price": 214500.0,
+        "fee": 0.0,
+        "source_ltb_id": "ltb_A006_t071",
+        "source_stb_id": "stb_A006_t072",
+        "decision_id": "decision_A006_t072",
+        "pre_portfolio": {
+          "cash": 393400.0,
+          "quantity": 527,
+          "stock_code": "005930"
+        },
+        "post_portfolio": {
+          "cash": 2538400.0,
+          "quantity": 517,
+          "realized_pnl": 769334.6798526666,
+          "stock_code": "005930",
+          "total_return_rate": 0.134349,
+          "total_value": 113434900.0
+        },
+        "scientific_sha256": "1ceffd51a4f8a57c36624d2f74ea778206b4c6c11cf43a1438e637cd34adf034"
+      },
+      "ltb_id": "ltb_A006_t072"
+    },
+    "A007": {
+      "fills": [
+        {
+          "user_id": "A007",
+          "stock_code": "005930",
+          "direction": "sell",
+          "quantity": 10,
+          "price": 214500.0,
+          "fee": 0.0
+        }
+      ],
+      "filled_quantity": 10,
+      "executed_price": 214500.0,
+      "fee": 0.0,
+      "fill_id": "fill_A007_t072",
+      "fill": {
+        "fill_id": "fill_A007_t072",
+        "agent_id": "A007",
+        "turn": 72,
+        "date": "2026-04-20",
+        "subturn": "pm",
+        "stock_code": "005930",
+        "action": "sell",
+        "requested_quantity": 10,
+        "filled_quantity": 10,
+        "executed_price": 214500.0,
+        "fee": 0.0,
+        "source_ltb_id": "ltb_A007_t071",
+        "source_stb_id": "stb_A007_t072",
+        "decision_id": "decision_A007_t072",
+        "pre_portfolio": {
+          "cash": 393400.0,
+          "quantity": 527,
+          "stock_code": "005930"
+        },
+        "post_portfolio": {
+          "cash": 2538400.0,
+          "quantity": 517,
+          "realized_pnl": 769334.6798526666,
+          "stock_code": "005930",
+          "total_return_rate": 0.134349,
+          "total_value": 113434900.0
+        },
+        "scientific_sha256": "b5d9ec867dfd5fbda93f52def4c2271860909ad14370012a2f0a39f3354231ab"
+      },
+      "ltb_id": "ltb_A007_t072"
+    }
+  }
+}

@@ -90,3 +90,5 @@ outputs/experiment_base_ver6_v3.db
 outputs/experiment_base_dist_matched.db
 # 오프라인 스모크(1 agent / 1일 / offline_llm=true). 유료 호출 없고 연구 가치 없음
 outputs/logs/simulation_20260806_132623_570071_13986/
+outputs/experiments/RN_COMM_ON_20260918/
+outputs/repair_backups/RN_COMM_ON_20260918_20260919/

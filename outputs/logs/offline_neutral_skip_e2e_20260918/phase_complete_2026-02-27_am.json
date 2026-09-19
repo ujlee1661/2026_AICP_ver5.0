@@ -1,0 +1,19 @@
+{
+  "run_id": "offline_neutral_skip_e2e_20260918",
+  "agent_count": 7,
+  "date_count": 1,
+  "information_mode": "pre_close_cutoff",
+  "decision_space": "buy_sell_only",
+  "turn_offset": 0,
+  "day_offset": 0,
+  "global_turn_start": 1,
+  "global_turn_end": 2,
+  "phases": [
+    "am"
+  ],
+  "community_delivery_summary": null,
+  "outcome_finalized": false,
+  "right_censored_outcome_count": 0,
+  "schedule_complete": false,
+  "log_dir": "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/logs/offline_neutral_skip_e2e_20260918"
+}

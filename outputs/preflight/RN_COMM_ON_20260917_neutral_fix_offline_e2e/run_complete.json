@@ -1,0 +1,34 @@
+{
+  "community_delivery_summary": {
+    "best_posts": 0,
+    "delivered": 0,
+    "no_eligible_recipient": 0,
+    "right_censored": 0
+  },
+  "completed_event_count": 90,
+  "event_count": 90,
+  "full_frozen_schedule": true,
+  "log_dir": "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/preflight/RN_COMM_ON_20260917_neutral_fix_offline_e2e",
+  "outcome_finalized": true,
+  "response_journal": {
+    "logical_counts": {
+      "accepted/committed": 2520
+    },
+    "path": "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/preflight/RN_COMM_ON_20260917_neutral_fix_offline_e2e/.runtime/response_journal.sqlite",
+    "physical_attempt_counts": {
+      "accepted": 2520
+    },
+    "schema_version": "integrated-response-journal-v1",
+    "stage_labels": [
+      "market_analysis",
+      "post_fill_long_term_belief",
+      "short_term_belief",
+      "trading_decision"
+    ]
+  },
+  "right_censored_outcome_count": 91,
+  "run_id": "RN_COMM_ON_20260917_neutral_fix_offline_e2e",
+  "runtime_db": "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/preflight/RN_COMM_ON_20260917_neutral_fix_offline_e2e/.runtime/runtime_sim.db",
+  "schedule_complete": true,
+  "status": "complete"
+}
