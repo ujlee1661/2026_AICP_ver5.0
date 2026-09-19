@@ -13,6 +13,7 @@
 
 현재 포트폴리오 (판단을 위한 보조 상태이며 evidence_references의 source가 아닙니다):
 {portfolio_summary}
+{advisor_note_block}
 
 오늘 뉴스와 커뮤니티에 대한 해석은 별도로 제공되지 않습니다.
 current_stb의 여섯 차원이 이미 그 해석 결과이므로 위 Belief에서 읽으세요.

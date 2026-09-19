@@ -364,6 +364,7 @@ async def run_agent_turn(
         market_features=today_context["market_features"],
         portfolio_summary=today_context["portfolio_summary"],
         execution_state=constraints,
+        advisor_note=today_context.get("advisor_note"),
         client=client,
         seed=stable_llm_seed(random_seed, agent_id, turn, "market_analysis"),
     )
@@ -395,6 +396,7 @@ async def run_agent_turn(
         market_analysis,
         today_context["portfolio_summary"],
         constraints,
+        advisor_note=today_context.get("advisor_note"),
         allow_hold=decision_space != "buy_sell_only",
         client=client,
         seed=stable_llm_seed(random_seed, agent_id, turn, "trading_decision"),

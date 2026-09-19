@@ -1858,6 +1858,26 @@ class MemoryAgent:
             return None
         return f"시스템 알림: {row['date']} turn {row['turn']} {row['message_type']}. {row['message']}"
 
+    def get_advisor_note(self, agent_id: str, *, current_turn: int) -> str | None:
+        """Return the immutable advisor treatment after its sealed cutoff."""
+
+        with connect(self.db_path) as conn:
+            rows = conn.execute(
+                """
+                SELECT turn, date, message
+                FROM agent_system_messages
+                WHERE agent_id = ? AND message_type = 'advisor' AND turn < ?
+                ORDER BY turn DESC, message_id DESC
+                """,
+                (agent_id, int(current_turn)),
+            ).fetchall()
+        if len(rows) > 1:
+            raise ValueError(f"multiple advisor messages found for {agent_id}")
+        if not rows:
+            return None
+        row = rows[0]
+        return f"시스템 알림: {row['date']} turn {row['turn']} advisor. {row['message']}"
+
     def get_portfolio_summary(self, agent_id: str, turn: int) -> str:
         row = self._latest_portfolio(agent_id, before_or_at_turn=turn)
         if row is None:

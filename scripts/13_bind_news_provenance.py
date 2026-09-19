@@ -16,7 +16,8 @@ calendar/stage-input/target/price registry + StudySpec과 함께 sealed 된다.
 입력 join:
   - split JSON 5폴더  : 제목·본문·요약·작성시각(effective_at)·필터링여부(N만)
   - rescrape CSV       : article_id·url·published_at·modified_at·source (제목으로 join)
-  - crawl *.jsonl      : 실제 scraped_at과 본문 (url로 join)
+  - crawl *.jsonl      : 실제 scraped_at과 본문 (제목으로 join, 있으면 우선)
+  - data/*_news.pkl    : crawl export가 없는 기간의 로컬 수집 원장
 
 바인딩 조건: 본문 존재 + 실제 scraped_at 존재 + scraped_at >= effective_at.
 그 외는 quarantine(사유 기록). 부족 event는 shortage로 수용한다.
@@ -127,16 +128,63 @@ def load_crawl(crawl_dir: Path) -> dict[str, dict]:
     return by_title
 
 
+def load_local_news_sources(data_dir: Path) -> dict[str, dict]:
+    """Load the collected local news ledgers without exposing article bodies.
+
+    The PKL ledgers contain title, summary, body, publication date/time, source,
+    and URL.  They are used only as provenance inputs; the sealed public payload
+    continues to contain title/summary plus body/version hashes, never the body.
+    """
+
+    by_title: dict[str, dict] = {}
+    for filename in ("samsung_news.pkl", "sector_news.pkl", "economy_news.pkl"):
+        path = data_dir / filename
+        if not path.is_file():
+            continue
+        with path.open("rb") as handle:
+            frame = pickle.load(handle)
+        for raw in frame.to_dict("records"):
+            title = str(raw.get("title", "")).strip()
+            date = str(raw.get("date", ""))[:10]
+            time = str(raw.get("time", "")).strip()[:5]
+            body = str(raw.get("body", "")).strip()
+            url = str(raw.get("url", "")).strip()
+            if not title or len(date) != 10 or len(time) != 5 or not body or not url:
+                continue
+            effective_at = f"{date}T{time}:00+09:00"
+            entry = {
+                "url": url,
+                "body": body,
+                "published_at": effective_at,
+                "modified_at": None,
+                "effective_at": effective_at,
+                "observed_at": effective_at,
+                "source": str(raw.get("source", "")).strip(),
+                "file_category": filename,
+            }
+            # Split JSON titles retain the publisher suffix while the PKL
+            # ledger stores the same MK title without it. Register both exact
+            # representations; no fuzzy matching is used.
+            for title_key in (title, f"{title} - 매일경제"):
+                current = by_title.get(title_key)
+                if current is None or effective_at > str(current["effective_at"]):
+                    by_title[title_key] = entry
+    return by_title
+
+
 def build(
     splits_dir: Path,
     crawl_dir: Path,
+    data_dir: Path,
     out_dir: Path,
     *,
     start_date: str,
     end_date: str,
 ) -> None:
     curated = load_curated_summaries(splits_dir)
-    crawl = load_crawl(crawl_dir)
+    local_sources = load_local_news_sources(data_dir)
+    # A crawl record carries stronger scrape-time provenance and therefore wins.
+    provenance = {**local_sources, **load_crawl(crawl_dir)}
 
     bound: list[dict] = []
     quarantine: list[dict] = []
@@ -162,7 +210,7 @@ def build(
             stats["eod_leakage_in_text"] += 1
             quarantine.append({"title": title, "reason": "eod_leakage_in_text"})
             continue
-        prov = crawl.get(title)
+        prov = provenance.get(title)
         if prov is None:
             stats["no_crawl_provenance"] += 1
             quarantine.append({"title": title, "reason": "no_crawl_provenance"})
@@ -282,7 +330,7 @@ def build(
     print("=" * 60)
     print(f"바인딩됨          : {len(bound)}")
     print(f"격리(quarantine)  : {len(quarantine)}  {dict(stats)}")
-    print(f"기사 보유 event   : {len(per_event)}/90")
+    print(f"기사 보유 event   : {len(per_event)}")
     print(f"10개 미만 event   : {len(short_events)} (부족 허용 정책)")
     print(f"산출물            : {out_dir}/")
     print("  - provenance_bound_articles.json / quarantine_report.json / coverage_report.json")
@@ -294,6 +342,7 @@ def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="통합 뉴스 provenance 바인딩 (crawl provenance + 큐레이션 요약).")
     p.add_argument("--splits-dir", type=Path, default=PROJECT_ROOT / "outputs")
     p.add_argument("--crawl-dir", type=Path, default=PROJECT_ROOT / "outputs/crawl")
+    p.add_argument("--data-dir", type=Path, default=PROJECT_ROOT / "data")
     p.add_argument("--out-dir", type=Path,
                    default=PROJECT_ROOT / "preparation/rn_ab_source_candidate_v1/provenance_bound")
     p.add_argument("--start-date", default="2026-02-27")
@@ -304,6 +353,7 @@ def main(argv: list[str] | None = None) -> int:
     build(
         args.splits_dir,
         args.crawl_dir,
+        args.data_dir,
         args.out_dir,
         start_date=args.start_date,
         end_date=args.end_date,

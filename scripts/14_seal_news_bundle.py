@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """통합 실뉴스 번들 조립·검증 (real_news_bundle_manifest candidate).
 
-script 13의 provenance 바인딩 결과를 45거래일×2 = 90 event 슬롯에 매핑하고,
+script 13의 provenance 바인딩 결과를 요청한 거래일×2 event 슬롯에 매핑하고,
 공통 ``SealedNewsBundle`` 스키마로 묶어 검증한다. 네트워크/LLM 미접촉.
 
 배치 규칙: 기사 노출시각 = effective_at(=observed_at, script 13에서 확정).
@@ -52,7 +52,7 @@ def trading_dates(
 
 
 def build_events(dates: list[str]) -> list[dict]:
-    """90 event + 명시적 뉴스 윈도우(사용자 확정 의도).
+    """명시적 거래일 event + 뉴스 윈도(사용자 확정 의도).
 
     - AM(D): 전 거래일 15:30 ~ 당일 08:59  (cutoff 08:59)
     - PM(D): 당일 09:00 ~ 당일 15:29        (cutoff 15:30; 15:30은 다음 AM)
@@ -125,6 +125,15 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--sim-db", type=Path, default=PROJECT_ROOT / "outputs/sim.db")
     p.add_argument("--out", type=Path,
                    default=PROJECT_ROOT / "preparation/rn_ab_source_candidate_v1/real_news_bundle_manifest.json")
+    p.add_argument(
+        "--base-bundle",
+        type=Path,
+        default=None,
+        help=(
+            "Optional sealed bundle whose existing event slots are preserved "
+            "exactly; only later calendar events are selected from --bound."
+        ),
+    )
     p.add_argument("--stock-code", default="005930")
     p.add_argument("--start-date", default="2026-02-27")
     p.add_argument("--end-date", default="2026-05-04")
@@ -133,6 +142,26 @@ def main(argv: list[str] | None = None) -> int:
         p.error("--start-date must not follow --end-date")
 
     bound = json.loads(args.bound.read_text(encoding="utf-8"))["articles"]
+    base = (
+        json.loads(args.base_bundle.read_text(encoding="utf-8"))
+        if args.base_bundle is not None
+        else None
+    )
+    base_slots_by_event: dict[str, list[dict]] = defaultdict(list)
+    base_articles: dict[str, dict] = {}
+    base_shortages: dict[str, dict] = {}
+    if base is not None:
+        SealedNewsBundle.load(
+            args.base_bundle,
+            expected_stock_code=args.stock_code,
+        )
+        base_articles = {
+            str(article["article_id"]): article
+            for article in base["articles"]
+        }
+        for slot in base["slots"]:
+            base_slots_by_event[str(slot["event_id"])].append(slot)
+        base_shortages = dict(base.get("accepted_shortages") or {})
     dates = trading_dates(
         args.sim_db,
         stock_code=args.stock_code,
@@ -149,6 +178,18 @@ def main(argv: list[str] | None = None) -> int:
 
     for e in events:
         eid = e["event_id"]
+        if eid in base_slots_by_event:
+            preserved = sorted(
+                base_slots_by_event[eid],
+                key=lambda row: int(row["slot_ordinal"]),
+            )
+            for slot in preserved:
+                article_id = str(slot["article_id"])
+                used_articles[article_id] = base_articles[article_id]
+                slots.append(dict(slot))
+            if eid in base_shortages:
+                accepted_shortages[eid] = base_shortages[eid]
+            continue
         chosen = select_slots(by_event.get(eid, []))
         if not chosen:
             empty_events.append(eid)

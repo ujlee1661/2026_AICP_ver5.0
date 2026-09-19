@@ -491,6 +491,8 @@ def assert_integrated_event_state(
             "At least one completed event is required for state validation"
         )
     ordered_turns = tuple(sorted(events))
+    predecessor_turn = ordered_turns[0] - 1
+    turn_placeholders = ",".join("?" for _ in ordered_turns)
     expected = {(agent_id, turn) for agent_id in agents for turn in ordered_turns}
     placeholders = ",".join("?" for _ in agents)
 
@@ -550,9 +552,10 @@ def assert_integrated_event_state(
                 f"""
                 SELECT {columns}
                 FROM {table}
-                WHERE turn > 0
+                WHERE turn IN ({turn_placeholders})
                 ORDER BY turn, agent_id
-                """
+                """,
+                ordered_turns,
             ).fetchall()
             rows_by_table[table] = rows
             _assert_exact_event_rows(
@@ -570,29 +573,34 @@ def assert_integrated_event_state(
             ]
 
         ltb_rows = connection.execute(
-            """
+            f"""
             SELECT agent_id, turn, date, subturn, ltb_id, parent_ltb_id,
                    source_stb_id, source_decision_id, source_fill_id,
                    scientific_sha256, human_log_sha256
             FROM simulation_ltb_states
+            WHERE turn IN ({turn_placeholders}) OR turn = ?
             ORDER BY turn, agent_id
-            """
+            """,
+            (*ordered_turns, predecessor_turn),
         ).fetchall()
-        runtime_ltb_rows = [row for row in ltb_rows if int(row["turn"]) > 0]
+        runtime_ltb_rows = [
+            row for row in ltb_rows if int(row["turn"]) in events
+        ]
         _assert_exact_event_rows(
             "simulation_ltb_states",
             runtime_ltb_rows,
             expected=expected,
             events=events,
         )
-        initial_ltb = {
+        predecessor_ltb = {
             str(row["agent_id"]): row
             for row in ltb_rows
-            if int(row["turn"]) == 0 and str(row["agent_id"]) in set(agents)
+            if int(row["turn"]) == predecessor_turn
+            and str(row["agent_id"]) in set(agents)
         }
-        if set(initial_ltb) != set(agents):
+        if set(predecessor_ltb) != set(agents):
             raise ExperimentCheckpointError(
-                "Every selected agent requires exactly one turn-zero LTB"
+                "Every selected agent requires exactly one predecessor LTB"
             )
 
         stb_by_key = {
@@ -616,7 +624,7 @@ def assert_integrated_event_state(
             for row in runtime_ltb_rows
         }
         for agent_id in agents:
-            parent_ltb_id = str(initial_ltb[agent_id]["ltb_id"])
+            parent_ltb_id = str(predecessor_ltb[agent_id]["ltb_id"])
             for turn in ordered_turns:
                 key = (agent_id, turn)
                 stb = stb_by_key[key]
@@ -644,10 +652,10 @@ def assert_integrated_event_state(
                 parent_ltb_id = str(ltb["ltb_id"])
 
         fill_contract_errors = connection.execute(
-            """
+            f"""
             SELECT COUNT(*)
             FROM simulation_fills
-            WHERE turn > 0
+            WHERE turn IN ({turn_placeholders})
               AND (
                     action NOT IN ('buy', 'sell')
                  OR requested_quantity <= 0
@@ -657,7 +665,7 @@ def assert_integrated_event_state(
                  OR stock_code <> ?
               )
             """,
-            (stock_code,),
+            (*ordered_turns, stock_code),
         ).fetchone()[0]
         if int(fill_contract_errors):
             raise ExperimentCheckpointError(
@@ -665,14 +673,15 @@ def assert_integrated_event_state(
             )
 
         trade_rows = connection.execute(
-            """
+            f"""
             SELECT agent_id, turn, date, action, quantity, executed_price, fee,
                    status, filled_quantity, analysis_id, decision_id,
                    source_ltb_id, source_stb_id, fill_id, post_fill_ltb_id
             FROM trade_log
-            WHERE turn > 0
+            WHERE turn IN ({turn_placeholders})
             ORDER BY turn, agent_id
-            """
+            """,
+            ordered_turns,
         ).fetchall()
         _assert_exact_event_rows(
             "trade_log",
@@ -715,14 +724,15 @@ def assert_integrated_event_state(
                    realized_pnl, total_return_rate
             FROM portfolio_state
             WHERE agent_id IN ({placeholders})
+              AND turn IN ({','.join('?' for _ in (predecessor_turn, *ordered_turns))})
             ORDER BY turn, agent_id
             """,
-            agents,
+            (*agents, predecessor_turn, *ordered_turns),
         ).fetchall()
         expected_portfolios = {
             (agent_id, turn)
             for agent_id in agents
-            for turn in (0, *ordered_turns)
+            for turn in (predecessor_turn, *ordered_turns)
         }
         actual_portfolios = {
             (str(row["agent_id"]), int(row["turn"]))
@@ -733,7 +743,7 @@ def assert_integrated_event_state(
             or len(portfolio_rows) != len(expected_portfolios)
         ):
             raise ExperimentCheckpointError(
-                "portfolio_state does not exactly cover turn zero and "
+                "portfolio_state does not exactly cover the predecessor and "
                 "every completed agent-event"
             )
         for row in portfolio_rows:
@@ -763,8 +773,9 @@ def assert_integrated_event_state(
                 SELECT COUNT(*)
                 FROM TradingDetails
                 WHERE user_id IN ({placeholders})
+                  AND date IN ({','.join('?' for _ in {str(events[turn]['date']) for turn in ordered_turns})})
                 """,
-                agents,
+                (*agents, *sorted({str(events[turn]['date']) for turn in ordered_turns})),
             ).fetchone()[0]
         )
         if trading_details_count != expected_trade_count:
@@ -773,7 +784,7 @@ def assert_integrated_event_state(
             )
         fabricated_messages = int(
             connection.execute(
-                "SELECT COUNT(*) FROM agent_system_messages"
+                "SELECT COUNT(*) FROM agent_system_messages WHERE message_type <> 'advisor'"
             ).fetchone()[0]
         )
         if fabricated_messages:
@@ -802,12 +813,12 @@ def assert_integrated_event_state(
             )
         future_consumptions = int(
             connection.execute(
-                f"""
+                """
                 SELECT COUNT(*)
                 FROM simulation_outcome_consumptions
-                WHERE consumed_at_event_id NOT IN ({event_placeholders})
+                WHERE consumed_at_event_id > ?
                 """,
-                tuple(sorted(event_ids)),
+                (str(events[ordered_turns[-1]]["event_id"]),),
             ).fetchone()[0]
         )
         if future_consumptions:
@@ -823,6 +834,7 @@ def assert_integrated_event_state(
             }
             for row in ltb_rows
             if str(row["agent_id"]) in set(agents)
+            and int(row["turn"]) in events
         ]
         payload["tables"]["trade_log"] = [
             {
@@ -1766,4 +1778,78 @@ def validate_clean_experiment_base(
         "initial_cash_values": sorted({float(row[1]) for row in portfolio_rows}),
         "initial_positions_empty": True,
         "runtime_counts": counts,
+    }
+
+
+def validate_warm_experiment_base(
+    path: Path | str,
+    *,
+    expected_agent_ids: Sequence[str],
+    boundary_turn: int,
+    boundary_date: str,
+    community_mode: str,
+) -> dict[str, Any]:
+    """Fail closed unless a canonical boundary DB can continue at the next turn."""
+
+    db_path = Path(path)
+    agent_ids = tuple(str(value) for value in expected_agent_ids)
+    if not db_path.is_file() or not agent_ids or len(agent_ids) != len(set(agent_ids)):
+        raise RuntimeError("Warm base requires a real DB and unique expected agents")
+    placeholders = ",".join("?" for _ in agent_ids)
+    with sqlite3.connect(db_path) as connection:
+        connection.row_factory = sqlite3.Row
+        quick = str(connection.execute("PRAGMA quick_check").fetchone()[0])
+        foreign_keys = connection.execute("PRAGMA foreign_key_check").fetchall()
+        if quick.lower() != "ok" or foreign_keys:
+            raise RuntimeError("Warm base database integrity check failed")
+        max_fill = connection.execute("SELECT MAX(turn) FROM simulation_fills").fetchone()[0]
+        max_ltb = connection.execute("SELECT MAX(turn) FROM simulation_ltb_states").fetchone()[0]
+        max_portfolio = connection.execute("SELECT MAX(turn) FROM portfolio_state").fetchone()[0]
+        if (max_fill, max_ltb, max_portfolio) != (boundary_turn, boundary_turn, boundary_turn):
+            raise RuntimeError(
+                "Warm base boundary turn differs: "
+                f"fill={max_fill} ltb={max_ltb} portfolio={max_portfolio} expected={boundary_turn}"
+            )
+        for table in ("simulation_ltb_states", "portfolio_state"):
+            rows = connection.execute(
+                f"SELECT agent_id, date FROM {table} WHERE turn=? ORDER BY agent_id",
+                (boundary_turn,),
+            ).fetchall()
+            observed = tuple(str(row["agent_id"]) for row in rows)
+            if observed != tuple(sorted(agent_ids)) or any(
+                str(row["date"]) != boundary_date for row in rows
+            ):
+                raise RuntimeError(f"Warm base {table} does not cover the boundary cohort")
+        pending = int(
+            connection.execute(
+                "SELECT COUNT(*) FROM trade_log WHERE status='pending'"
+            ).fetchone()[0]
+        )
+        if pending:
+            raise RuntimeError(f"Warm base contains {pending} pending trade rows")
+        advisor_rows = int(
+            connection.execute(
+                "SELECT COUNT(*) FROM agent_system_messages WHERE message_type='advisor'"
+            ).fetchone()[0]
+        )
+        if advisor_rows:
+            raise RuntimeError("Warm base must precede advisor treatment installation")
+        community_rows = int(
+            connection.execute(
+                "SELECT COUNT(*) FROM community_logs WHERE turn=?",
+                (boundary_turn,),
+            ).fetchone()[0]
+        )
+        if community_mode == "on" and community_rows != len(agent_ids):
+            raise RuntimeError("Warm Community ON base lacks the complete PM boundary board")
+        if community_mode == "off" and community_rows:
+            raise RuntimeError("Warm Community OFF base unexpectedly contains boundary community logs")
+    return {
+        "status": "pass",
+        "base_db": str(db_path.resolve()),
+        "sha256": file_sha256(db_path),
+        "boundary_turn": int(boundary_turn),
+        "boundary_date": boundary_date,
+        "agent_count": len(agent_ids),
+        "community_mode": community_mode,
     }

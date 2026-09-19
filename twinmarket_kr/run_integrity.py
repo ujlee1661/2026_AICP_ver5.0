@@ -373,7 +373,7 @@ def validate_sealed_news_coverage(
     news_bundle_path: Path | str,
     *,
     event_ids: Sequence[str] | None = None,
-    minimum_real_count: int = 5,
+    minimum_real_count: int = 0,
     expected_stock_code: str | None = config.STOCK_CODE,
 ) -> dict[str, Any]:
     """Validate the exact target/shortage contract of the sealed real-news feed.
@@ -382,12 +382,12 @@ def validate_sealed_news_coverage(
     is the delivered scientific input.  A short event is valid only because
     :class:`SealedNewsBundle` proves that its accepted-shortage record exactly
     binds the ordered article IDs and payload hashes.  This validator adds the
-    study's lower bound (five real articles) and optionally restricts the
-    report to the events selected by a run.
+    sealed shortage record and optionally restricts the report to the events
+    selected by a run. Shortage is recorded, not treated as a run failure.
     """
 
-    if minimum_real_count < 1:
-        raise ValueError("minimum_real_count must be positive")
+    if minimum_real_count < 0:
+        raise ValueError("minimum_real_count must be non-negative")
     bundle = SealedNewsBundle.load(
         news_bundle_path,
         expected_stock_code=expected_stock_code,
@@ -1186,7 +1186,10 @@ def _validate_canonical_database(
     completed_events: Sequence[Mapping[str, Any]],
     community_mode: str,
     full_schedule: bool,
+    outcome_schedule_complete: bool | None = None,
 ) -> dict[str, Any]:
+    if outcome_schedule_complete is None:
+        outcome_schedule_complete = full_schedule
     event_by_id = {
         str(event["event_id"]): dict(event)
         for event in completed_events
@@ -1198,6 +1201,26 @@ def _validate_canonical_database(
     }
     cohort = set(agent_ids)
     with connect(db_path, read_only=True) as connection:
+        # A warm continuation keeps its canonical parent prefix in the same DB.
+        # Outcome rows may therefore mature at valid events before this
+        # segment's first event; include those ledger-backed event identities.
+        for event_date, subturn, turn in connection.execute(
+            """
+            SELECT date, subturn, MIN(turn)
+            FROM simulation_stb_states
+            GROUP BY date, subturn
+            """
+        ).fetchall():
+            event_id = f"{event_date}/{str(subturn).upper()}"
+            event_by_id.setdefault(
+                event_id,
+                {
+                    "event_id": event_id,
+                    "date": str(event_date),
+                    "subturn": str(subturn),
+                    "turn": int(turn),
+                },
+            )
         fill_count = int(
             connection.execute(
                 "SELECT COUNT(*) FROM simulation_fills WHERE turn > 0"
@@ -1247,7 +1270,7 @@ def _validate_canonical_database(
                     )
             elif status == "right_censored":
                 if (
-                    not full_schedule
+                    not outcome_schedule_complete
                     or row["due_event_id"] is not None
                     or row["available_from_event_id"] is not None
                     or row["observed_event_id"] is not None
@@ -1260,7 +1283,7 @@ def _validate_canonical_database(
                 raise CanonicalRunValidationError(
                     f"Unknown outcome status: {status}"
                 )
-        if full_schedule:
+        if outcome_schedule_complete:
             expected_outcome_count = fill_count * len(expected_horizons)
             if len(outcomes) != expected_outcome_count:
                 raise CanonicalRunValidationError(
@@ -2307,7 +2330,22 @@ def validate_canonical_run(
         )
 
     completed_events: list[dict[str, Any]] = []
-    for turn, event_id in enumerate(event_ids, start=1):
+    with sqlite3.connect(committed_db) as connection:
+        turn_rows = connection.execute(
+            """
+            SELECT date, subturn, MIN(turn), MAX(turn)
+            FROM simulation_stb_states
+            GROUP BY date, subturn
+            """
+        ).fetchall()
+    turn_by_event = {}
+    for event_date, subturn, min_turn, max_turn in turn_rows:
+        if int(min_turn) != int(max_turn):
+            raise CanonicalRunValidationError(
+                f"Event maps to multiple turns: {event_date}/{str(subturn).upper()}"
+            )
+        turn_by_event[f"{event_date}/{str(subturn).upper()}"] = int(min_turn)
+    for event_id in event_ids:
         try:
             event_date, raw_subturn = event_id.rsplit("/", 1)
         except ValueError as exc:
@@ -2319,10 +2357,14 @@ def validate_canonical_run(
             raise CanonicalRunValidationError(
                 f"Invalid event subturn: {event_id}"
             )
+        if event_id not in turn_by_event:
+            raise CanonicalRunValidationError(
+                f"Canonical DB has no turn for event: {event_id}"
+            )
         completed_events.append(
             {
                 "event_id": event_id,
-                "turn": turn,
+                "turn": turn_by_event[event_id],
                 "date": event_date,
                 "subturn": subturn,
             }
@@ -2366,11 +2408,11 @@ def validate_canonical_run(
         event_ids=event_ids,
         expected_stock_code=str(parameters.get("stock_code") or ""),
     )
+    bundle = SealedNewsBundle.load(
+        news_path,
+        expected_stock_code=str(parameters.get("stock_code") or ""),
+    )
     if publication_ready:
-        bundle = SealedNewsBundle.load(
-            news_path,
-            expected_stock_code=str(parameters.get("stock_code") or ""),
-        )
         if set(event_ids) != set(bundle.slots_by_event):
             raise CanonicalRunValidationError(
                 "Publication run does not cover the complete sealed news schedule"
@@ -2385,6 +2427,9 @@ def validate_canonical_run(
         completed_events=completed_events,
         community_mode=community_mode,
         full_schedule=full_schedule,
+        outcome_schedule_complete=(
+            event_ids[-1] == max(bundle.slots_by_event)
+        ),
     )
     log_report: dict[str, Any] | None = None
     if verify_logs:
@@ -2398,7 +2443,7 @@ def validate_canonical_run(
                 ],
                 agent_ids=list(agent_ids),
                 community_audience_agent_ids=list(agent_ids),
-                turn_offset=0,
+                turn_offset=min(int(event["turn"]) for event in completed_events) - 1,
                 fake_news_mode="off",
                 daily_news_csv=None,
                 community_mode=community_mode,

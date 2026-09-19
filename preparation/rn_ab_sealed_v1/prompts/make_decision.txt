@@ -19,6 +19,7 @@
 
 의사결정 공간:
 {decision_space_instruction}
+{advisor_note_block}
 
 삼성전자(005930)에 대해 오늘의 거래 결정을 내리기 전, 아래 순서대로 판단하세요.
 

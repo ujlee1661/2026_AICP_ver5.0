@@ -19,6 +19,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 import config
 from twinmarket_kr.agents.news_agent import SealedNewsBundle
+from twinmarket_kr.advisor.artifact import AdvisorArtifact
 from twinmarket_kr.community.validation import can_author_community_post
 from twinmarket_kr.experiment_runtime import (
     EventCheckpointRuntime,
@@ -31,6 +32,7 @@ from twinmarket_kr.experiment_runtime import (
     file_sha256,
     run_directory_lock,
     validate_clean_experiment_base,
+    validate_warm_experiment_base,
 )
 from twinmarket_kr.llm.client import (
     OpenRouterClient,
@@ -81,6 +83,18 @@ def build_parser() -> argparse.ArgumentParser:
         help="Run the same sealed real-news baseline with community disabled/enabled.",
     )
     parser.add_argument(
+        "--advisor-mode",
+        choices=("off", "on"),
+        default="off",
+        help="Enable the sealed one-time advisor treatment for its assigned 10 agents.",
+    )
+    parser.add_argument(
+        "--advisor-artifact",
+        type=Path,
+        default=None,
+        help="Required with --advisor-mode on; forbidden when advisor mode is off.",
+    )
+    parser.add_argument(
         "--news-bundle",
         type=Path,
         default=config.SEALED_REAL_NEWS_BUNDLE,
@@ -110,6 +124,17 @@ def build_parser() -> argparse.ArgumentParser:
             "scripts/04_build_experiment_base.py. It is copied once into the "
             "run-local runtime DB and never mutated by this runner."
         ),
+    )
+    parser.add_argument(
+        "--warm-base",
+        action="store_true",
+        help="Continue from a validated 2026-05-04 turn-90 canonical parent DB.",
+    )
+    parser.add_argument(
+        "--parent-run-dir",
+        type=Path,
+        default=None,
+        help="Required with --warm-base; supplies immutable parent provenance.",
     )
     parser.add_argument(
         "--sim-db",
@@ -252,6 +277,8 @@ def _signature_input_files(args: argparse.Namespace) -> dict[str, Path]:
         "price_registry": Path(args.price_registry),
         "persona_db": Path(config.SYS_100_DB),
     }
+    if args.advisor_artifact is not None:
+        inputs["advisor_artifact"] = Path(args.advisor_artifact)
     sealed_root = Path(args.news_bundle).parent
     for label, filename in (
         ("sealed_cohort", "cohort.json"),
@@ -278,7 +305,7 @@ def _build_signature(
 ) -> dict[str, Any]:
     condition_id = (
         "RN_COMM_ON" if args.community_mode == "on" else "RN_COMM_OFF"
-    )
+    ) + ("_ADVISOR_ON" if args.advisor_mode == "on" else "_ADVISOR_OFF")
     parameters = {
         "condition_id": condition_id,
         "study_spec_sha256": study_profile.study_spec_sha256,
@@ -286,9 +313,29 @@ def _build_signature(
         "prompt_bundle_sha256": study_profile.prompt_bundle_sha256,
         "news_treatment": "real_only",
         "community_mode": args.community_mode,
+        "advisor_mode": args.advisor_mode,
+        "advisor_artifact_sha256": (
+            file_sha256(args.advisor_artifact)
+            if args.advisor_artifact is not None
+            else None
+        ),
         "stock_code": study_profile.stock_code,
         "instrument_name": study_profile.instrument_name,
         "base_db_source": str(Path(args.base_db).resolve()),
+        "warm_base": bool(args.warm_base),
+        "parent_run_dir": (
+            str(args.parent_run_dir.resolve()) if args.parent_run_dir is not None else None
+        ),
+        "parent_run_signature_sha256": (
+            file_sha256(args.parent_run_dir / "run_signature.json")
+            if args.parent_run_dir is not None
+            else None
+        ),
+        "parent_terminal_sha256": (
+            file_sha256(args.parent_run_dir / "segment_complete.json")
+            if args.parent_run_dir is not None
+            else None
+        ),
         "start_date": dates[0],
         "end_date": dates[-1],
         "trading_dates": dates,
@@ -656,12 +703,30 @@ def _write_run_metadata(
 
 
 async def _run(args: argparse.Namespace) -> Path:
+    # argparse always supplies these fields. Direct callers and older tests may
+    # still construct a smaller Namespace, so preserve that internal API.
+    for name, default in (
+        ("advisor_mode", "off"),
+        ("advisor_artifact", None),
+        ("warm_base", False),
+        ("parent_run_dir", None),
+    ):
+        if not hasattr(args, name):
+            setattr(args, name, default)
     if args.resume and args.run_dir is None:
         raise ValueError("--resume requires an explicit --run-dir")
     if args.max_agents is not None and args.max_agents < 1:
         raise ValueError("--max-agents must be a positive integer")
     if args.max_days is not None and args.max_days < 1:
         raise ValueError("--max-days must be a positive integer")
+    if args.advisor_mode == "on" and args.advisor_artifact is None:
+        raise ValueError("--advisor-mode on requires --advisor-artifact")
+    if args.advisor_mode == "off" and args.advisor_artifact is not None:
+        raise ValueError("--advisor-artifact is forbidden when --advisor-mode is off")
+    if args.warm_base and args.parent_run_dir is None:
+        raise ValueError("--warm-base requires --parent-run-dir")
+    if not args.warm_base and args.parent_run_dir is not None:
+        raise ValueError("--parent-run-dir requires --warm-base")
     offline_llm = os.getenv(
         "TWINMARKET_OFFLINE_LLM",
         "",
@@ -756,6 +821,11 @@ async def _run(args: argparse.Namespace) -> Path:
         raise ExperimentCheckpointError(
             f"--max-agents exceeds the sealed cohort size {full_cohort_size}"
         )
+    if args.advisor_artifact is not None:
+        AdvisorArtifact.load(
+            args.advisor_artifact,
+            cohort_agent_ids=[str(agent["agent_id"]) for agent in sealed_agents],
+        )
 
     with run_directory_lock(run_dir):
         if args.resume:
@@ -776,12 +846,42 @@ async def _run(args: argparse.Namespace) -> Path:
                 raise FileNotFoundError(
                     f"Base simulation DB is missing: {args.base_db}"
                 )
-            validate_clean_experiment_base(
-                args.base_db,
-                expected_agents=sealed_agents,
-                expected_stock_code=study_profile.stock_code,
-                expected_trading_dates=study_profile.schedule_date_ids,
-            )
+            if args.warm_base:
+                if dates[0] != "2026-05-06":
+                    raise ExperimentCheckpointError(
+                        "Advisor warm continuation must start on 2026-05-06"
+                    )
+                parent_dir = args.parent_run_dir.resolve()
+                parent_terminal = _read_json_object(
+                    parent_dir / "segment_complete.json",
+                    "parent segment completion",
+                )
+                if (
+                    parent_terminal.get("status") != "segment_complete"
+                    or int(parent_terminal.get("completed_event_count") or 0) != 90
+                ):
+                    raise ExperimentCheckpointError(
+                        "Warm parent must be a complete 90-event canonical segment"
+                    )
+                parent_runtime = Path(str(parent_terminal.get("runtime_db") or "")).resolve()
+                if parent_runtime != Path(args.base_db).resolve():
+                    raise ExperimentCheckpointError(
+                        "--base-db must be the parent segment canonical runtime DB"
+                    )
+                validate_warm_experiment_base(
+                    args.base_db,
+                    expected_agent_ids=[str(agent["agent_id"]) for agent in agents],
+                    boundary_turn=90,
+                    boundary_date="2026-05-04",
+                    community_mode=args.community_mode,
+                )
+            else:
+                validate_clean_experiment_base(
+                    args.base_db,
+                    expected_agents=sealed_agents,
+                    expected_stock_code=study_profile.stock_code,
+                    expected_trading_dates=study_profile.schedule_date_ids,
+                )
             runtime_db = (
                 args.sim_db.resolve()
                 if args.sim_db is not None
@@ -861,11 +961,14 @@ async def _run(args: argparse.Namespace) -> Path:
                     news_bundle=args.news_bundle,
                     calendar_registry=args.calendar_registry,
                     price_registry=args.price_registry,
+                    advisor_artifact=args.advisor_artifact,
+                    advisor_cohort_agent_ids=study_profile.agent_ids,
                     community_mode=args.community_mode,
                     sim_db=runtime_db,
-                    reset_runtime_tables=not runtime.checkpoint()[
-                        "completed_events"
-                    ],
+                    reset_runtime_tables=(
+                        not args.warm_base
+                        and not runtime.checkpoint()["completed_events"]
+                    ),
                     log_root=run_dir.parent,
                     log_run_id=run_dir.name,
                     phases=phases,

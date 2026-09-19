@@ -24,6 +24,7 @@ from twinmarket_kr.agents.news_agent import (
     PM_NEWS_WINDOW_START_TIME,
     NewsAgent,
 )
+from twinmarket_kr.advisor.artifact import AdvisorArtifact
 from twinmarket_kr.community.agent import CommunityAgent
 from twinmarket_kr.community.posting import posting_decision
 from twinmarket_kr.community.reading import community_reading_react, community_reading_select
@@ -208,6 +209,8 @@ async def run_simulation(
     news_bundle: Path | str = config.SEALED_REAL_NEWS_BUNDLE,
     calendar_registry: Path | str = config.SEALED_EVENT_CALENDAR,
     price_registry: Path | str = config.SEALED_EVENT_PRICES,
+    advisor_artifact: Path | str | None = None,
+    advisor_cohort_agent_ids: Sequence[str] | None = None,
     community_mode: str | None = None,
     sim_db: Path | str | None = None,
     reset_runtime_tables: bool = True,
@@ -372,6 +375,16 @@ async def run_simulation(
 
     if reset_runtime_tables:
         _reset_runtime_tables(sim_db_path)
+    if advisor_artifact is not None:
+        AdvisorArtifact.load(
+            advisor_artifact,
+            cohort_agent_ids=(
+                list(advisor_cohort_agent_ids)
+                if advisor_cohort_agent_ids is not None
+                else [str(agent["agent_id"]) for agent in agents]
+            ),
+            expected_count=10,
+        ).ensure_messages_installed(sim_db_path)
     memory = MemoryAgent(
         sim_db_path,
         event_schedule=event_schedule,

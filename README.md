@@ -50,7 +50,11 @@ runtime이나 과거 compatibility runner를 사용하지 않습니다.
 
 ## 정본 입력
 
-현재 baseline profile은 `preparation/rn_ab_sealed_v1/`입니다.
+현재 기본 baseline profile은 `preparation/rn_ab_sealed_v1/`(…‑2026-05-04,
+45거래일)입니다. 2026-05-29까지 실행할 때는 기존 90개 event를
+그대로 보존하고 34개 event만 추가한
+`preparation/rn_ab_sealed_to_20260529_v1/` profile을 명시합니다. 종료일은
+일요일인 5월 31일이 아니라 마지막 거래일인 5월 29일입니다.
 
 | 파일 | 역할 |
 | --- | --- |
@@ -232,6 +236,7 @@ outputs/logs/rn_ab_ver6_45day_20260826/
 | [ARCHITECTURE.md](ARCHITECTURE.md) | 엔진, STB/LTB, 거래, 커뮤니티, artifact 구조 |
 | [EXPERIMENT_DESIGN.md](EXPERIMENT_DESIGN.md) | 연구 질문, 조건, 정책과 분석 계약 |
 | [RUNBOOK_AND_PREFLIGHT.md](RUNBOOK_AND_PREFLIGHT.md) | preflight, 실행, resume, 검증, 보고 |
+| [advisor_plan.md](advisor_plan.md) | 5월 4일 warm fork 기반 개인화 Advisor 실험 계약 |
 
 `AGENTS.md`는 작업 지침입니다. 그 밖의 Markdown과 archive 자료는 역사·결과
 sidecar일 수 있으며 현재 실행 명령의 정본으로 사용하지 않습니다.

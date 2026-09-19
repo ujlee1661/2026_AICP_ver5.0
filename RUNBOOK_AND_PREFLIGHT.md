@@ -201,6 +201,23 @@ telemetry 또는 canary 승인 증거가 아니므로, 기존 묶음을 유료 �
 현재 baseline에서는 수진의 `preparation/rn_ab_sealed_v1/`을 입력 정본으로
 사용하며 cohort와 news를 재선발하지 않는다. source를 바꾸지 않는 일반
 재현·실행 준비에서 `00`, `02`, `03`, `13`, `14`를 다시 실행하지 않는다.
+
+2026-05-29까지 확장 실행할 때는 별도 정본
+`preparation/rn_ab_sealed_to_20260529_v1/`을 사용한다. 이 profile은 기존
+2026-05-04까지의 90개 event·760개 slot을 변경하지 않고, 2026-05-06
+AM부터 2026-05-29 PM까지만 추가한다. 기본 profile을 묵시적으로
+바꾸지 않으므로 확장 실행은 다음 입력을 모두 명시해야 한다.
+
+```bash
+TWINMARKET_OFFLINE_LLM=1 python scripts/05_run_simulation.py \
+  --start-date 2026-02-27 \
+  --end-date 2026-05-29 \
+  --news-bundle preparation/rn_ab_sealed_to_20260529_v1/news.json \
+  --calendar-registry preparation/rn_ab_sealed_to_20260529_v1/calendar.json \
+  --price-registry preparation/rn_ab_sealed_to_20260529_v1/prices.json \
+  --run-dir outputs/experiments/<run_id>
+```
+
 최종 freeze 전 `02 --help`와 `03 --help`를 다시 확인해 `02`에는 write
 경로가 없고, `03`의 write는 `--write`와 명시적 source/target/profile 없이는
 시작되지 않는지 회귀로 고정한다. bare 실행이 기존 sealed input이나
@@ -666,7 +683,54 @@ Community 분석에서는 `community_interactions.csv`의 `title_only`와
 `full_body`를 반드시 분리하고, `community_best_posts.csv`의 예정/실제
 delivery와 self-exclusion을 함께 확인한다.
 
-## 16. 재현 패키지
+## 16. Advisor warm-fork 실험
+
+Advisor 실험은 `rn_ab_sealed_to_20260529_v1` profile을 사용한다. 먼저 현재 통합
+엔진으로 2026-05-04 PM까지 100명 parent segment를 만든다. 과거 legacy/ver6
+DB는 warm base로 사용할 수 없다.
+
+```bash
+python scripts/16_prepare_advisor_inputs.py \
+  --parent-run-dir outputs/experiments/<parent_run> \
+  --output outputs/advisor/<experiment_id>/advisor_cases.json
+```
+
+아래 단계만 reasoning ON이며 유료 호출이므로 사용자 승인을 받은 뒤 실행한다.
+메인 시뮬레이션 호출은 Advisor ON/OFF 모두 reasoning OFF다.
+
+```bash
+python scripts/17_generate_advisor_artifact.py \
+  --cases outputs/advisor/<experiment_id>/advisor_cases.json \
+  --output outputs/advisor/<experiment_id>/advisor_messages.json \
+  --audit outputs/advisor/<experiment_id>/advisor_openrouter_calls.jsonl \
+  --allow-paid-api
+```
+
+동일한 parent `.runtime/runtime_sim.db`에서 5월 6일~29일 ON/OFF를 각각 새
+`--run-dir`로 fork한다. ON은 `--advisor-artifact`가 필수이고 OFF에서는 금지된다.
+`--warm-base`는 parent completion, turn 90 경계, pending trade 부재와 parent
+DB 일치를 fail-closed로 검사한다. run signature에는 parent 경로·signature·terminal
+hash와 복제 직후 DB hash가 함께 기록된다.
+
+```bash
+python scripts/05_run_simulation.py \
+  --start-date 2026-05-06 --end-date 2026-05-29 --seed 2 \
+  --community-mode off --advisor-mode on \
+  --advisor-artifact outputs/advisor/<experiment_id>/advisor_messages.json \
+  --warm-base --parent-run-dir outputs/experiments/<parent_run> \
+  --base-db outputs/experiments/<parent_run>/.runtime/runtime_sim.db \
+  --news-bundle preparation/rn_ab_sealed_to_20260529_v1/news.json \
+  --calendar-registry preparation/rn_ab_sealed_to_20260529_v1/calendar.json \
+  --price-registry preparation/rn_ab_sealed_to_20260529_v1/prices.json \
+  --run-dir outputs/experiments/<advisor_on_run> \
+  --allow-paid-api --reasoning-off-canary-audit <approved_canary.jsonl>
+```
+
+현재 확정되지 않은 Community 조건은 실행 직전에 `off`, `on`, 또는 4셀 중
+선택한다. Advisor 대상은 seed `20260919`와 namespace
+`advisor-assignment-v1`로 전체 100명에서 고정된 10명이다.
+
+## 17. 재현 패키지
 
 팀원이 clone 후 같은 run을 검증할 수 있도록 다음을 보존한다.
 
@@ -682,7 +746,7 @@ delivery와 self-exclusion을 함께 확인한다.
 
 secret, API key, 직접 개인식별정보는 패키지에 넣지 않는다.
 
-## 17. 최종 Go/No-Go
+## 18. 최종 Go/No-Go
 
 | Gate | GO 기준 |
 | --- | --- |

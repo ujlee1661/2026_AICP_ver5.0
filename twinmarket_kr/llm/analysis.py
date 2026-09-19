@@ -421,6 +421,7 @@ async def analyze_market(
     market_features: dict[str, Any],
     portfolio_summary: str,
     execution_state: dict[str, Any],
+    advisor_note: str | None = None,
     client: OpenRouterClient | None = None,
     seed: int | None = None,
 ) -> dict[str, Any]:
@@ -452,6 +453,11 @@ async def analyze_market(
         market_features=json.dumps(market_features, ensure_ascii=False, indent=2),
         execution_state=json.dumps(execution_state, ensure_ascii=False, indent=2),
         portfolio_summary=portfolio_summary,
+        advisor_note_block=(
+            "\n담당 투자 어드바이저의 행동 규율 메모:\n" + advisor_note + "\n"
+            if advisor_note
+            else ""
+        ),
     )
     allowed_reference_fields = {
         "previous_ltb": set(BELIEF_DIMENSION_KEYS),

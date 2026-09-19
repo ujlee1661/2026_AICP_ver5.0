@@ -209,6 +209,7 @@ class OpenRouterClient:
         logical_call_id: str | None = None,
         phase_attempt_id: str | None = None,
         request_policy: Mapping[str, Any] | None = None,
+        _advisor_reasoning_on: bool = False,
     ) -> Any:
         if self.offline:
             return _offline_response(messages)
@@ -244,10 +245,30 @@ class OpenRouterClient:
         supplied_request_policy = (
             dict(request_policy) if request_policy is not None else self.request_policy()
         )
-        final_request_policy = _enforce_paper_reasoning_off(
-            requested_model,
-            supplied_request_policy,
-        )
+        if _advisor_reasoning_on:
+            expected = {
+                "reasoning": {"effort": "high", "exclude": False},
+                "provider": {
+                    "only": [config.PAPER_OPENROUTER_PROVIDER],
+                    "order": [config.PAPER_OPENROUTER_PROVIDER],
+                    "allow_fallbacks": False,
+                    "require_parameters": True,
+                },
+            }
+            if (
+                requested_model != config.PAPER_OPENROUTER_MODEL
+                or supplied_request_policy != expected
+                or self.audit_context.get("purpose") != "advisor_generation"
+            ):
+                raise ReasoningPolicyError(
+                    "Advisor reasoning-on requires its exact model/provider policy and audit purpose"
+                )
+            final_request_policy = expected
+        else:
+            final_request_policy = _enforce_paper_reasoning_off(
+                requested_model,
+                supplied_request_policy,
+            )
         kwargs["extra_body"] = final_request_policy
 
         delay = 1.0
@@ -400,6 +421,47 @@ class OpenRouterClient:
             logical_call_id=logical_call_id,
             phase_attempt_id=phase_attempt_id,
             request_policy=final_policy,
+        )
+
+    async def chat_advisor_reasoning_on(
+        self,
+        messages: list[dict[str, str]],
+        *,
+        response_format: dict[str, Any],
+        temperature: float,
+        seed: int,
+        max_tokens: int,
+        audit_label: str,
+        logical_call_id: str,
+        phase_attempt_id: str,
+    ) -> Any:
+        """One-purpose path for sealed Advisor generation with reasoning enabled."""
+
+        if self.offline:
+            raise RuntimeError("Advisor generation requires an explicitly authorized live call")
+        if self.audit_context.get("purpose") != "advisor_generation":
+            raise ReasoningPolicyError("Advisor client is missing advisor_generation audit purpose")
+        policy = {
+            "reasoning": {"effort": "high", "exclude": False},
+            "provider": {
+                "only": [config.PAPER_OPENROUTER_PROVIDER],
+                "order": [config.PAPER_OPENROUTER_PROVIDER],
+                "allow_fallbacks": False,
+                "require_parameters": True,
+            },
+        }
+        return await self.chat(
+            messages,
+            model=config.PAPER_OPENROUTER_MODEL,
+            response_format=response_format,
+            temperature=temperature,
+            seed=seed,
+            max_tokens=max_tokens,
+            audit_label=audit_label,
+            logical_call_id=logical_call_id,
+            phase_attempt_id=phase_attempt_id,
+            request_policy=policy,
+            _advisor_reasoning_on=True,
         )
 
     async def ping(self) -> str:

@@ -190,6 +190,7 @@ async def make_decision(
     portfolio_summary: str,
     trading_constraints: dict[str, Any],
     *,
+    advisor_note: str | None = None,
     allow_hold: bool = False,
     client: OpenRouterClient | None = None,
     seed: int | None = None,
@@ -233,6 +234,11 @@ async def make_decision(
             trading_constraints, ensure_ascii=False, indent=2
         ),
         decision_space_instruction=decision_space_instruction,
+        advisor_note_block=(
+            "\n담당 투자 어드바이저의 행동 규율 메모:\n" + advisor_note + "\n"
+            if advisor_note
+            else ""
+        ),
     )
     if validation_attempts < 1:
         raise ValueError("validation_attempts must be at least 1")
