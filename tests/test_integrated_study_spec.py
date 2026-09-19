@@ -153,16 +153,12 @@ class IntegratedStudySpecTests(unittest.TestCase):
         ):
             self._validate(self.sealed_root, changed)
 
-    def test_rejects_structured_community_post_permission_mismatch(self) -> None:
+    def test_runtime_post_flag_cannot_override_depth_policy(self) -> None:
         changed = [dict(agent) for agent in self.agents]
         changed[0]["can_post_community"] = 1 - int(
             changed[0]["can_post_community"]
         )
-        with self.assertRaisesRegex(
-            IntegratedStudySpecError,
-            "can_post_community",
-        ):
-            self._validate(self.sealed_root, changed)
+        self._validate(self.sealed_root, changed)
 
     def test_rejects_non_prompt_matching_metadata_drift(self) -> None:
         changed = [dict(agent) for agent in self.agents]

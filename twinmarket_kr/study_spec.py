@@ -246,12 +246,13 @@ def _validate_cohort(
             depth,
             f"cohort[{agent_id}].news_depth",
         )
+        expected_can_post = int(depth in {1, 2})
         _expect(
-            int(runtime.get("can_post_community")),
             can_post,
+            expected_can_post,
             f"cohort[{agent_id}].can_post_community",
         )
-        if can_post not in {0, 1} or (can_post == 1 and depth not in {1, 2}):
+        if can_post not in {0, 1}:
             raise IntegratedStudySpecError(
                 f"cohort[{agent_id}] has invalid community posting permission"
             )
@@ -354,7 +355,9 @@ def _validate_persona_projection(
                 "ordinal": ordinal,
                 "agent_id": agent_id,
                 "news_depth": int(runtime["news_depth"]),
-                "can_post_community": int(runtime["can_post_community"]),
+                "can_post_community": int(
+                    int(runtime["news_depth"]) in {1, 2}
+                ),
                 "initial_cash": int(runtime["ini_cash"]),
                 "structured_persona_sha256": structured_persona_sha256(
                     dict(runtime)
@@ -468,8 +471,8 @@ def _validate_policy(
     _expect(community.get("depth1_selective_read_cap"), 5, "community D1 cap")
     _expect(community.get("depth2_selective_read_cap"), 5, "community D2 cap")
     _expect(
-        community.get("posting_permission_from_cohort_flag"),
-        "can_post_community",
+        community.get("posting_permission_from_depth_policy"),
+        "D1_D2_allowed_D0_denied",
         "community posting permission source",
     )
     _expect(

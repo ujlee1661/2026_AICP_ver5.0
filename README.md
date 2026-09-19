@@ -11,7 +11,7 @@
 - 현재 persona는 `data/sys_100_ko_ver5.db`의 100명이며 depth 분포는
   D0/D1/D2 = 30/55/15입니다.
 - 커뮤니티 글쓰기는 depth만으로 허용하지 않습니다.
-  `can_post_community=1`인 D1/D2 14명만 게시 여부를 판단합니다.
+  D1/D2 70명 모두 게시 여부를 자유롭게 판단합니다(D0는 게시 불가).
 - 커뮤니티 읽기는 종전대로 D1/D2가 수행하며 각 event 최대 5개입니다.
 - 로컬 `.env`는 기본적으로 `TWINMARKET_OFFLINE_LLM=1`이므로 외부 API를
   호출하지 않습니다.
@@ -103,7 +103,7 @@ python scripts/04_build_experiment_base.py --force
 
 ## 먼저 실행할 무과금 smoke test
 
-현재 cohort에서 D2와 게시 권한 보유자를 함께 포함하려면 최소 23명을 사용합니다.
+현재 cohort에서 D2를 포함하려면 최소 22명을 사용합니다.
 
 ```bash
 source .venv/bin/activate
@@ -190,6 +190,11 @@ python scripts/generate_community_report_pdf.py \
 
 ## 보존된 과거 로그
 
+로컬 실행 결과의 우선순위와 보조 run 격리 위치는
+[`outputs/PRIMARY_RUNS.md`](outputs/PRIMARY_RUNS.md)에 정리되어 있습니다.
+현재 주요 결과는 `outputs/experiments/RN_COMM_ON_20260918/`과
+`outputs/logs/rn_ab_ver6_45day_20260826/` 두 경로입니다.
+
 `outputs/logs/`에는 현재 아래 폴더만 보존합니다.
 
 ```text
@@ -208,7 +213,7 @@ outputs/logs/rn_ab_ver6_45day_20260826/
 
 ## 커뮤니티 핵심 정책
 
-- 게시: `can_post_community=1`인 D1/D2만 판단, agent-PM당 최대 1개
+- 게시: D1/D2 모두 자유롭게 판단, 게시 강제 없음, agent-PM당 최대 1개
 - 읽기: D0 0개, D1 최대 5개, D2 최대 5개
 - 선택: persona를 받은 LLM이 제목 후보 화면에서 선택하며 빈 선택도 허용
 - 본문: 최대 500자, 501자는 거부하며 자동으로 자르지 않음

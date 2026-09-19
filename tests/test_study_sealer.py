@@ -63,7 +63,7 @@ class IntegratedStudySealerTests(unittest.TestCase):
         )
         self.assertEqual(
             Counter(int(row["can_post_community"]) for row in rows),
-            Counter({0: 86, 1: 14}),
+            Counter({1: 70, 0: 30}),
         )
         self.assertTrue(
             all(

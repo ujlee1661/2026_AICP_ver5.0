@@ -251,7 +251,7 @@ D2 동결 프로필뿐이다.
 ```text
 PM의 실제 fill 확정
   -> post-fill LTB 생성
-  -> `can_post_community=1`로 봉인된 D1/D2만 게시 여부를 결정
+  -> 모든 D1/D2가 게시 여부를 자유롭게 결정
      (게시 강제 없음, 최대 1개)
   -> 당일 게시글 전체를 동결한 후보 보드 생성
   -> D1/D2가 자기 글을 제외한 제목 목록에서 읽을 글을 선택
@@ -429,7 +429,7 @@ PM의 실제 fill 확정
 - `belief_summary`와 `view_change`는 사람·로그·게시글용 파생값이며 다음 거래
   입력은 6차원 STB/LTB다.
 - Community baseline은 D0/D1/D2 선택 읽기 상한 0/5/5,
-  `can_post_community=1`인 D1/D2만 게시,
+  모든 D1/D2가 게시 여부를 자유롭게 결정하며,
   D0도 다음 AM Best 원문 열람, 글 500자, Best 자기 글 제외·무보충,
   title-only/full-body 분리 로그로 통합했다.
 - strict OpenRouter 요청은 `reasoning={"effort":"none","exclude":true}`,

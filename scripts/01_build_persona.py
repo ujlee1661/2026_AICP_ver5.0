@@ -53,7 +53,9 @@ def validate_existing_baseline(
             "ordinal": ordinal,
             "agent_id": str(agent["agent_id"]),
             "news_depth": int(agent["news_depth"]),
-            "can_post_community": int(agent["can_post_community"]),
+            "can_post_community": int(
+                int(agent["news_depth"]) in {1, 2}
+            ),
             "initial_cash": int(agent["ini_cash"]),
             "structured_persona_sha256": structured_persona_sha256(agent),
             "persona_sha256": str(agent["persona_prompt_sha256"]),

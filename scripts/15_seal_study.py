@@ -220,7 +220,9 @@ def build_persona_projection(
                 "ordinal": ordinal,
                 "agent_id": str(row["agent_id"]),
                 "news_depth": int(row["news_depth"]),
-                "can_post_community": int(row["can_post_community"]),
+                "can_post_community": int(
+                    int(row["news_depth"]) in {1, 2}
+                ),
                 "initial_cash": int(row["ini_cash"]),
                 "structured_persona_sha256": structured_persona_sha256(
                     row
@@ -427,7 +429,7 @@ def build_spec(
         "news_exposure_policy": news_exposure_policy,
         "community_policy": {
             "best_k": 5, "best_selection_policy": "top_k_or_fewer_available_no_forced_posting",
-            "posting_permission_from_cohort_flag": "can_post_community",
+            "posting_permission_from_depth_policy": "D1_D2_allowed_D0_denied",
             "reading_permissions_from_cohort_depth_map": True,
             "depth1_selective_read_cap": 5,
             "depth2_selective_read_cap": 5, "best_payload": "title_plus_full_frozen_body",

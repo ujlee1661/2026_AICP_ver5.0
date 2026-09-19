@@ -2515,6 +2515,12 @@ def load_agents_from_sys100(
             ).fetchall()
         ]
     for agent in agents:
+        # Community author eligibility is a deterministic depth policy, not a
+        # separately assigned persona attribute. Keep the derived value in the
+        # runtime row for artifact compatibility with completed runs.
+        agent["can_post_community"] = int(
+            int(agent.get("news_depth", -1)) in {1, 2}
+        )
         source_prompt = str(agent.get("persona_prompt") or "")
         rendered_prompt = generate_persona_prompt(
             agent,

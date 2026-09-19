@@ -126,17 +126,15 @@ class CommunityPolicyTests(unittest.TestCase):
 
         self.assertEqual(errors, [])
 
-    def test_explicit_post_permission_is_fail_closed_and_independent_of_reading(self) -> None:
-        self.assertTrue(
-            can_author_community_post(
-                {"news_depth": 1, "can_post_community": 1}
-            )
-        )
+    def test_post_permission_is_derived_only_from_depth(self) -> None:
         for agent in (
-            {"news_depth": 1, "can_post_community": 0},
+            {"news_depth": 1},
             {"news_depth": 2},
-            {"news_depth": 0, "can_post_community": 1},
+            {"news_depth": 1, "can_post_community": 0},
         ):
+            with self.subTest(agent=agent):
+                self.assertTrue(can_author_community_post(agent))
+        for agent in ({"news_depth": 0}, {}, {"news_depth": "bad"}):
             with self.subTest(agent=agent):
                 self.assertFalse(can_author_community_post(agent))
 
@@ -262,7 +260,7 @@ class CommunityPolicyTests(unittest.TestCase):
 
 
 class CommunityPostingPermissionRuntimeTests(unittest.IsolatedAsyncioTestCase):
-    async def test_posting_llm_is_called_only_for_explicitly_permitted_agents(self) -> None:
+    async def test_posting_llm_is_called_for_every_d1_d2_agent(self) -> None:
         permitted = {
             "agent_id": "A001",
             "news_depth": 1,
@@ -270,7 +268,7 @@ class CommunityPostingPermissionRuntimeTests(unittest.IsolatedAsyncioTestCase):
         }
         blocked = {
             "agent_id": "A002",
-            "news_depth": 2,
+            "news_depth": 0,
             "can_post_community": 0,
         }
         turn_results = [
