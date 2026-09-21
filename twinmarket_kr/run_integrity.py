@@ -1369,8 +1369,10 @@ def _validate_canonical_database(
                     f"Community-off DB contains community state: {nonempty}"
                 )
         elif community_mode == "on":
+            scoped_pm_turns = sorted(pm_turns)
+            turn_placeholders = ",".join("?" for _ in scoped_pm_turns)
             posts = connection.execute(
-                """
+                f"""
                 SELECT post.*, ltb.agent_id AS ltb_agent,
                        ltb.turn AS ltb_turn,
                        fill.agent_id AS fill_agent,
@@ -1384,8 +1386,10 @@ def _validate_canonical_database(
                   ON fill.fill_id = post.source_fill_id
                 LEFT JOIN simulation_decisions AS decision
                   ON decision.decision_id = post.source_decision_id
+                WHERE post.turn IN ({turn_placeholders})
                 ORDER BY post.post_id
-                """
+                """,
+                scoped_pm_turns,
             ).fetchall()
             for post in posts:
                 author = str(post["agent_id"])
@@ -1411,14 +1415,16 @@ def _validate_canonical_database(
                     )
 
             reactions = connection.execute(
-                """
+                f"""
                 SELECT interaction.*, post.agent_id AS author_agent_id,
                        post.turn AS post_turn, post.date AS post_date
                 FROM community_interactions AS interaction
                 LEFT JOIN community_posts AS post
                   ON post.post_id = interaction.post_id
+                WHERE interaction.turn IN ({turn_placeholders})
                 ORDER BY interaction.interaction_id
-                """
+                """,
+                scoped_pm_turns,
             ).fetchall()
             for reaction in reactions:
                 reader = str(reaction["agent_id"])
@@ -1442,7 +1448,7 @@ def _validate_canonical_database(
                     )
             score_mismatches = int(
                 connection.execute(
-                    """
+                    f"""
                     SELECT COUNT(*)
                     FROM community_posts AS post
                     LEFT JOIN (
@@ -1455,13 +1461,17 @@ def _validate_canonical_database(
                         GROUP BY post_id
                     ) AS reaction
                       ON reaction.post_id = post.post_id
-                    WHERE post.like_count <> COALESCE(reaction.likes, 0)
-                       OR post.unlike_count <> COALESCE(reaction.unlikes, 0)
-                       OR post.score <> (
+                    WHERE post.turn IN ({turn_placeholders})
+                      AND (
+                           post.like_count <> COALESCE(reaction.likes, 0)
+                        OR post.unlike_count <> COALESCE(reaction.unlikes, 0)
+                        OR post.score <> (
                             COALESCE(reaction.likes, 0)
                           - COALESCE(reaction.unlikes, 0)
                        )
-                    """
+                      )
+                    """,
+                    scoped_pm_turns,
                 ).fetchone()[0]
             )
             if score_mismatches:
@@ -1470,12 +1480,14 @@ def _validate_canonical_database(
                 )
 
             logs = connection.execute(
-                """
+                f"""
                 SELECT agent_id, turn, date, best_posts_seen, posts_read,
                        candidate_posts_seen
                 FROM community_logs
+                WHERE turn IN ({turn_placeholders})
                 ORDER BY turn, agent_id
-                """
+                """,
+                scoped_pm_turns,
             ).fetchall()
             expected_log_keys = {
                 (agent_id, turn)

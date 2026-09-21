@@ -1,0 +1,1353 @@
+{
+  "agent_count": 100,
+  "artifact_tree_sha256": "18cebc0080046636d9019aa1f0e5ae125ecbcd7f3bff94a681bd70657230b639",
+  "canonical_db": "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_COMM_ON_CONT_ON_TO_20260522_20260921/.runtime/committed.db",
+  "committed_database_sha256": "69ff67bfea519e4ef854390b87d64cef47aa4c9c0e7d42799d84c3a611978e80",
+  "community_mode": "on",
+  "database": {
+    "community_counts": {
+      "community_interactions": 20298,
+      "community_logs": 5800,
+      "community_posts": 4060
+    },
+    "fill_count": 11600,
+    "matured_outcome_count": 33500,
+    "outcome_consumption_count": 33500,
+    "outcome_count": 33500,
+    "right_censored_outcome_count": 0
+  },
+  "event_count": 26,
+  "final_integrity_sha256": "5dc3b71f1abf74a357be3bd7fc5496a199c1061aefcf9133dafc4641c53f6fcf",
+  "logs": {
+    "agent_count": 100,
+    "community_agent_count": 100,
+    "date_count": 13,
+    "expected_agent_turns": 2600,
+    "run_dir": "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_COMM_ON_CONT_ON_TO_20260522_20260921",
+    "scheduled_fake_dates": [],
+    "sealed_news_coverage": {
+      "accepted_shortages": {
+        "2026-05-06/PM": {
+          "actual_real_count": 6,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 6,
+          "missing_real_count": 4,
+          "ordered_article_ids": [
+            "news_20260506_종목_7e11b22a",
+            "news_20260506_종목_69590b9d",
+            "news_20260506_종목_52f94c4b",
+            "news_20260506_종목_3152bbc1",
+            "news_20260506_섹터_55004554",
+            "news_20260506_경제_11576bc8"
+          ],
+          "ordered_payload_sha256": [
+            "393b3c2be2c965b03a88f13960a7948775479fb9a8b1262e08fbc9325d66ba93",
+            "91c40bc854f5241773f5168c64d32d7588d0b81d28a0109bce4c7d5cd1ab5ba5",
+            "9bce4179e8a1416a403ee3a9ef6c7b1e7fd8176c63a3aa20dae4f022a5103a68",
+            "04ee64d2134fedd0666cf795fdb996f239ec427a364137d8baddc7cd3b54b683",
+            "222c5575aa425e21524b19617e1562dc7fbe049c98a3cbca0f21e7e7d6ae0361",
+            "514d500b3294d5c0b29fdadf264901331c0d5ce631f40ab82c1912cbd06c3cd3"
+          ],
+          "selected_safe_count": 6,
+          "serialized_count": 6,
+          "target_real_count": 10
+        },
+        "2026-05-07/AM": {
+          "actual_real_count": 9,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 9,
+          "missing_real_count": 1,
+          "ordered_article_ids": [
+            "news_20260506_종목_fa56eb9b",
+            "news_20260506_종목_cc2d13ef",
+            "news_20260506_종목_5a1fb646",
+            "news_20260506_종목_b5883b2f",
+            "news_20260506_종목_e2baf4eb",
+            "news_20260506_섹터_1d32177d",
+            "news_20260506_섹터_dfd78a49",
+            "news_20260506_경제_6a8c5aeb",
+            "news_20260506_경제_4bd727f6"
+          ],
+          "ordered_payload_sha256": [
+            "4a0d6ab1b183ce71ee23d4cb8f2abf3f0f7d326d66f7a56e81b4e3862f8a1e4b",
+            "0fdba669a03013471b35ef7d61786680bb6bd0635589d41d639b6675acf51308",
+            "ec0493ebe63c56d5c17873e8bf6902342c427b695e430aa2918cdd7d25306ffd",
+            "bd1ff27d16e0675c2efb49058e6c6e153ec225b8fbab63cb468e93e0c90bcdb8",
+            "503739612bd600272393be2ba8ba369de295dce2cda137ca0ec34a199c4493af",
+            "c86be848602c20d41c3e89c297028ecf571637b2088967b2a84ab4c11dce4f53",
+            "c88bb386f700d4bf14cff58ca4d21bed6d549884bc353b4d511a43bbe6025552",
+            "a0819820f864d8a90c929d33a306805a55db20cf13c7aead334d627a2b941297",
+            "3d44e24eac110cd3f8954cffd7e06f55cb2065c5d2ed4d2b917c1f57335fd076"
+          ],
+          "selected_safe_count": 9,
+          "serialized_count": 9,
+          "target_real_count": 10
+        },
+        "2026-05-07/PM": {
+          "actual_real_count": 7,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 7,
+          "missing_real_count": 3,
+          "ordered_article_ids": [
+            "news_20260507_종목_6371a168",
+            "news_20260507_종목_df22c9e8",
+            "news_20260507_종목_8436edac",
+            "news_20260507_섹터_c886580d",
+            "news_20260507_섹터_7f62acb2",
+            "news_20260507_섹터_0e1f2372",
+            "news_20260507_경제_d7a2e92c"
+          ],
+          "ordered_payload_sha256": [
+            "43c0a2359d4fe9ccae3e6d03ed6e2acd253faa85456db6092ba1db18038216e6",
+            "ee4135eb4a7fd17d92aed29fec2d0cf8f9b812223cbbb192ab90bbb9cb6102d1",
+            "f4ca0d8c498655dc640c9f58aed6b42d04dc7ab8c3d911755455ace7e002e37b",
+            "b24e56981d8ae743f55f77bb5e6b813b8442e4dffc7ed8de4833e73d9ffd696d",
+            "9dbeb2a94c0d861f219421f73d1cfcbd4f13a4edf2ef1f15eeef8807fe3a8aab",
+            "54b9225c6e9a222d1b6334991a82fb9e915607f4814222285f8e4f2b905386e7",
+            "db6fa2212daa33b8d04558e4571a53b592ce511dca5aeb8dd504669f3b8e21c0"
+          ],
+          "selected_safe_count": 7,
+          "serialized_count": 7,
+          "target_real_count": 10
+        },
+        "2026-05-08/AM": {
+          "actual_real_count": 7,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 7,
+          "missing_real_count": 3,
+          "ordered_article_ids": [
+            "news_20260507_종목_aab7aab9",
+            "news_20260507_종목_13d195c6",
+            "news_20260507_종목_3f6a2dc8",
+            "news_20260507_종목_a5100686",
+            "news_20260507_종목_09a24bbf",
+            "news_20260507_경제_8b63d215",
+            "news_20260507_경제_cebf8139"
+          ],
+          "ordered_payload_sha256": [
+            "30abb0312826e038c8b017d4272ec3acdcc3f5a13474ff352e6b0de792464a94",
+            "e276eea854e3bea12cf2e48320f65796858b35b77f1ed09a91494107bb1c1e08",
+            "cd2fa795f063b1df7564172883078b95502f4885d12283b9dcac7b74ab65cbf7",
+            "0c7b65bc3bbc5afe931a471e2fee40280acda91cd0729219c7019668e5199417",
+            "9f2e5162078ff55236b9d656305bd7557727cd420806d6083315d421d21fe521",
+            "577581ce6684bf7b65af1567c476a8fbb06195318874e24501843ba96cd29b46",
+            "8320a733f2c5ad8b671e3d75b03e7435569381f0aba07a8628b11b01637a83d6"
+          ],
+          "selected_safe_count": 7,
+          "serialized_count": 7,
+          "target_real_count": 10
+        },
+        "2026-05-08/PM": {
+          "actual_real_count": 3,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 3,
+          "missing_real_count": 7,
+          "ordered_article_ids": [
+            "news_20260508_종목_0a24dd9a",
+            "news_20260508_종목_8ea7a7d8",
+            "news_20260508_종목_3587c552"
+          ],
+          "ordered_payload_sha256": [
+            "ef858913ee5c8df744b6f4f447f466ec1753cd6f1bc5da21c7786f9f2180ceb4",
+            "69eb07d73fc3af7beefcea2393dcaaf9f807e594aa1174c8ba68c18aac6f812c",
+            "b49537cda0a8ecf188df2b152b48a7be7c4c73cd4e2b93213d4e30d7dab4c392"
+          ],
+          "selected_safe_count": 3,
+          "serialized_count": 3,
+          "target_real_count": 10
+        },
+        "2026-05-11/AM": {
+          "actual_real_count": 7,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 7,
+          "missing_real_count": 3,
+          "ordered_article_ids": [
+            "news_20260508_종목_14899998",
+            "news_20260508_종목_5cdf4563",
+            "news_20260508_종목_8d675bf6",
+            "news_20260508_종목_bb9a3fb7",
+            "news_20260508_종목_08630e33",
+            "news_20260508_경제_2f1e4f5a",
+            "news_20260508_경제_7c307b64"
+          ],
+          "ordered_payload_sha256": [
+            "9537e9190299787fbf1ae2dc6ac3a532a24620d98c0ffcf89c329caffde5f6f5",
+            "104c93908b36f371dcdb2a2c6c06ced9c13cac8af319f97ef7c0d5a9a7670c8a",
+            "adde9306654976f8c6fec04e11cbe3da890d8db585979bcd3e6d46ceeda8d424",
+            "f6cb0a369dc0a03631d8613fecc166a4830aad3d62b23c6970abf32661d4147e",
+            "0a850ca1ef299758fb9347af4dd7744bec312a2b7882d41147c42f473850326a",
+            "37a928109dd37400ad2d76358982eba9f97de270aa2053c01cf571ce38ba059b",
+            "ccb3ca691371bda352a041d648b0b4aafa44eeec3abf697dfc7c2f2ae61238cc"
+          ],
+          "selected_safe_count": 7,
+          "serialized_count": 7,
+          "target_real_count": 10
+        },
+        "2026-05-11/PM": {
+          "actual_real_count": 8,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 8,
+          "missing_real_count": 2,
+          "ordered_article_ids": [
+            "news_20260511_종목_da75387d",
+            "news_20260511_종목_0adbacb1",
+            "news_20260511_종목_3ab7c4fe",
+            "news_20260511_종목_1f78fe68",
+            "news_20260511_종목_f0e62fd7",
+            "news_20260511_섹터_284c57ad",
+            "news_20260511_경제_1171f56a",
+            "news_20260511_경제_bf467980"
+          ],
+          "ordered_payload_sha256": [
+            "e3b3b4969719ce6d54332411722ef83d9d675f456942f00551aab06f64116db5",
+            "cf8b0a8a271d5b2d7407be4fb3c9f9aeb7495e230ba649db31664d87e629ab9c",
+            "97af542370bf962ff0fe29c71f1fb83ff0cff211ad63c522ed63faf0ed925da5",
+            "b14d4ba9529bbe1778e77740a9c08dbe73b51ad8ec449926d1c59c9bb2fb847c",
+            "7b41ec7c5d528989158a18149c8f7683dbf78645d61e82eb9771616d3adf47d8",
+            "b0c6a9392bc174beb4f1d0d2f4c89c6097a1f89bb4a5f69e78444d11ffdfef50",
+            "8a9dd7855e270ed0f476f99fb3b62d7fd89740747730a2fc62f8a4421de888a8",
+            "f59471f194aba52a72bee0dc7f5a1cf0e50249f39fbef735680eb548b9eef931"
+          ],
+          "selected_safe_count": 8,
+          "serialized_count": 8,
+          "target_real_count": 10
+        },
+        "2026-05-12/AM": {
+          "actual_real_count": 5,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 5,
+          "missing_real_count": 5,
+          "ordered_article_ids": [
+            "news_20260511_종목_215bdad1",
+            "news_20260511_종목_a573d80b",
+            "news_20260511_종목_34b0bdbc",
+            "news_20260511_종목_6f828486",
+            "news_20260511_종목_7cfd212d"
+          ],
+          "ordered_payload_sha256": [
+            "3d09da76c25e8dba20d3ac45c562f7ee2f6bcd38a7fd996f0c174adf82d512b6",
+            "0f58b73ff5e83544644c6065a29a076929e5d011fb5ac2209dda7712fd6949c8",
+            "e0699cc68763ded63e2d47513a8bb28d42b16e6eeb6f6b3ce8cd1b80fd91cfdd",
+            "a0768702e17253dd49b6fe3fe5ec1f89ef8d8008886d12ce8d14443208ea0c7f",
+            "0da2b1bd2fec7caa079ccd494e5a44e1bd23bfeff2cec1619b1b17dbb3d3c812"
+          ],
+          "selected_safe_count": 5,
+          "serialized_count": 5,
+          "target_real_count": 10
+        },
+        "2026-05-12/PM": {
+          "actual_real_count": 3,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 3,
+          "missing_real_count": 7,
+          "ordered_article_ids": [
+            "news_20260512_종목_761be6ad",
+            "news_20260512_종목_9e4d9437",
+            "news_20260512_종목_5c7debda"
+          ],
+          "ordered_payload_sha256": [
+            "9d2af3850bb4cbc1932e255f6c2da79adc22f2ac11e236055352e2340c47d247",
+            "f04291fc6be80be0af96144341014e638249833b41bc751bc6f3650ddeee0f7a",
+            "46fecf80c2c583a0dbe9c03f8255b228c93b54153cddb2ca1ecf34d2728ea62b"
+          ],
+          "selected_safe_count": 3,
+          "serialized_count": 3,
+          "target_real_count": 10
+        },
+        "2026-05-13/AM": {
+          "actual_real_count": 9,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 9,
+          "missing_real_count": 1,
+          "ordered_article_ids": [
+            "news_20260512_종목_3833046f",
+            "news_20260512_종목_28fa1090",
+            "news_20260512_종목_79185293",
+            "news_20260512_종목_a71e847b",
+            "news_20260512_종목_031f34c3",
+            "news_20260512_섹터_4bd04a33",
+            "news_20260512_섹터_fbfb45dc",
+            "news_20260512_경제_30e75ac3",
+            "news_20260512_경제_d0c6a147"
+          ],
+          "ordered_payload_sha256": [
+            "b7e21cd9836c1e1ac6d68a6e9d0f9b06039e7e5e423adc797f32f9aa4eb07dc6",
+            "fa779d88c092dcc2d6797425b317b0378d4df31e4df472038fa9e1be25d2cd2f",
+            "ffeedeee384d64180dfc6a2b8e88cacd4b410d3e6ad9dbcb48c50d4167c03e47",
+            "b105932bf9621439fe01868e468a02c8e316b96ffb2bf78e257df251160a9ad4",
+            "b446c8232c9cd4da0b0be4f858f85c89833b3c788f32f0f81c2929265f369b90",
+            "2b96ba1db35dbb83e9b7e3953d35b257e45eb4187a18728aad13060da9e3f8a6",
+            "07ad7bbd1c70eb870b65e42827d64d40591b63c8b716b2dd6bb504637ba312f1",
+            "39480967a16b1712739153b829e97c409f8631ff935ffd49d35ab0b29d121381",
+            "84379c959625e6dc33bfdb47c0df6e85e2eb91e6517215ba63ba3afacc53051b"
+          ],
+          "selected_safe_count": 9,
+          "serialized_count": 9,
+          "target_real_count": 10
+        },
+        "2026-05-13/PM": {
+          "actual_real_count": 7,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 7,
+          "missing_real_count": 3,
+          "ordered_article_ids": [
+            "news_20260513_종목_f122a3de",
+            "news_20260513_종목_98c2f131",
+            "news_20260513_종목_3a7754cf",
+            "news_20260513_종목_49436e07",
+            "news_20260513_종목_b2cd5ba5",
+            "news_20260513_섹터_c987b2ed",
+            "news_20260513_경제_a7baccae"
+          ],
+          "ordered_payload_sha256": [
+            "0e464d7444d0f906402f8c22c4d53c51a97259657aaa539bec7c35646609db29",
+            "2b792342c6b370fc302b2262fc11bc7354ad1babf1472bdd9cca99d653185d1a",
+            "04f5f2af0d747e92088b75c5fd3a0935dc79cb77dcf2a71273a4d250a208fadf",
+            "49c8cc8c37e6e2d08f0b48fb7edb7e44917b540284a83b1144a30a7fc52ed50f",
+            "490dfb01d46836bb42fbd680e2faebcd604fd063a1545c66287928c497cd0652",
+            "2bab82a170be484085b057def2050870b0414d42255abbb6df41f4de0a86ea88",
+            "0961935b1d4b4ff424e56a9a862dcd47207bb8ce96475cdc701315a24bd38369"
+          ],
+          "selected_safe_count": 7,
+          "serialized_count": 7,
+          "target_real_count": 10
+        },
+        "2026-05-14/PM": {
+          "actual_real_count": 7,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 7,
+          "missing_real_count": 3,
+          "ordered_article_ids": [
+            "news_20260514_종목_e6504244",
+            "news_20260514_종목_86471c3c",
+            "news_20260514_종목_59a5bc0a",
+            "news_20260514_종목_21703e65",
+            "news_20260514_종목_25baa352",
+            "news_20260514_경제_9828f45e",
+            "news_20260514_경제_89339d96"
+          ],
+          "ordered_payload_sha256": [
+            "bb3b6f2588bd02dc1be0599e04a3b8ef62bb093567f7117bc09a378d5c55f72a",
+            "4f97342a57754b6e45ffc27fa7be258ae6976dec717b3e469483a7d7c19828f7",
+            "b281e35c667693bf9924129b5b2708f176c9786fbf637d523215f2222dadfd82",
+            "07757e2ec338b515c172c11c5bbe3a318b8c55071265b9e0dfd98ad87cde055a",
+            "1c67328ef15fda2be8eb960ecc80896b05a1b515e786d17cc843e50fd5f2bace",
+            "a04014a7b4b6bac60fd755c2a2812099d97d5e755788ef8afecb92f5603ccf25",
+            "6168eb0bbb23c8f8cad71b14cc07f6d8f81bdbdc14061ebf397a7834d405cd6a"
+          ],
+          "selected_safe_count": 7,
+          "serialized_count": 7,
+          "target_real_count": 10
+        },
+        "2026-05-15/AM": {
+          "actual_real_count": 8,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 8,
+          "missing_real_count": 2,
+          "ordered_article_ids": [
+            "news_20260514_종목_a4e52346",
+            "news_20260514_종목_da79f1e7",
+            "news_20260514_종목_4db4942d",
+            "news_20260514_종목_71796b09",
+            "news_20260514_종목_3999dee3",
+            "news_20260514_섹터_6d8e5b06",
+            "news_20260514_경제_9c917f6e",
+            "news_20260514_경제_1e5dc560"
+          ],
+          "ordered_payload_sha256": [
+            "7e08b402ed989ddc0357e75ad874f12d433003e54f5ff5931f7af4c88dba67e5",
+            "794258c78e7400b738eb3d59d9c2d38dd44597564d02b030ea64a9bc3ac30cab",
+            "436f4d7c72314cd6200c32207d676648b74c94f1f926a87cbe83378008878693",
+            "2b1b788efbea357628459d95329d7472a198b34b6d942535ca04623c6c564532",
+            "6cb77a1b437fbff11bafa5101d8a2298a646087bbd259d15cc2fdb122c90f071",
+            "679fea6f3dbfc33aeffd3aed5b8a783a9b70dca0dd2ea3204cc918f49000acc0",
+            "4af1f656a99422456b21958c1a69d9c6804cb96eb07970142d43cf01bc1aca27",
+            "734847e887da8109cf9c4f20ee8eadac22e377b759f80066a5f8c9d54e0f2bf4"
+          ],
+          "selected_safe_count": 8,
+          "serialized_count": 8,
+          "target_real_count": 10
+        },
+        "2026-05-15/PM": {
+          "actual_real_count": 5,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 5,
+          "missing_real_count": 5,
+          "ordered_article_ids": [
+            "news_20260515_종목_9d7e3ce7",
+            "news_20260515_종목_9b6e0dea",
+            "news_20260515_종목_4a9e65f4",
+            "news_20260515_경제_9519abc0",
+            "news_20260515_경제_3048b9c1"
+          ],
+          "ordered_payload_sha256": [
+            "c9548b285df046a77423ba510b8ee9c463b234a76a5867eedbcc20b69373f9be",
+            "5faed8be7721e417903783125b33ff497fc4ea4be867541c3f20cde90130dadc",
+            "849845f31098ef26f8fb6669a3b0616599b51fa9fb0f3312901d732347a76c21",
+            "b3296a97ad3c7731c061d617723f95212755320e4a5b2b05ddc22fe0a8721ab7",
+            "28f6d8fc479cea4549356ce82a8a7661227d6823dd6263cf30de035f1af73959"
+          ],
+          "selected_safe_count": 5,
+          "serialized_count": 5,
+          "target_real_count": 10
+        },
+        "2026-05-18/PM": {
+          "actual_real_count": 7,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 7,
+          "missing_real_count": 3,
+          "ordered_article_ids": [
+            "news_20260518_종목_2d85f0c0",
+            "news_20260518_종목_c252e884",
+            "news_20260518_종목_8bea51f6",
+            "news_20260518_종목_828890cf",
+            "news_20260518_종목_b1fd4c0e",
+            "news_20260518_경제_424025f6",
+            "news_20260518_경제_d6fca5cb"
+          ],
+          "ordered_payload_sha256": [
+            "f342b9edd3a98bf5379a4fc0d9fc88f1ee84eac5275bcfdf246a43b3f6de48d5",
+            "25ba6d3f83d9a6efa797b25e38034e1fa84bd02a938ae492105351321d382191",
+            "5355b245cfb739bc210f3cce3c7dbdd53c6b18fcaa4ce31dd814930dd40e35fb",
+            "d3f5f2ce7975f0c0b52318e3c1c1e91aae452f627b87a9d313f5bb5e3ad4316d",
+            "24a9002839a44ad128ad12087485fdf633c1c297fb9d7893ea2565f105e9e83e",
+            "8b803cf96bda28cbfb65df7d650d1bf04381c413af04879908dd626558f9d595",
+            "2db7a9de08eb05b14d1824d29d8d3b6b245839f29976c0db2754438bca09bb87"
+          ],
+          "selected_safe_count": 7,
+          "serialized_count": 7,
+          "target_real_count": 10
+        },
+        "2026-05-19/AM": {
+          "actual_real_count": 6,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 6,
+          "missing_real_count": 4,
+          "ordered_article_ids": [
+            "news_20260518_종목_72e9b0b0",
+            "news_20260518_종목_d31a2e32",
+            "news_20260518_종목_b1dbb008",
+            "news_20260518_종목_48889b51",
+            "news_20260518_종목_d272bbeb",
+            "news_20260518_섹터_edcc0d93"
+          ],
+          "ordered_payload_sha256": [
+            "18b31af31212d3ed03a48058b85a618d4a13f0e026970ccb6e53caee9ff35a56",
+            "3174d6a6a79bff97018132b2e8807f4d5c6fc46a1dd600d2e2e04b5e5f382113",
+            "84d7c0865021cdc28b08ce97b599d78585eb14e8bd2db17e6ec6838f97be1415",
+            "572c2f8b69a997a42d9de2cf8271488f7086c15f10a89b34bcb68e46a76e9b01",
+            "63c34a6706befb22a2a4ee5d05b0bb979002b4e4755cdcb4fef40041675a2d5b",
+            "67daa37e9bcd4b152693609f4c0ce0ef3a1be6fb1aabc1edfd9f084e30b56b48"
+          ],
+          "selected_safe_count": 6,
+          "serialized_count": 6,
+          "target_real_count": 10
+        },
+        "2026-05-19/PM": {
+          "actual_real_count": 7,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 7,
+          "missing_real_count": 3,
+          "ordered_article_ids": [
+            "news_20260519_종목_6fbe01d2",
+            "news_20260519_종목_e303740a",
+            "news_20260519_종목_0a400d1c",
+            "news_20260519_종목_651eeab3",
+            "news_20260519_종목_184ea212",
+            "news_20260519_섹터_f15bfcb7",
+            "news_20260519_경제_be2b69ba"
+          ],
+          "ordered_payload_sha256": [
+            "da10929e7d10539a1db3aedc21551c7c5da0aa21689a5e26fea2989b46f0dd9c",
+            "8887e41de067af76e7de5b2aa80a76b6b377091f982c4a2ded424636d12cd017",
+            "5a6784193bfd30d0ca943a430eb2c3acdb7ae18f26b6364dc5e3adefa8b3d46d",
+            "d58d77c6841d236448276de517782f852bf8d771bbcabf33b5ab4b5ad214c3f9",
+            "e02a319bcc4ab48fe4b96ab1daa0941439c06a078635c3288ff3b5b60b2e6f1c",
+            "7de8005ac6a752436426ad7ba0202b77b7ad3cf1995b20520914f47749f2bda9",
+            "6d47767555ec28ad1288dd6a619e2a7a40150ccd66084abe05b98aee0138d8d3"
+          ],
+          "selected_safe_count": 7,
+          "serialized_count": 7,
+          "target_real_count": 10
+        },
+        "2026-05-20/AM": {
+          "actual_real_count": 8,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 8,
+          "missing_real_count": 2,
+          "ordered_article_ids": [
+            "news_20260519_종목_ea52e40e",
+            "news_20260519_종목_455842e1",
+            "news_20260519_종목_c7b1c1f9",
+            "news_20260519_종목_42f169f7",
+            "news_20260519_종목_c3b27ef6",
+            "news_20260519_섹터_ae400a69",
+            "news_20260519_경제_1a19ec86",
+            "news_20260519_경제_8b769124"
+          ],
+          "ordered_payload_sha256": [
+            "0fcb229da3cc413cc9f52dc3143e4c59650c9e64af64e99511b961ef520bdac9",
+            "996c44a984e7ac893a855e02730fa79da3e334a1668f91c71f959263760ef284",
+            "214cb269d92bad86f820327a92ffbb15a710d268e404042f1f8174bf10bb0c60",
+            "3c863a0cbb6d1fe354dad6c075dd38a4a1054839b0d67df6034b38f64cbfe494",
+            "50940c797367b4b9058ec0a271bc7339fe1e7840b4d44bda2b1cd62559b552e3",
+            "9be7064982f4be743a77dd3b9f1c1ff96dbaf0164748d0aa5b8d7a2688a37e9e",
+            "9ae6a10f67a25064d49e676a89c10f28c54bc8caa0ae2d894918e7c328cd06bf",
+            "fbe65f4d281aa97762f834ca4dab89dbd395f7a870d49838aaf16379fa209959"
+          ],
+          "selected_safe_count": 8,
+          "serialized_count": 8,
+          "target_real_count": 10
+        },
+        "2026-05-20/PM": {
+          "actual_real_count": 7,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 7,
+          "missing_real_count": 3,
+          "ordered_article_ids": [
+            "news_20260520_종목_0f11ea8c",
+            "news_20260520_종목_20590ea4",
+            "news_20260520_종목_c04dfc46",
+            "news_20260520_종목_04f87d3a",
+            "news_20260520_종목_2faee52a",
+            "news_20260520_섹터_bc1a77ae",
+            "news_20260520_경제_b38bf2f0"
+          ],
+          "ordered_payload_sha256": [
+            "3ba0205e33b1a4e82c20969bcdc4e4b02a2f652384d7f63720f07e968ffe6e6b",
+            "31d13bbbef9cbbd580d7c338105274810a4c320027cb5c856de25aa85ec7a026",
+            "1c1dcbae1d6c67a03e4866167d7b84380bd7c4973d75293bdedc210ba349d032",
+            "2a4fb87889f2456d3c52f430ea371ef64f0c296dac403e441367435235645a22",
+            "1da2822e31a38842cd1085210b8d842574ad8e31e69704eb1b6d98904e2c722d",
+            "f71a57e07aefacb860630b6c1af77d3db18f1bd2d4d43938fb67472224feae5c",
+            "afb42acd286b9705645aaa2f960c2abca95e492523e1ada520b7e71042e63516"
+          ],
+          "selected_safe_count": 7,
+          "serialized_count": 7,
+          "target_real_count": 10
+        },
+        "2026-05-21/PM": {
+          "actual_real_count": 8,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 8,
+          "missing_real_count": 2,
+          "ordered_article_ids": [
+            "news_20260521_종목_3fe1e648",
+            "news_20260521_종목_9e24c60d",
+            "news_20260521_종목_a014a9bb",
+            "news_20260521_종목_638447f4",
+            "news_20260521_종목_b792d299",
+            "news_20260521_섹터_11b5b17c",
+            "news_20260521_경제_1f0bc323",
+            "news_20260521_경제_be10c829"
+          ],
+          "ordered_payload_sha256": [
+            "54e8af1ea5ee75bf3b1b720edd988fc4e8ed635aa3a34233e3e16e4b758912b7",
+            "a1c6b93d00f8c87fd356b7718d9d8436ebe8055246cd5e371b9e6a701a95d0bd",
+            "beb65b19f731fa6cab4d19c84e28ba86dd6b02574586b0471d1aa6384b8e0a98",
+            "a574121f5e632bcc86fa6a39735fcbf10839d18e4593704ada2c2c289e691613",
+            "a98f6c03d6dc81e15f7f8ed3eef4361c6e3e4ffff019e856547b18f30738f0cd",
+            "550a3a487a21f082a9b458bf8917bd05df12eaaec1f86f744457936ea5e910e1",
+            "736b5d203fcebe047e3bb6ae38e005d8977d03354223064ccfecfd4f509b8385",
+            "82870baa6d22cd15ba672958013217600a88f3e10f8d33ab929a44feeeacd6b4"
+          ],
+          "selected_safe_count": 8,
+          "serialized_count": 8,
+          "target_real_count": 10
+        },
+        "2026-05-22/AM": {
+          "actual_real_count": 7,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 7,
+          "missing_real_count": 3,
+          "ordered_article_ids": [
+            "news_20260521_종목_a2b27766",
+            "news_20260521_종목_a36028e8",
+            "news_20260521_종목_e94f8e30",
+            "news_20260521_종목_0be2a355",
+            "news_20260521_종목_52988d1e",
+            "news_20260521_경제_88a1b18d",
+            "news_20260521_경제_3e2f8584"
+          ],
+          "ordered_payload_sha256": [
+            "5e8269312b09d604a7c4f3347f3db93959c8f59929e705833e5ab719d994aef6",
+            "eb95993865d53ec94f94d08014c44544840a827c5dd0ee4e86c9862ffdba74ca",
+            "3d3bd6eed6b570f17b4253baba1a5058cfceb743c45dba7682dd618f59947a78",
+            "00240ef505eabd1bc8c00f440d5e6712c4993c898a78532a1d5a58614b0c917f",
+            "6141c516147e1b3ecbfc6721aa6d05d08cbad9ac11e312e4fc047becfb314855",
+            "d3edd32583e9e27a1d0d389a1ecb72010d3cb398ace6698564143fa14385e53e",
+            "3381ef40d7605d86a90631d590f4e12d96e6dc5ff876a115bfe19a8ca72daf09"
+          ],
+          "selected_safe_count": 7,
+          "serialized_count": 7,
+          "target_real_count": 10
+        },
+        "2026-05-22/PM": {
+          "actual_real_count": 5,
+          "coverage_status": "shortage_accepted",
+          "delivered_real_count": 5,
+          "missing_real_count": 5,
+          "ordered_article_ids": [
+            "news_20260522_종목_ea1de774",
+            "news_20260522_종목_ad94cf88",
+            "news_20260522_종목_e74aeda0",
+            "news_20260522_종목_da69f79b",
+            "news_20260522_종목_c07e08ca"
+          ],
+          "ordered_payload_sha256": [
+            "9608491712f0c12cf13b4347fd869e01b59d962e9b0b7de8a27d6f60bd27a87a",
+            "f0ef9c740bf868c360bfdf1cd495f29e1fab253a46f3e829313b70f8e4b30d1c",
+            "4f4134331c2711af91f1427847035c9aa6b39c95acdedc803c95c9882712fb45",
+            "75498fd5f48df8f5d1085b85761bfb3d2021cf3100f555815c553224a2d88b5b",
+            "5a0487048eefc17f5cc504d805d60f260ac7b8d79102e1da6c05b2601663f8ed"
+          ],
+          "selected_safe_count": 5,
+          "serialized_count": 5,
+          "target_real_count": 10
+        }
+      },
+      "bundle_file_sha256": "32343072d27274628ecba3ec8494ecebdaf93f7f95b316e6ff4e07e00f7f6055",
+      "bundle_path": "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/preparation/rn_ab_sealed_to_20260529_candidate_20260919/news.json",
+      "bundle_sha256": "23abe71b82b51d20d8f9423eb450321f97ff8a31bacbe1c48b8535f354ec113c",
+      "delivered_real_count": 186,
+      "event_count": 26,
+      "minimum_real_count": 0,
+      "shortage_event_count": 22,
+      "slot_counts": {
+        "2026-05-06/AM": 10,
+        "2026-05-06/PM": 6,
+        "2026-05-07/AM": 9,
+        "2026-05-07/PM": 7,
+        "2026-05-08/AM": 7,
+        "2026-05-08/PM": 3,
+        "2026-05-11/AM": 7,
+        "2026-05-11/PM": 8,
+        "2026-05-12/AM": 5,
+        "2026-05-12/PM": 3,
+        "2026-05-13/AM": 9,
+        "2026-05-13/PM": 7,
+        "2026-05-14/AM": 10,
+        "2026-05-14/PM": 7,
+        "2026-05-15/AM": 8,
+        "2026-05-15/PM": 5,
+        "2026-05-18/AM": 10,
+        "2026-05-18/PM": 7,
+        "2026-05-19/AM": 6,
+        "2026-05-19/PM": 7,
+        "2026-05-20/AM": 8,
+        "2026-05-20/PM": 7,
+        "2026-05-21/AM": 10,
+        "2026-05-21/PM": 8,
+        "2026-05-22/AM": 7,
+        "2026-05-22/PM": 5
+      },
+      "status": "pass",
+      "target_real_count": 10
+    },
+    "status": "pass",
+    "turn_offset": 90,
+    "visible_news_counts": {
+      "2026-05-06:am": [
+        10
+      ],
+      "2026-05-06:pm": [
+        6
+      ],
+      "2026-05-07:am": [
+        9
+      ],
+      "2026-05-07:pm": [
+        7
+      ],
+      "2026-05-08:am": [
+        7
+      ],
+      "2026-05-08:pm": [
+        3
+      ],
+      "2026-05-11:am": [
+        7
+      ],
+      "2026-05-11:pm": [
+        8
+      ],
+      "2026-05-12:am": [
+        5
+      ],
+      "2026-05-12:pm": [
+        3
+      ],
+      "2026-05-13:am": [
+        9
+      ],
+      "2026-05-13:pm": [
+        7
+      ],
+      "2026-05-14:am": [
+        10
+      ],
+      "2026-05-14:pm": [
+        7
+      ],
+      "2026-05-15:am": [
+        8
+      ],
+      "2026-05-15:pm": [
+        5
+      ],
+      "2026-05-18:am": [
+        10
+      ],
+      "2026-05-18:pm": [
+        7
+      ],
+      "2026-05-19:am": [
+        6
+      ],
+      "2026-05-19:pm": [
+        7
+      ],
+      "2026-05-20:am": [
+        8
+      ],
+      "2026-05-20:pm": [
+        7
+      ],
+      "2026-05-21:am": [
+        10
+      ],
+      "2026-05-21:pm": [
+        8
+      ],
+      "2026-05-22:am": [
+        7
+      ],
+      "2026-05-22:pm": [
+        5
+      ]
+    }
+  },
+  "news_coverage": {
+    "accepted_shortages": {
+      "2026-05-06/PM": {
+        "actual_real_count": 6,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 6,
+        "missing_real_count": 4,
+        "ordered_article_ids": [
+          "news_20260506_종목_7e11b22a",
+          "news_20260506_종목_69590b9d",
+          "news_20260506_종목_52f94c4b",
+          "news_20260506_종목_3152bbc1",
+          "news_20260506_섹터_55004554",
+          "news_20260506_경제_11576bc8"
+        ],
+        "ordered_payload_sha256": [
+          "393b3c2be2c965b03a88f13960a7948775479fb9a8b1262e08fbc9325d66ba93",
+          "91c40bc854f5241773f5168c64d32d7588d0b81d28a0109bce4c7d5cd1ab5ba5",
+          "9bce4179e8a1416a403ee3a9ef6c7b1e7fd8176c63a3aa20dae4f022a5103a68",
+          "04ee64d2134fedd0666cf795fdb996f239ec427a364137d8baddc7cd3b54b683",
+          "222c5575aa425e21524b19617e1562dc7fbe049c98a3cbca0f21e7e7d6ae0361",
+          "514d500b3294d5c0b29fdadf264901331c0d5ce631f40ab82c1912cbd06c3cd3"
+        ],
+        "selected_safe_count": 6,
+        "serialized_count": 6,
+        "target_real_count": 10
+      },
+      "2026-05-07/AM": {
+        "actual_real_count": 9,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 9,
+        "missing_real_count": 1,
+        "ordered_article_ids": [
+          "news_20260506_종목_fa56eb9b",
+          "news_20260506_종목_cc2d13ef",
+          "news_20260506_종목_5a1fb646",
+          "news_20260506_종목_b5883b2f",
+          "news_20260506_종목_e2baf4eb",
+          "news_20260506_섹터_1d32177d",
+          "news_20260506_섹터_dfd78a49",
+          "news_20260506_경제_6a8c5aeb",
+          "news_20260506_경제_4bd727f6"
+        ],
+        "ordered_payload_sha256": [
+          "4a0d6ab1b183ce71ee23d4cb8f2abf3f0f7d326d66f7a56e81b4e3862f8a1e4b",
+          "0fdba669a03013471b35ef7d61786680bb6bd0635589d41d639b6675acf51308",
+          "ec0493ebe63c56d5c17873e8bf6902342c427b695e430aa2918cdd7d25306ffd",
+          "bd1ff27d16e0675c2efb49058e6c6e153ec225b8fbab63cb468e93e0c90bcdb8",
+          "503739612bd600272393be2ba8ba369de295dce2cda137ca0ec34a199c4493af",
+          "c86be848602c20d41c3e89c297028ecf571637b2088967b2a84ab4c11dce4f53",
+          "c88bb386f700d4bf14cff58ca4d21bed6d549884bc353b4d511a43bbe6025552",
+          "a0819820f864d8a90c929d33a306805a55db20cf13c7aead334d627a2b941297",
+          "3d44e24eac110cd3f8954cffd7e06f55cb2065c5d2ed4d2b917c1f57335fd076"
+        ],
+        "selected_safe_count": 9,
+        "serialized_count": 9,
+        "target_real_count": 10
+      },
+      "2026-05-07/PM": {
+        "actual_real_count": 7,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 7,
+        "missing_real_count": 3,
+        "ordered_article_ids": [
+          "news_20260507_종목_6371a168",
+          "news_20260507_종목_df22c9e8",
+          "news_20260507_종목_8436edac",
+          "news_20260507_섹터_c886580d",
+          "news_20260507_섹터_7f62acb2",
+          "news_20260507_섹터_0e1f2372",
+          "news_20260507_경제_d7a2e92c"
+        ],
+        "ordered_payload_sha256": [
+          "43c0a2359d4fe9ccae3e6d03ed6e2acd253faa85456db6092ba1db18038216e6",
+          "ee4135eb4a7fd17d92aed29fec2d0cf8f9b812223cbbb192ab90bbb9cb6102d1",
+          "f4ca0d8c498655dc640c9f58aed6b42d04dc7ab8c3d911755455ace7e002e37b",
+          "b24e56981d8ae743f55f77bb5e6b813b8442e4dffc7ed8de4833e73d9ffd696d",
+          "9dbeb2a94c0d861f219421f73d1cfcbd4f13a4edf2ef1f15eeef8807fe3a8aab",
+          "54b9225c6e9a222d1b6334991a82fb9e915607f4814222285f8e4f2b905386e7",
+          "db6fa2212daa33b8d04558e4571a53b592ce511dca5aeb8dd504669f3b8e21c0"
+        ],
+        "selected_safe_count": 7,
+        "serialized_count": 7,
+        "target_real_count": 10
+      },
+      "2026-05-08/AM": {
+        "actual_real_count": 7,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 7,
+        "missing_real_count": 3,
+        "ordered_article_ids": [
+          "news_20260507_종목_aab7aab9",
+          "news_20260507_종목_13d195c6",
+          "news_20260507_종목_3f6a2dc8",
+          "news_20260507_종목_a5100686",
+          "news_20260507_종목_09a24bbf",
+          "news_20260507_경제_8b63d215",
+          "news_20260507_경제_cebf8139"
+        ],
+        "ordered_payload_sha256": [
+          "30abb0312826e038c8b017d4272ec3acdcc3f5a13474ff352e6b0de792464a94",
+          "e276eea854e3bea12cf2e48320f65796858b35b77f1ed09a91494107bb1c1e08",
+          "cd2fa795f063b1df7564172883078b95502f4885d12283b9dcac7b74ab65cbf7",
+          "0c7b65bc3bbc5afe931a471e2fee40280acda91cd0729219c7019668e5199417",
+          "9f2e5162078ff55236b9d656305bd7557727cd420806d6083315d421d21fe521",
+          "577581ce6684bf7b65af1567c476a8fbb06195318874e24501843ba96cd29b46",
+          "8320a733f2c5ad8b671e3d75b03e7435569381f0aba07a8628b11b01637a83d6"
+        ],
+        "selected_safe_count": 7,
+        "serialized_count": 7,
+        "target_real_count": 10
+      },
+      "2026-05-08/PM": {
+        "actual_real_count": 3,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 3,
+        "missing_real_count": 7,
+        "ordered_article_ids": [
+          "news_20260508_종목_0a24dd9a",
+          "news_20260508_종목_8ea7a7d8",
+          "news_20260508_종목_3587c552"
+        ],
+        "ordered_payload_sha256": [
+          "ef858913ee5c8df744b6f4f447f466ec1753cd6f1bc5da21c7786f9f2180ceb4",
+          "69eb07d73fc3af7beefcea2393dcaaf9f807e594aa1174c8ba68c18aac6f812c",
+          "b49537cda0a8ecf188df2b152b48a7be7c4c73cd4e2b93213d4e30d7dab4c392"
+        ],
+        "selected_safe_count": 3,
+        "serialized_count": 3,
+        "target_real_count": 10
+      },
+      "2026-05-11/AM": {
+        "actual_real_count": 7,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 7,
+        "missing_real_count": 3,
+        "ordered_article_ids": [
+          "news_20260508_종목_14899998",
+          "news_20260508_종목_5cdf4563",
+          "news_20260508_종목_8d675bf6",
+          "news_20260508_종목_bb9a3fb7",
+          "news_20260508_종목_08630e33",
+          "news_20260508_경제_2f1e4f5a",
+          "news_20260508_경제_7c307b64"
+        ],
+        "ordered_payload_sha256": [
+          "9537e9190299787fbf1ae2dc6ac3a532a24620d98c0ffcf89c329caffde5f6f5",
+          "104c93908b36f371dcdb2a2c6c06ced9c13cac8af319f97ef7c0d5a9a7670c8a",
+          "adde9306654976f8c6fec04e11cbe3da890d8db585979bcd3e6d46ceeda8d424",
+          "f6cb0a369dc0a03631d8613fecc166a4830aad3d62b23c6970abf32661d4147e",
+          "0a850ca1ef299758fb9347af4dd7744bec312a2b7882d41147c42f473850326a",
+          "37a928109dd37400ad2d76358982eba9f97de270aa2053c01cf571ce38ba059b",
+          "ccb3ca691371bda352a041d648b0b4aafa44eeec3abf697dfc7c2f2ae61238cc"
+        ],
+        "selected_safe_count": 7,
+        "serialized_count": 7,
+        "target_real_count": 10
+      },
+      "2026-05-11/PM": {
+        "actual_real_count": 8,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 8,
+        "missing_real_count": 2,
+        "ordered_article_ids": [
+          "news_20260511_종목_da75387d",
+          "news_20260511_종목_0adbacb1",
+          "news_20260511_종목_3ab7c4fe",
+          "news_20260511_종목_1f78fe68",
+          "news_20260511_종목_f0e62fd7",
+          "news_20260511_섹터_284c57ad",
+          "news_20260511_경제_1171f56a",
+          "news_20260511_경제_bf467980"
+        ],
+        "ordered_payload_sha256": [
+          "e3b3b4969719ce6d54332411722ef83d9d675f456942f00551aab06f64116db5",
+          "cf8b0a8a271d5b2d7407be4fb3c9f9aeb7495e230ba649db31664d87e629ab9c",
+          "97af542370bf962ff0fe29c71f1fb83ff0cff211ad63c522ed63faf0ed925da5",
+          "b14d4ba9529bbe1778e77740a9c08dbe73b51ad8ec449926d1c59c9bb2fb847c",
+          "7b41ec7c5d528989158a18149c8f7683dbf78645d61e82eb9771616d3adf47d8",
+          "b0c6a9392bc174beb4f1d0d2f4c89c6097a1f89bb4a5f69e78444d11ffdfef50",
+          "8a9dd7855e270ed0f476f99fb3b62d7fd89740747730a2fc62f8a4421de888a8",
+          "f59471f194aba52a72bee0dc7f5a1cf0e50249f39fbef735680eb548b9eef931"
+        ],
+        "selected_safe_count": 8,
+        "serialized_count": 8,
+        "target_real_count": 10
+      },
+      "2026-05-12/AM": {
+        "actual_real_count": 5,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 5,
+        "missing_real_count": 5,
+        "ordered_article_ids": [
+          "news_20260511_종목_215bdad1",
+          "news_20260511_종목_a573d80b",
+          "news_20260511_종목_34b0bdbc",
+          "news_20260511_종목_6f828486",
+          "news_20260511_종목_7cfd212d"
+        ],
+        "ordered_payload_sha256": [
+          "3d09da76c25e8dba20d3ac45c562f7ee2f6bcd38a7fd996f0c174adf82d512b6",
+          "0f58b73ff5e83544644c6065a29a076929e5d011fb5ac2209dda7712fd6949c8",
+          "e0699cc68763ded63e2d47513a8bb28d42b16e6eeb6f6b3ce8cd1b80fd91cfdd",
+          "a0768702e17253dd49b6fe3fe5ec1f89ef8d8008886d12ce8d14443208ea0c7f",
+          "0da2b1bd2fec7caa079ccd494e5a44e1bd23bfeff2cec1619b1b17dbb3d3c812"
+        ],
+        "selected_safe_count": 5,
+        "serialized_count": 5,
+        "target_real_count": 10
+      },
+      "2026-05-12/PM": {
+        "actual_real_count": 3,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 3,
+        "missing_real_count": 7,
+        "ordered_article_ids": [
+          "news_20260512_종목_761be6ad",
+          "news_20260512_종목_9e4d9437",
+          "news_20260512_종목_5c7debda"
+        ],
+        "ordered_payload_sha256": [
+          "9d2af3850bb4cbc1932e255f6c2da79adc22f2ac11e236055352e2340c47d247",
+          "f04291fc6be80be0af96144341014e638249833b41bc751bc6f3650ddeee0f7a",
+          "46fecf80c2c583a0dbe9c03f8255b228c93b54153cddb2ca1ecf34d2728ea62b"
+        ],
+        "selected_safe_count": 3,
+        "serialized_count": 3,
+        "target_real_count": 10
+      },
+      "2026-05-13/AM": {
+        "actual_real_count": 9,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 9,
+        "missing_real_count": 1,
+        "ordered_article_ids": [
+          "news_20260512_종목_3833046f",
+          "news_20260512_종목_28fa1090",
+          "news_20260512_종목_79185293",
+          "news_20260512_종목_a71e847b",
+          "news_20260512_종목_031f34c3",
+          "news_20260512_섹터_4bd04a33",
+          "news_20260512_섹터_fbfb45dc",
+          "news_20260512_경제_30e75ac3",
+          "news_20260512_경제_d0c6a147"
+        ],
+        "ordered_payload_sha256": [
+          "b7e21cd9836c1e1ac6d68a6e9d0f9b06039e7e5e423adc797f32f9aa4eb07dc6",
+          "fa779d88c092dcc2d6797425b317b0378d4df31e4df472038fa9e1be25d2cd2f",
+          "ffeedeee384d64180dfc6a2b8e88cacd4b410d3e6ad9dbcb48c50d4167c03e47",
+          "b105932bf9621439fe01868e468a02c8e316b96ffb2bf78e257df251160a9ad4",
+          "b446c8232c9cd4da0b0be4f858f85c89833b3c788f32f0f81c2929265f369b90",
+          "2b96ba1db35dbb83e9b7e3953d35b257e45eb4187a18728aad13060da9e3f8a6",
+          "07ad7bbd1c70eb870b65e42827d64d40591b63c8b716b2dd6bb504637ba312f1",
+          "39480967a16b1712739153b829e97c409f8631ff935ffd49d35ab0b29d121381",
+          "84379c959625e6dc33bfdb47c0df6e85e2eb91e6517215ba63ba3afacc53051b"
+        ],
+        "selected_safe_count": 9,
+        "serialized_count": 9,
+        "target_real_count": 10
+      },
+      "2026-05-13/PM": {
+        "actual_real_count": 7,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 7,
+        "missing_real_count": 3,
+        "ordered_article_ids": [
+          "news_20260513_종목_f122a3de",
+          "news_20260513_종목_98c2f131",
+          "news_20260513_종목_3a7754cf",
+          "news_20260513_종목_49436e07",
+          "news_20260513_종목_b2cd5ba5",
+          "news_20260513_섹터_c987b2ed",
+          "news_20260513_경제_a7baccae"
+        ],
+        "ordered_payload_sha256": [
+          "0e464d7444d0f906402f8c22c4d53c51a97259657aaa539bec7c35646609db29",
+          "2b792342c6b370fc302b2262fc11bc7354ad1babf1472bdd9cca99d653185d1a",
+          "04f5f2af0d747e92088b75c5fd3a0935dc79cb77dcf2a71273a4d250a208fadf",
+          "49c8cc8c37e6e2d08f0b48fb7edb7e44917b540284a83b1144a30a7fc52ed50f",
+          "490dfb01d46836bb42fbd680e2faebcd604fd063a1545c66287928c497cd0652",
+          "2bab82a170be484085b057def2050870b0414d42255abbb6df41f4de0a86ea88",
+          "0961935b1d4b4ff424e56a9a862dcd47207bb8ce96475cdc701315a24bd38369"
+        ],
+        "selected_safe_count": 7,
+        "serialized_count": 7,
+        "target_real_count": 10
+      },
+      "2026-05-14/PM": {
+        "actual_real_count": 7,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 7,
+        "missing_real_count": 3,
+        "ordered_article_ids": [
+          "news_20260514_종목_e6504244",
+          "news_20260514_종목_86471c3c",
+          "news_20260514_종목_59a5bc0a",
+          "news_20260514_종목_21703e65",
+          "news_20260514_종목_25baa352",
+          "news_20260514_경제_9828f45e",
+          "news_20260514_경제_89339d96"
+        ],
+        "ordered_payload_sha256": [
+          "bb3b6f2588bd02dc1be0599e04a3b8ef62bb093567f7117bc09a378d5c55f72a",
+          "4f97342a57754b6e45ffc27fa7be258ae6976dec717b3e469483a7d7c19828f7",
+          "b281e35c667693bf9924129b5b2708f176c9786fbf637d523215f2222dadfd82",
+          "07757e2ec338b515c172c11c5bbe3a318b8c55071265b9e0dfd98ad87cde055a",
+          "1c67328ef15fda2be8eb960ecc80896b05a1b515e786d17cc843e50fd5f2bace",
+          "a04014a7b4b6bac60fd755c2a2812099d97d5e755788ef8afecb92f5603ccf25",
+          "6168eb0bbb23c8f8cad71b14cc07f6d8f81bdbdc14061ebf397a7834d405cd6a"
+        ],
+        "selected_safe_count": 7,
+        "serialized_count": 7,
+        "target_real_count": 10
+      },
+      "2026-05-15/AM": {
+        "actual_real_count": 8,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 8,
+        "missing_real_count": 2,
+        "ordered_article_ids": [
+          "news_20260514_종목_a4e52346",
+          "news_20260514_종목_da79f1e7",
+          "news_20260514_종목_4db4942d",
+          "news_20260514_종목_71796b09",
+          "news_20260514_종목_3999dee3",
+          "news_20260514_섹터_6d8e5b06",
+          "news_20260514_경제_9c917f6e",
+          "news_20260514_경제_1e5dc560"
+        ],
+        "ordered_payload_sha256": [
+          "7e08b402ed989ddc0357e75ad874f12d433003e54f5ff5931f7af4c88dba67e5",
+          "794258c78e7400b738eb3d59d9c2d38dd44597564d02b030ea64a9bc3ac30cab",
+          "436f4d7c72314cd6200c32207d676648b74c94f1f926a87cbe83378008878693",
+          "2b1b788efbea357628459d95329d7472a198b34b6d942535ca04623c6c564532",
+          "6cb77a1b437fbff11bafa5101d8a2298a646087bbd259d15cc2fdb122c90f071",
+          "679fea6f3dbfc33aeffd3aed5b8a783a9b70dca0dd2ea3204cc918f49000acc0",
+          "4af1f656a99422456b21958c1a69d9c6804cb96eb07970142d43cf01bc1aca27",
+          "734847e887da8109cf9c4f20ee8eadac22e377b759f80066a5f8c9d54e0f2bf4"
+        ],
+        "selected_safe_count": 8,
+        "serialized_count": 8,
+        "target_real_count": 10
+      },
+      "2026-05-15/PM": {
+        "actual_real_count": 5,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 5,
+        "missing_real_count": 5,
+        "ordered_article_ids": [
+          "news_20260515_종목_9d7e3ce7",
+          "news_20260515_종목_9b6e0dea",
+          "news_20260515_종목_4a9e65f4",
+          "news_20260515_경제_9519abc0",
+          "news_20260515_경제_3048b9c1"
+        ],
+        "ordered_payload_sha256": [
+          "c9548b285df046a77423ba510b8ee9c463b234a76a5867eedbcc20b69373f9be",
+          "5faed8be7721e417903783125b33ff497fc4ea4be867541c3f20cde90130dadc",
+          "849845f31098ef26f8fb6669a3b0616599b51fa9fb0f3312901d732347a76c21",
+          "b3296a97ad3c7731c061d617723f95212755320e4a5b2b05ddc22fe0a8721ab7",
+          "28f6d8fc479cea4549356ce82a8a7661227d6823dd6263cf30de035f1af73959"
+        ],
+        "selected_safe_count": 5,
+        "serialized_count": 5,
+        "target_real_count": 10
+      },
+      "2026-05-18/PM": {
+        "actual_real_count": 7,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 7,
+        "missing_real_count": 3,
+        "ordered_article_ids": [
+          "news_20260518_종목_2d85f0c0",
+          "news_20260518_종목_c252e884",
+          "news_20260518_종목_8bea51f6",
+          "news_20260518_종목_828890cf",
+          "news_20260518_종목_b1fd4c0e",
+          "news_20260518_경제_424025f6",
+          "news_20260518_경제_d6fca5cb"
+        ],
+        "ordered_payload_sha256": [
+          "f342b9edd3a98bf5379a4fc0d9fc88f1ee84eac5275bcfdf246a43b3f6de48d5",
+          "25ba6d3f83d9a6efa797b25e38034e1fa84bd02a938ae492105351321d382191",
+          "5355b245cfb739bc210f3cce3c7dbdd53c6b18fcaa4ce31dd814930dd40e35fb",
+          "d3f5f2ce7975f0c0b52318e3c1c1e91aae452f627b87a9d313f5bb5e3ad4316d",
+          "24a9002839a44ad128ad12087485fdf633c1c297fb9d7893ea2565f105e9e83e",
+          "8b803cf96bda28cbfb65df7d650d1bf04381c413af04879908dd626558f9d595",
+          "2db7a9de08eb05b14d1824d29d8d3b6b245839f29976c0db2754438bca09bb87"
+        ],
+        "selected_safe_count": 7,
+        "serialized_count": 7,
+        "target_real_count": 10
+      },
+      "2026-05-19/AM": {
+        "actual_real_count": 6,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 6,
+        "missing_real_count": 4,
+        "ordered_article_ids": [
+          "news_20260518_종목_72e9b0b0",
+          "news_20260518_종목_d31a2e32",
+          "news_20260518_종목_b1dbb008",
+          "news_20260518_종목_48889b51",
+          "news_20260518_종목_d272bbeb",
+          "news_20260518_섹터_edcc0d93"
+        ],
+        "ordered_payload_sha256": [
+          "18b31af31212d3ed03a48058b85a618d4a13f0e026970ccb6e53caee9ff35a56",
+          "3174d6a6a79bff97018132b2e8807f4d5c6fc46a1dd600d2e2e04b5e5f382113",
+          "84d7c0865021cdc28b08ce97b599d78585eb14e8bd2db17e6ec6838f97be1415",
+          "572c2f8b69a997a42d9de2cf8271488f7086c15f10a89b34bcb68e46a76e9b01",
+          "63c34a6706befb22a2a4ee5d05b0bb979002b4e4755cdcb4fef40041675a2d5b",
+          "67daa37e9bcd4b152693609f4c0ce0ef3a1be6fb1aabc1edfd9f084e30b56b48"
+        ],
+        "selected_safe_count": 6,
+        "serialized_count": 6,
+        "target_real_count": 10
+      },
+      "2026-05-19/PM": {
+        "actual_real_count": 7,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 7,
+        "missing_real_count": 3,
+        "ordered_article_ids": [
+          "news_20260519_종목_6fbe01d2",
+          "news_20260519_종목_e303740a",
+          "news_20260519_종목_0a400d1c",
+          "news_20260519_종목_651eeab3",
+          "news_20260519_종목_184ea212",
+          "news_20260519_섹터_f15bfcb7",
+          "news_20260519_경제_be2b69ba"
+        ],
+        "ordered_payload_sha256": [
+          "da10929e7d10539a1db3aedc21551c7c5da0aa21689a5e26fea2989b46f0dd9c",
+          "8887e41de067af76e7de5b2aa80a76b6b377091f982c4a2ded424636d12cd017",
+          "5a6784193bfd30d0ca943a430eb2c3acdb7ae18f26b6364dc5e3adefa8b3d46d",
+          "d58d77c6841d236448276de517782f852bf8d771bbcabf33b5ab4b5ad214c3f9",
+          "e02a319bcc4ab48fe4b96ab1daa0941439c06a078635c3288ff3b5b60b2e6f1c",
+          "7de8005ac6a752436426ad7ba0202b77b7ad3cf1995b20520914f47749f2bda9",
+          "6d47767555ec28ad1288dd6a619e2a7a40150ccd66084abe05b98aee0138d8d3"
+        ],
+        "selected_safe_count": 7,
+        "serialized_count": 7,
+        "target_real_count": 10
+      },
+      "2026-05-20/AM": {
+        "actual_real_count": 8,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 8,
+        "missing_real_count": 2,
+        "ordered_article_ids": [
+          "news_20260519_종목_ea52e40e",
+          "news_20260519_종목_455842e1",
+          "news_20260519_종목_c7b1c1f9",
+          "news_20260519_종목_42f169f7",
+          "news_20260519_종목_c3b27ef6",
+          "news_20260519_섹터_ae400a69",
+          "news_20260519_경제_1a19ec86",
+          "news_20260519_경제_8b769124"
+        ],
+        "ordered_payload_sha256": [
+          "0fcb229da3cc413cc9f52dc3143e4c59650c9e64af64e99511b961ef520bdac9",
+          "996c44a984e7ac893a855e02730fa79da3e334a1668f91c71f959263760ef284",
+          "214cb269d92bad86f820327a92ffbb15a710d268e404042f1f8174bf10bb0c60",
+          "3c863a0cbb6d1fe354dad6c075dd38a4a1054839b0d67df6034b38f64cbfe494",
+          "50940c797367b4b9058ec0a271bc7339fe1e7840b4d44bda2b1cd62559b552e3",
+          "9be7064982f4be743a77dd3b9f1c1ff96dbaf0164748d0aa5b8d7a2688a37e9e",
+          "9ae6a10f67a25064d49e676a89c10f28c54bc8caa0ae2d894918e7c328cd06bf",
+          "fbe65f4d281aa97762f834ca4dab89dbd395f7a870d49838aaf16379fa209959"
+        ],
+        "selected_safe_count": 8,
+        "serialized_count": 8,
+        "target_real_count": 10
+      },
+      "2026-05-20/PM": {
+        "actual_real_count": 7,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 7,
+        "missing_real_count": 3,
+        "ordered_article_ids": [
+          "news_20260520_종목_0f11ea8c",
+          "news_20260520_종목_20590ea4",
+          "news_20260520_종목_c04dfc46",
+          "news_20260520_종목_04f87d3a",
+          "news_20260520_종목_2faee52a",
+          "news_20260520_섹터_bc1a77ae",
+          "news_20260520_경제_b38bf2f0"
+        ],
+        "ordered_payload_sha256": [
+          "3ba0205e33b1a4e82c20969bcdc4e4b02a2f652384d7f63720f07e968ffe6e6b",
+          "31d13bbbef9cbbd580d7c338105274810a4c320027cb5c856de25aa85ec7a026",
+          "1c1dcbae1d6c67a03e4866167d7b84380bd7c4973d75293bdedc210ba349d032",
+          "2a4fb87889f2456d3c52f430ea371ef64f0c296dac403e441367435235645a22",
+          "1da2822e31a38842cd1085210b8d842574ad8e31e69704eb1b6d98904e2c722d",
+          "f71a57e07aefacb860630b6c1af77d3db18f1bd2d4d43938fb67472224feae5c",
+          "afb42acd286b9705645aaa2f960c2abca95e492523e1ada520b7e71042e63516"
+        ],
+        "selected_safe_count": 7,
+        "serialized_count": 7,
+        "target_real_count": 10
+      },
+      "2026-05-21/PM": {
+        "actual_real_count": 8,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 8,
+        "missing_real_count": 2,
+        "ordered_article_ids": [
+          "news_20260521_종목_3fe1e648",
+          "news_20260521_종목_9e24c60d",
+          "news_20260521_종목_a014a9bb",
+          "news_20260521_종목_638447f4",
+          "news_20260521_종목_b792d299",
+          "news_20260521_섹터_11b5b17c",
+          "news_20260521_경제_1f0bc323",
+          "news_20260521_경제_be10c829"
+        ],
+        "ordered_payload_sha256": [
+          "54e8af1ea5ee75bf3b1b720edd988fc4e8ed635aa3a34233e3e16e4b758912b7",
+          "a1c6b93d00f8c87fd356b7718d9d8436ebe8055246cd5e371b9e6a701a95d0bd",
+          "beb65b19f731fa6cab4d19c84e28ba86dd6b02574586b0471d1aa6384b8e0a98",
+          "a574121f5e632bcc86fa6a39735fcbf10839d18e4593704ada2c2c289e691613",
+          "a98f6c03d6dc81e15f7f8ed3eef4361c6e3e4ffff019e856547b18f30738f0cd",
+          "550a3a487a21f082a9b458bf8917bd05df12eaaec1f86f744457936ea5e910e1",
+          "736b5d203fcebe047e3bb6ae38e005d8977d03354223064ccfecfd4f509b8385",
+          "82870baa6d22cd15ba672958013217600a88f3e10f8d33ab929a44feeeacd6b4"
+        ],
+        "selected_safe_count": 8,
+        "serialized_count": 8,
+        "target_real_count": 10
+      },
+      "2026-05-22/AM": {
+        "actual_real_count": 7,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 7,
+        "missing_real_count": 3,
+        "ordered_article_ids": [
+          "news_20260521_종목_a2b27766",
+          "news_20260521_종목_a36028e8",
+          "news_20260521_종목_e94f8e30",
+          "news_20260521_종목_0be2a355",
+          "news_20260521_종목_52988d1e",
+          "news_20260521_경제_88a1b18d",
+          "news_20260521_경제_3e2f8584"
+        ],
+        "ordered_payload_sha256": [
+          "5e8269312b09d604a7c4f3347f3db93959c8f59929e705833e5ab719d994aef6",
+          "eb95993865d53ec94f94d08014c44544840a827c5dd0ee4e86c9862ffdba74ca",
+          "3d3bd6eed6b570f17b4253baba1a5058cfceb743c45dba7682dd618f59947a78",
+          "00240ef505eabd1bc8c00f440d5e6712c4993c898a78532a1d5a58614b0c917f",
+          "6141c516147e1b3ecbfc6721aa6d05d08cbad9ac11e312e4fc047becfb314855",
+          "d3edd32583e9e27a1d0d389a1ecb72010d3cb398ace6698564143fa14385e53e",
+          "3381ef40d7605d86a90631d590f4e12d96e6dc5ff876a115bfe19a8ca72daf09"
+        ],
+        "selected_safe_count": 7,
+        "serialized_count": 7,
+        "target_real_count": 10
+      },
+      "2026-05-22/PM": {
+        "actual_real_count": 5,
+        "coverage_status": "shortage_accepted",
+        "delivered_real_count": 5,
+        "missing_real_count": 5,
+        "ordered_article_ids": [
+          "news_20260522_종목_ea1de774",
+          "news_20260522_종목_ad94cf88",
+          "news_20260522_종목_e74aeda0",
+          "news_20260522_종목_da69f79b",
+          "news_20260522_종목_c07e08ca"
+        ],
+        "ordered_payload_sha256": [
+          "9608491712f0c12cf13b4347fd869e01b59d962e9b0b7de8a27d6f60bd27a87a",
+          "f0ef9c740bf868c360bfdf1cd495f29e1fab253a46f3e829313b70f8e4b30d1c",
+          "4f4134331c2711af91f1427847035c9aa6b39c95acdedc803c95c9882712fb45",
+          "75498fd5f48df8f5d1085b85761bfb3d2021cf3100f555815c553224a2d88b5b",
+          "5a0487048eefc17f5cc504d805d60f260ac7b8d79102e1da6c05b2601663f8ed"
+        ],
+        "selected_safe_count": 5,
+        "serialized_count": 5,
+        "target_real_count": 10
+      }
+    },
+    "bundle_file_sha256": "32343072d27274628ecba3ec8494ecebdaf93f7f95b316e6ff4e07e00f7f6055",
+    "bundle_path": "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/preparation/rn_ab_sealed_to_20260529_candidate_20260919/news.json",
+    "bundle_sha256": "23abe71b82b51d20d8f9423eb450321f97ff8a31bacbe1c48b8535f354ec113c",
+    "delivered_real_count": 186,
+    "event_count": 26,
+    "minimum_real_count": 0,
+    "shortage_event_count": 22,
+    "slot_counts": {
+      "2026-05-06/AM": 10,
+      "2026-05-06/PM": 6,
+      "2026-05-07/AM": 9,
+      "2026-05-07/PM": 7,
+      "2026-05-08/AM": 7,
+      "2026-05-08/PM": 3,
+      "2026-05-11/AM": 7,
+      "2026-05-11/PM": 8,
+      "2026-05-12/AM": 5,
+      "2026-05-12/PM": 3,
+      "2026-05-13/AM": 9,
+      "2026-05-13/PM": 7,
+      "2026-05-14/AM": 10,
+      "2026-05-14/PM": 7,
+      "2026-05-15/AM": 8,
+      "2026-05-15/PM": 5,
+      "2026-05-18/AM": 10,
+      "2026-05-18/PM": 7,
+      "2026-05-19/AM": 6,
+      "2026-05-19/PM": 7,
+      "2026-05-20/AM": 8,
+      "2026-05-20/PM": 7,
+      "2026-05-21/AM": 10,
+      "2026-05-21/PM": 8,
+      "2026-05-22/AM": 7,
+      "2026-05-22/PM": 5
+    },
+    "status": "pass",
+    "target_real_count": 10
+  },
+  "response_audit": null,
+  "run_dir": "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_COMM_ON_CONT_ON_TO_20260522_20260921",
+  "run_signature_sha256": "b36b42a4f52f505f5e47e6e59592fe2fd5d40af8331f8806d0b1685480e73dc4",
+  "status": "segment_valid_not_publication_ready"
+}

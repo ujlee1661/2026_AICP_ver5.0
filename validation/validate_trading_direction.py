@@ -24,7 +24,10 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import Flowable, PageBreak, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
-from twinmarket_kr.run_integrity import require_publication_ready_run
+from twinmarket_kr.run_integrity import (
+    require_publication_ready_run,
+    validate_canonical_run,
+)
 
 
 VALIDATION_DIR = PROJECT_ROOT / "validation"
@@ -58,6 +61,15 @@ def parse_args() -> argparse.Namespace:
         required=True,
         help="Explicit completed simulation run directory.",
     )
+    parser.add_argument(
+        "--parent-run-dir",
+        type=Path,
+        help=(
+            "Optional immediately preceding canonical segment. Its fills and "
+            "calendar are combined with --run-dir after both segments pass "
+            "validation."
+        ),
+    )
     parser.add_argument("--actual-value", type=Path, default=VALIDATION_DIR / "data_trading_value.csv")
     parser.add_argument("--actual-volume", type=Path, default=VALIDATION_DIR / "data_trading_volume.csv")
     parser.add_argument(
@@ -89,6 +101,15 @@ def parse_args() -> argparse.Namespace:
         help=(
             "Exclude the first N approved simulation trading days after exact "
             "coverage validation. The Samsung baseline uses 3."
+        ),
+    )
+    parser.add_argument(
+        "--allow-segment",
+        action="store_true",
+        help=(
+            "Allow a canonically valid segment_complete continuation. "
+            "The resulting report is a segment validation report and is "
+            "not publication-ready."
         ),
     )
     return parser.parse_args()
@@ -517,6 +538,67 @@ def load_run_metadata(run_dir: Path) -> dict[str, Any]:
         return {}
     with metadata_path.open(encoding="utf-8") as f:
         return json.load(f)
+
+
+def combine_simulation_segments(
+    parent: tuple[str, dict[str, dict[str, float]], dict[str, Any]],
+    continuation: tuple[str, dict[str, dict[str, float]], dict[str, Any]],
+) -> tuple[str, dict[str, dict[str, float]], dict[str, Any]]:
+    parent_id, parent_daily, parent_audit = parent
+    continuation_id, continuation_daily, continuation_audit = continuation
+    overlapping_dates = set(parent_daily) & set(continuation_daily)
+    if overlapping_dates:
+        raise ValueError(
+            "parent and continuation simulation dates overlap: "
+            f"{sorted(overlapping_dates)}"
+        )
+    parent_fill_ids = set(parent_audit["fill_ids"])
+    continuation_fill_ids = set(continuation_audit["fill_ids"])
+    duplicate_fill_ids = parent_fill_ids & continuation_fill_ids
+    if duplicate_fill_ids:
+        raise ValueError(
+            "parent and continuation reuse fill IDs: "
+            f"{sorted(duplicate_fill_ids)[:5]}"
+        )
+    parent_keys = {
+        (row["agent_id"], row["date"], row["subturn"])
+        for row in parent_audit["agent_event_keys"]
+    }
+    continuation_keys = {
+        (row["agent_id"], row["date"], row["subturn"])
+        for row in continuation_audit["agent_event_keys"]
+    }
+    duplicate_keys = parent_keys & continuation_keys
+    if duplicate_keys:
+        raise ValueError(
+            "parent and continuation agent-events overlap: "
+            f"{sorted(duplicate_keys)[:5]}"
+        )
+    combined_daily = {**parent_daily, **continuation_daily}
+    previous_close: float | None = None
+    for date in sorted(combined_daily):
+        close = float(combined_daily[date]["closing_price"])
+        combined_daily[date]["market_return"] = (
+            (close - previous_close) / previous_close
+            if previous_close not in (None, 0) and close > 0
+            else 0.0
+        )
+        if close > 0:
+            previous_close = close
+    combined_keys = sorted(parent_keys | continuation_keys)
+    return (
+        f"{parent_id}+{continuation_id}",
+        combined_daily,
+        {
+            "fill_count": int(parent_audit["fill_count"])
+            + int(continuation_audit["fill_count"]),
+            "fill_ids": sorted(parent_fill_ids | continuation_fill_ids),
+            "agent_event_keys": [
+                {"agent_id": agent_id, "date": date, "subturn": subturn}
+                for agent_id, date, subturn in combined_keys
+            ],
+        },
+    )
 
 
 def metric_bundle(sim_values: list[float], actual_values: list[float]) -> dict[str, Any]:
@@ -1151,7 +1233,27 @@ def main() -> None:
     try:
         if args.skip_initial_days < 0:
             raise ValueError("--skip-initial-days must be non-negative")
-        require_publication_ready_run(args.run_dir)
+        allow_segment = getattr(args, "allow_segment", False)
+        parent_run_dir = getattr(args, "parent_run_dir", None)
+        if allow_segment:
+            validate_canonical_run(
+                args.run_dir,
+                publication_ready=False,
+                verify_logs=True,
+            )
+            if parent_run_dir is not None:
+                validate_canonical_run(
+                    parent_run_dir,
+                    publication_ready=False,
+                    verify_logs=True,
+                )
+        else:
+            if parent_run_dir is not None:
+                raise ValueError(
+                    "--parent-run-dir requires --allow-segment because a "
+                    "publication-ready run must already be complete"
+                )
+            require_publication_ready_run(args.run_dir)
         actual_value = load_actual(args.actual_value)
         actual_volume = load_actual(args.actual_volume)
         run_id, simulation, fill_audit = load_simulation(
@@ -1159,14 +1261,35 @@ def main() -> None:
             args.stock_code,
         )
         run_metadata = load_run_metadata(args.run_dir)
+        parent_metadata: dict[str, Any] | None = None
+        if parent_run_dir is not None:
+            parent_metadata = load_run_metadata(parent_run_dir)
+            parent_simulation = load_simulation(parent_run_dir, args.stock_code)
+            run_id, simulation, fill_audit = combine_simulation_segments(
+                parent_simulation,
+                (run_id, simulation, fill_audit),
+            )
+            if (
+                parent_metadata.get("agent_ids")
+                and run_metadata.get("agent_ids")
+                and parent_metadata["agent_ids"] != run_metadata["agent_ids"]
+            ):
+                raise ValueError("parent and continuation cohorts differ")
 
         output_dir = require_external_output_dir(args.output_dir, args.run_dir)
+        if parent_run_dir is not None:
+            require_external_output_dir(output_dir, parent_run_dir)
         output_dir.mkdir(parents=True, exist_ok=True)
 
         approved_dates = [
             parse_date(date)
             for date in (
-                run_metadata.get("trading_dates")
+                (
+                    list(parent_metadata.get("trading_dates") or [])
+                    + list(run_metadata.get("trading_dates") or [])
+                    if parent_metadata is not None
+                    else run_metadata.get("trading_dates")
+                )
                 or sorted(simulation)
             )
         ]
@@ -1292,6 +1415,11 @@ def main() -> None:
         summary = {
             "run_id": run_id,
             "run_dir": str(args.run_dir.resolve()),
+            "parent_run_dir": (
+                str(parent_run_dir.resolve())
+                if parent_run_dir is not None
+                else None
+            ),
             "actual_value": str(args.actual_value.resolve()),
             "actual_volume": str(args.actual_volume.resolve()),
             "generated_at": datetime.now().isoformat(timespec="seconds"),

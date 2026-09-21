@@ -1,0 +1,11 @@
+﻿date,llm_net,llm_direction,market_return,Individuals,Individuals_direction,Subtotal-Institutions,Subtotal-Institutions_direction,Total of foreign,Total of foreign_direction,Other corporations,Other corporations_direction,llm_matches_individuals
+2026-05-11,-20660.0,net_sell,0.0633147113594041,6163844.0,net_buy,1599184.0,net_buy,-7997922.0,net_sell,234894.0,net_buy,0
+2026-05-12,18276.0,net_buy,-0.02276707530647986,7805001.0,net_buy,-78144.0,net_sell,-7824233.0,net_sell,97376.0,net_buy,1
+2026-05-13,-4966.0,net_sell,0.017921146953405017,3734208.0,net_buy,1642009.0,net_buy,-5675844.0,net_sell,299627.0,net_buy,0
+2026-05-14,-20447.0,net_sell,0.04225352112676056,-1040591.0,net_sell,260989.0,net_buy,757349.0,net_buy,22253.0,net_buy,1
+2026-05-15,28466.0,net_buy,-0.08614864864864864,10257346.0,net_buy,-1529944.0,net_sell,-8855741.0,net_sell,128339.0,net_buy,1
+2026-05-18,-12528.0,net_sell,0.038817005545286505,1689597.0,net_buy,2803397.0,net_buy,-4486093.0,net_sell,-6901.0,net_sell,0
+2026-05-19,5334.0,net_buy,-0.019572953736654804,7818601.0,net_buy,1418906.0,net_buy,-9263047.0,net_sell,25540.0,net_buy,1
+2026-05-20,-17504.0,net_sell,0.0018148820326678765,2765915.0,net_buy,2756787.0,net_buy,-5733354.0,net_sell,210652.0,net_buy,0
+2026-05-21,-5381.0,net_sell,0.08514492753623189,-5931378.0,net_sell,2608486.0,net_buy,3672423.0,net_buy,-349531.0,net_sell,1
+2026-05-22,6911.0,net_buy,-0.02337228714524207,3602972.0,net_buy,-307631.0,net_sell,-3419695.0,net_sell,124354.0,net_buy,1

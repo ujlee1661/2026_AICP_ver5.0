@@ -76,6 +76,47 @@ class DirectionValidatorTests(unittest.TestCase):
             {"buy": 0, "sell": 1, "flat": 0},
         )
 
+    def test_parent_and_continuation_are_combined_without_boundary_gap(self) -> None:
+        parent = (
+            "parent",
+            {"2026-05-04": {"closing_price": 100.0, "market_return": 0.0}},
+            {
+                "fill_count": 1,
+                "fill_ids": ["fill-1"],
+                "agent_event_keys": [
+                    {"agent_id": "A001", "date": "2026-05-04", "subturn": "pm"}
+                ],
+            },
+        )
+        continuation = (
+            "continuation",
+            {"2026-05-06": {"closing_price": 110.0, "market_return": 0.0}},
+            {
+                "fill_count": 1,
+                "fill_ids": ["fill-2"],
+                "agent_event_keys": [
+                    {"agent_id": "A001", "date": "2026-05-06", "subturn": "am"}
+                ],
+            },
+        )
+        run_id, daily, audit = validator.combine_simulation_segments(
+            parent,
+            continuation,
+        )
+        self.assertEqual(run_id, "parent+continuation")
+        self.assertAlmostEqual(daily["2026-05-06"]["market_return"], 0.1)
+        self.assertEqual(audit["fill_count"], 2)
+        self.assertEqual(len(audit["agent_event_keys"]), 2)
+
+    def test_parent_and_continuation_reject_overlapping_dates(self) -> None:
+        segment = (
+            "segment",
+            {"2026-05-04": {"closing_price": 100.0, "market_return": 0.0}},
+            {"fill_count": 0, "fill_ids": [], "agent_event_keys": []},
+        )
+        with self.assertRaisesRegex(ValueError, "dates overlap"):
+            validator.combine_simulation_segments(segment, segment)
+
 
 if __name__ == "__main__":
     unittest.main()
