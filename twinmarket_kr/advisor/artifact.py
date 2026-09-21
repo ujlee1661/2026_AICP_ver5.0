@@ -16,7 +16,7 @@ ADVISOR_BODY_MAX_CHARS = 500
 ADVISOR_ARTIFACT_TYPE = "integrated_advisor_messages_v1"
 ADVISOR_MODEL = "qwen/qwen3.5-flash-02-23"
 ADVISOR_PROVIDER = "alibaba"
-ADVISOR_REASONING_POLICY = {"effort": "high", "exclude": False}
+ADVISOR_REASONING_POLICY = {"enabled": True, "exclude": False}
 ADVISOR_FORBIDDEN_BODY_PHRASES = (
     "매수하세요",
     "매도하세요",

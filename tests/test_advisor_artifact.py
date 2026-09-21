@@ -17,6 +17,11 @@ from twinmarket_kr.advisor.artifact import (
     canonical_sha256,
     deterministic_advisor_agents,
 )
+from twinmarket_kr.advisor.generation import (
+    ADVISOR_VALIDATION_ATTEMPTS,
+    generate_advisor_output,
+    parse_advisor_response,
+)
 from twinmarket_kr.agents.memory_agent import MemoryAgent
 from twinmarket_kr.db.connection import init_sim_db
 
@@ -105,6 +110,78 @@ class AdvisorArtifactTests(unittest.TestCase):
             note = memory.get_advisor_note(agent_id, current_turn=91)
             self.assertIn("담당 투자 어드바이저", note or "")
             self.assertIsNone(memory.get_advisor_note("A999", current_turn=91))
+
+
+class _AdvisorSequenceClient:
+    def __init__(self, responses: list[object]) -> None:
+        self.responses = [json.dumps(value, ensure_ascii=False) for value in responses]
+        self.calls: list[dict] = []
+        self.acceptances: list[dict] = []
+
+    async def chat_advisor_reasoning_on(self, messages, **kwargs):
+        self.calls.append({"messages": messages, **kwargs})
+        return {
+            "choices": [
+                {
+                    "finish_reason": "stop",
+                    "message": {
+                        "content": self.responses.pop(0),
+                        "reasoning": "검토 완료",
+                    },
+                }
+            ],
+            "usage": {"completion_tokens_details": {"reasoning_tokens": 1}},
+        }
+
+    def record_advisor_acceptance(self, **kwargs) -> None:
+        self.acceptances.append(kwargs)
+
+
+class AdvisorGenerationRetryTests(unittest.IsolatedAsyncioTestCase):
+    @staticmethod
+    def _valid_output() -> dict:
+        return {
+            "persona_basis": ["장기 투자 성향"],
+            "observed_behavior": ["최근 거래 규모가 커짐"],
+            "persona_behavior_assessment": "성향과 행동을 함께 점검함",
+            "performance_context": "수익률은 보조 근거로 사용함",
+            "advice_body": "거래 규모와 판단 근거를 함께 점검하세요.",
+        }
+
+    def test_reasoning_text_with_fenced_json_is_parsed_without_coercion(self) -> None:
+        expected = self._valid_output()
+        raw = "검토 과정입니다.\n```json\n" + json.dumps(expected, ensure_ascii=False) + "\n```"
+        self.assertEqual(parse_advisor_response(raw), expected)
+
+    async def test_non_object_is_retried_with_error_and_new_seed(self) -> None:
+        client = _AdvisorSequenceClient([[], self._valid_output()])
+        output, prompt_sha256 = await generate_advisor_output(
+            {"agent_id": "A003"}, client=client, seed=7, agent_id="A003"
+        )
+        self.assertEqual(output, self._valid_output())
+        self.assertEqual(len(prompt_sha256), 64)
+        self.assertEqual(len(client.calls), 2)
+        self.assertEqual(client.calls[0]["seed"], 7)
+        self.assertNotEqual(client.calls[0]["seed"], client.calls[1]["seed"])
+        self.assertEqual(client.calls[0]["temperature"], 0.2)
+        self.assertEqual(client.calls[1]["temperature"], 0.3)
+        retry_prompt = client.calls[1]["messages"][0]["content"]
+        self.assertIn("contains no object matching the sealed schema", retry_prompt)
+        self.assertIn('"persona_basis"', retry_prompt)
+        self.assertEqual(len(client.acceptances), 1)
+        self.assertEqual(
+            client.acceptances[0]["phase_attempt_id"],
+            "advisor-generation-attempt-2",
+        )
+
+    async def test_invalid_output_exhausts_bounded_attempts(self) -> None:
+        client = _AdvisorSequenceClient([[]] * ADVISOR_VALIDATION_ATTEMPTS)
+        with self.assertRaisesRegex(ValueError, "after 3 attempts"):
+            await generate_advisor_output(
+                {"agent_id": "A003"}, client=client, seed=7, agent_id="A003"
+            )
+        self.assertEqual(len(client.calls), ADVISOR_VALIDATION_ATTEMPTS)
+        self.assertFalse(client.acceptances)
 
 
 if __name__ == "__main__":

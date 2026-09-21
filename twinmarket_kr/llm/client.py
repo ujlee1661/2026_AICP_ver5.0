@@ -247,7 +247,7 @@ class OpenRouterClient:
         )
         if _advisor_reasoning_on:
             expected = {
-                "reasoning": {"effort": "high", "exclude": False},
+                "reasoning": {"enabled": True, "exclude": False},
                 "provider": {
                     "only": [config.PAPER_OPENROUTER_PROVIDER],
                     "order": [config.PAPER_OPENROUTER_PROVIDER],
@@ -427,7 +427,7 @@ class OpenRouterClient:
         self,
         messages: list[dict[str, str]],
         *,
-        response_format: dict[str, Any],
+        response_format: dict[str, Any] | None,
         temperature: float,
         seed: int,
         max_tokens: int,
@@ -442,7 +442,7 @@ class OpenRouterClient:
         if self.audit_context.get("purpose") != "advisor_generation":
             raise ReasoningPolicyError("Advisor client is missing advisor_generation audit purpose")
         policy = {
-            "reasoning": {"effort": "high", "exclude": False},
+            "reasoning": {"enabled": True, "exclude": False},
             "provider": {
                 "only": [config.PAPER_OPENROUTER_PROVIDER],
                 "order": [config.PAPER_OPENROUTER_PROVIDER],
@@ -575,6 +575,59 @@ class OpenRouterClient:
                 handle.write(
                     json.dumps(acceptance, ensure_ascii=False, default=str) + "\n"
                 )
+                handle.flush()
+            finally:
+                fcntl.flock(handle, fcntl.LOCK_UN)
+
+    def record_advisor_acceptance(
+        self,
+        *,
+        logical_call_id: str,
+        phase_attempt_id: str,
+        accepted_response_sha256: str,
+    ) -> None:
+        """Bind a validated Advisor object extracted from reasoning-on text."""
+
+        _require_sha256(accepted_response_sha256, label="accepted_response_sha256")
+        context = _audit_context(getattr(self, "audit_context", None))
+        if context.get("purpose") != "advisor_generation":
+            raise APIAuditIntegrityError("Advisor acceptance requires advisor_generation context")
+        path = _audit_path(getattr(self, "audit_path", None))
+        if path is None or not path.exists():
+            raise APIAuditIntegrityError("Advisor acceptance requires an existing audit path")
+        with path.open("a+", encoding="utf-8") as handle:
+            fcntl.flock(handle, fcntl.LOCK_EX)
+            try:
+                handle.seek(0)
+                rows = _read_audit_handle(handle, path=path)
+                candidates = [
+                    row
+                    for row in rows
+                    if row.get("audit_event") == "provider_attempt"
+                    and row.get("status") == "success"
+                    and row.get("logical_call_id") == logical_call_id
+                    and row.get("phase_attempt_id") == phase_attempt_id
+                    and row.get("finish_reason") == "stop"
+                    and row.get("audit_context") == context
+                ]
+                if not candidates:
+                    raise APIAuditIntegrityError(
+                        f"No completed Advisor provider response can bind {logical_call_id}"
+                    )
+                provider_row = candidates[-1]
+                acceptance = dict(provider_row)
+                acceptance.update(
+                    {
+                        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+                        "audit_event": "advisor_acceptance",
+                        "status": "accepted",
+                        "accepted_response_sha256": accepted_response_sha256,
+                        "provider_attempt_sha256": _canonical_audit_sha256(provider_row),
+                        "acceptance_mode": "validated_json_extracted_from_reasoning_text",
+                    }
+                )
+                handle.seek(0, os.SEEK_END)
+                handle.write(json.dumps(acceptance, ensure_ascii=False, default=str) + "\n")
                 handle.flush()
             finally:
                 fcntl.flock(handle, fcntl.LOCK_UN)
