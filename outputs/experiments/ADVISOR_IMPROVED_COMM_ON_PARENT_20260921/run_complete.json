@@ -1,0 +1,42 @@
+{
+  "community_delivery_summary": {
+    "best_posts": 225,
+    "delivered": 220,
+    "no_eligible_recipient": 0,
+    "right_censored": 5
+  },
+  "completed_event_count": 90,
+  "event_count": 90,
+  "full_frozen_schedule": true,
+  "log_dir": "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_IMPROVED_COMM_ON_PARENT_20260921",
+  "outcome_finalized": true,
+  "response_journal": {
+    "logical_counts": {
+      "accepted/committed": 52543
+    },
+    "path": "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_IMPROVED_COMM_ON_PARENT_20260921/.runtime/response_journal.sqlite",
+    "physical_attempt_counts": {
+      "accepted": 52543,
+      "rejected": 2893,
+      "started": 8
+    },
+    "schema_version": "integrated-response-journal-v1",
+    "stage_labels": [
+      "community_posting",
+      "community_read_react",
+      "community_read_select",
+      "community_thinking",
+      "depth2_post_search",
+      "depth2_pre_search",
+      "market_analysis",
+      "post_fill_long_term_belief",
+      "short_term_belief",
+      "trading_decision"
+    ]
+  },
+  "right_censored_outcome_count": 1300,
+  "run_id": "ADVISOR_IMPROVED_COMM_ON_PARENT_20260921",
+  "runtime_db": "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_IMPROVED_COMM_ON_PARENT_20260921/.runtime/runtime_sim.db",
+  "schedule_complete": true,
+  "status": "complete"
+}

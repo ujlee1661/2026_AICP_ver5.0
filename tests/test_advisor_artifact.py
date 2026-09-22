@@ -21,7 +21,10 @@ from twinmarket_kr.advisor.generation import (
     ADVISOR_VALIDATION_ATTEMPTS,
     generate_advisor_output,
     parse_advisor_response,
+    validate_advisor_case,
+    validate_advisor_output,
 )
+from twinmarket_kr.advisor.case_builder import normalize_runtime_constraints
 from twinmarket_kr.agents.memory_agent import MemoryAgent
 from twinmarket_kr.db.connection import init_sim_db
 
@@ -139,10 +142,29 @@ class _AdvisorSequenceClient:
 
 class AdvisorGenerationRetryTests(unittest.IsolatedAsyncioTestCase):
     @staticmethod
+    def _valid_case() -> dict:
+        return {
+            "agent_id": "A003",
+            "cutoff_event_id": "2026-05-04/PM",
+            "runtime_constraints": {
+                "decision_space": ["buy", "sell"],
+                "allow_hold": False,
+                "minimum_order_quantity": 1,
+                "transaction_fee_rate": 0.0,
+            },
+            "representative_episodes": [
+                {
+                    "fill_id": "fill_A003_t090",
+                    "event_id": "2026-05-04/PM",
+                }
+            ],
+        }
+
+    @staticmethod
     def _valid_output() -> dict:
         return {
             "persona_basis": ["장기 투자 성향"],
-            "observed_behavior": ["최근 거래 규모가 커짐"],
+            "observed_behavior": ["fill_A003_t090: 최근 거래 규모가 커짐"],
             "persona_behavior_assessment": "성향과 행동을 함께 점검함",
             "performance_context": "수익률은 보조 근거로 사용함",
             "advice_body": "거래 규모와 판단 근거를 함께 점검하세요.",
@@ -156,7 +178,7 @@ class AdvisorGenerationRetryTests(unittest.IsolatedAsyncioTestCase):
     async def test_non_object_is_retried_with_error_and_new_seed(self) -> None:
         client = _AdvisorSequenceClient([[], self._valid_output()])
         output, prompt_sha256 = await generate_advisor_output(
-            {"agent_id": "A003"}, client=client, seed=7, agent_id="A003"
+            self._valid_case(), client=client, seed=7, agent_id="A003"
         )
         self.assertEqual(output, self._valid_output())
         self.assertEqual(len(prompt_sha256), 64)
@@ -168,6 +190,7 @@ class AdvisorGenerationRetryTests(unittest.IsolatedAsyncioTestCase):
         retry_prompt = client.calls[1]["messages"][0]["content"]
         self.assertIn("contains no object matching the sealed schema", retry_prompt)
         self.assertIn('"persona_basis"', retry_prompt)
+        self.assertIn("fill_A003_t090", retry_prompt)
         self.assertEqual(len(client.acceptances), 1)
         self.assertEqual(
             client.acceptances[0]["phase_attempt_id"],
@@ -178,10 +201,61 @@ class AdvisorGenerationRetryTests(unittest.IsolatedAsyncioTestCase):
         client = _AdvisorSequenceClient([[]] * ADVISOR_VALIDATION_ATTEMPTS)
         with self.assertRaisesRegex(ValueError, "after 3 attempts"):
             await generate_advisor_output(
-                {"agent_id": "A003"}, client=client, seed=7, agent_id="A003"
+                self._valid_case(), client=client, seed=7, agent_id="A003"
             )
         self.assertEqual(len(client.calls), ADVISOR_VALIDATION_ATTEMPTS)
         self.assertFalse(client.acceptances)
+
+    def test_runtime_constraints_are_fail_closed(self) -> None:
+        self.assertEqual(
+            normalize_runtime_constraints(
+                {
+                    "decision_space": "buy_sell_only",
+                    "allow_hold": False,
+                    "minimum_order_quantity": 1,
+                    "transaction_fee_rate": 0.0,
+                }
+            ),
+            self._valid_case()["runtime_constraints"],
+        )
+        for field, invalid in (
+            ("decision_space", ["buy", "sell", "hold"]),
+            ("allow_hold", True),
+            ("minimum_order_quantity", 10),
+            ("transaction_fee_rate", 0.001),
+        ):
+            constraints = dict(self._valid_case()["runtime_constraints"])
+            constraints[field] = invalid
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                normalize_runtime_constraints(constraints)
+
+    def test_grounding_requires_available_fill_id(self) -> None:
+        case = self._valid_case()
+        self.assertEqual(validate_advisor_case(case)["fill_ids"], {"fill_A003_t090"})
+        missing = self._valid_output()
+        missing["observed_behavior"] = ["최근 거래 규모가 커짐"]
+        with self.assertRaisesRegex(ValueError, "must cite a fill_id"):
+            validate_advisor_output(missing, case=case)
+        unavailable = self._valid_output()
+        unavailable["observed_behavior"] = ["fill_A003_t091: 거래 규모가 커짐"]
+        with self.assertRaisesRegex(ValueError, "unavailable fill_id"):
+            validate_advisor_output(unavailable, case=case)
+
+    def test_post_cutoff_date_is_rejected(self) -> None:
+        output = self._valid_output()
+        output["advice_body"] = "5월 6일 행동을 근거로 판단 절차를 점검하세요."
+        with self.assertRaisesRegex(ValueError, "post-cutoff Korean date"):
+            validate_advisor_output(output, case=self._valid_case())
+
+    async def test_rendered_prompt_contains_constraints_and_improved_contract(self) -> None:
+        client = _AdvisorSequenceClient([self._valid_output()])
+        await generate_advisor_output(
+            self._valid_case(), client=client, seed=7, agent_id="A003"
+        )
+        prompt = client.calls[0]["messages"][0]["content"]
+        self.assertIn('"minimum_order_quantity": 1', prompt)
+        self.assertIn("가장 중요한 판단 문제 하나", prompt)
+        self.assertIn("명확한 오류나 충돌이 없으면 문제를 만들어내지 마세요", prompt)
 
 
 if __name__ == "__main__":

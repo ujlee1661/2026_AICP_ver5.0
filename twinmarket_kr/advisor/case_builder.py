@@ -10,6 +10,31 @@ from typing import Any, Mapping, Sequence
 from twinmarket_kr.advisor.artifact import canonical_sha256
 
 
+def normalize_runtime_constraints(value: Mapping[str, Any]) -> dict[str, Any]:
+    """Validate the exact trade constraints shown to the Advisor."""
+
+    decision_space = value.get("decision_space")
+    if decision_space == "buy_sell_only":
+        decision_space = ["buy", "sell"]
+    if decision_space != ["buy", "sell"]:
+        raise ValueError("advisor runtime decision_space must be buy/sell only")
+    allow_hold = value.get("allow_hold", False)
+    if allow_hold is not False:
+        raise ValueError("advisor runtime must not allow hold")
+    minimum_order_quantity = value.get("minimum_order_quantity")
+    if isinstance(minimum_order_quantity, bool) or minimum_order_quantity != 1:
+        raise ValueError("advisor minimum order quantity must be 1")
+    transaction_fee_rate = value.get("transaction_fee_rate")
+    if isinstance(transaction_fee_rate, bool) or transaction_fee_rate != 0.0:
+        raise ValueError("advisor transaction fee rate must be 0")
+    return {
+        "decision_space": ["buy", "sell"],
+        "allow_hold": False,
+        "minimum_order_quantity": 1,
+        "transaction_fee_rate": 0.0,
+    }
+
+
 def _json(value: Any) -> Any:
     return json.loads(str(value or "null"))
 
@@ -31,6 +56,7 @@ def build_advisor_case(
     db_path: Path | str,
     *,
     agent: Mapping[str, Any],
+    runtime_constraints: Mapping[str, Any],
     cutoff_turn: int = 90,
 ) -> dict[str, Any]:
     agent_id = str(agent["agent_id"])
@@ -186,6 +212,7 @@ def build_advisor_case(
     case = {
         "agent_id": agent_id,
         "cutoff_event_id": "2026-05-04/PM",
+        "runtime_constraints": normalize_runtime_constraints(runtime_constraints),
         "persona": {"persona_prompt": str(agent["persona_prompt"]), "structured": persona_fields},
         "latest_ltb": {key: str(ltb[key]) for key in ("ltb_id", "dim_1", "dim_2", "dim_3", "dim_4", "dim_5", "dim_6")},
         "behavior_summary": {
@@ -231,9 +258,14 @@ def build_advisor_cases(
     *,
     agents: Sequence[Mapping[str, Any]],
     selected_agent_ids: Sequence[str],
+    runtime_constraints: Mapping[str, Any],
 ) -> list[dict[str, Any]]:
     by_id = {str(agent["agent_id"]): agent for agent in agents}
     return [
-        build_advisor_case(db_path, agent=by_id[agent_id])
+        build_advisor_case(
+            db_path,
+            agent=by_id[agent_id],
+            runtime_constraints=runtime_constraints,
+        )
         for agent_id in selected_agent_ids
     ]

@@ -353,6 +353,7 @@ def _build_signature(
         "seed": int(args.seed),
         "information_mode": "pre_close_cutoff",
         "decision_space": "buy_sell_only",
+        "min_order_unit": int(config.MIN_ORDER_UNIT),
         "simulation_concurrency": int(
             study_profile.per_arm_concurrency
         ),
