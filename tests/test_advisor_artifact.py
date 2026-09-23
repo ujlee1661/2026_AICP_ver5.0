@@ -74,16 +74,30 @@ class AdvisorArtifactTests(unittest.TestCase):
             path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
             return AdvisorArtifact.load(path, cohort_agent_ids=self.agent_ids)
 
-    def test_assignment_is_reproducible_and_contains_ten_unique_agents(self) -> None:
+    def test_assignment_is_reproducible_and_contains_full_unique_cohort(self) -> None:
         first = deterministic_advisor_agents(self.agent_ids)
         second = deterministic_advisor_agents(reversed(self.agent_ids))
         self.assertEqual(first, second)
-        self.assertEqual(len(first), 10)
-        self.assertEqual(len(set(first)), 10)
+        self.assertEqual(first, tuple(self.agent_ids))
+        self.assertEqual(len(first), 100)
+        self.assertEqual(len(set(first)), 100)
+
+    def test_assignment_rejects_a_partial_cohort(self) -> None:
+        with self.assertRaisesRegex(ValueError, "full 100-agent cohort"):
+            deterministic_advisor_agents(self.agent_ids[:-1])
+
+    def test_artifact_rejects_a_missing_cohort_message(self) -> None:
+        payload = self._payload()
+        payload["messages"].pop()
+        payload["artifact_sha256"] = canonical_sha256(
+            {key: value for key, value in payload.items() if key != "artifact_sha256"}
+        )
+        with self.assertRaisesRegex(ValueError, "exactly 100 messages"):
+            self._load(payload)
 
     def test_500_character_body_passes_and_501_fails(self) -> None:
         artifact = self._load(self._payload("가" * 500))
-        self.assertEqual(len(artifact.messages), 10)
+        self.assertEqual(len(artifact.messages), 100)
         with self.assertRaisesRegex(ValueError, "exceeds 500"):
             self._load(self._payload("가" * 501))
 

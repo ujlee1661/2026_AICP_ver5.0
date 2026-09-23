@@ -18,6 +18,7 @@ from twinmarket_kr.advisor.artifact import (
     ADVISOR_ARTIFACT_TYPE,
     ADVISOR_ASSIGNMENT_NAMESPACE,
     ADVISOR_ASSIGNMENT_SEED,
+    ADVISOR_COHORT_SIZE,
     ADVISOR_MODEL,
     ADVISOR_PROVIDER,
     ADVISOR_REASONING_POLICY,
@@ -41,8 +42,14 @@ def _load_cases(path: Path) -> dict:
     if int(raw.get("assignment_seed")) != ADVISOR_ASSIGNMENT_SEED:
         raise ValueError("advisor cases assignment seed differs")
     cases = raw.get("cases")
-    if not isinstance(cases, list) or len(cases) != 10:
-        raise ValueError("advisor cases artifact must contain exactly 10 cases")
+    if not isinstance(cases, list) or len(cases) != ADVISOR_COHORT_SIZE:
+        raise ValueError(
+            f"advisor cases artifact must contain exactly {ADVISOR_COHORT_SIZE} cases"
+        )
+    selected_ids = raw.get("selected_agent_ids")
+    case_ids = [str(case.get("agent_id") or "") for case in cases]
+    if selected_ids != case_ids or len(case_ids) != len(set(case_ids)):
+        raise ValueError("advisor cases must cover the selected full cohort exactly once")
     return raw
 
 
@@ -101,7 +108,7 @@ async def _generate(args: argparse.Namespace) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Generate 10 sealed Advisor messages through OpenRouter.")
+    parser = argparse.ArgumentParser(description="Generate 100 sealed Advisor messages through OpenRouter.")
     parser.add_argument("--cases", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--audit", type=Path, required=True)

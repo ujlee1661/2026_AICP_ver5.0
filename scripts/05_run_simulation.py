@@ -86,7 +86,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--advisor-mode",
         choices=("off", "on"),
         default="off",
-        help="Enable the sealed one-time advisor treatment for its assigned 10 agents.",
+        help="Enable the sealed one-time advisor treatment for all 100 cohort agents.",
     )
     parser.add_argument(
         "--advisor-artifact",

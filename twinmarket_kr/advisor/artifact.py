@@ -2,15 +2,15 @@ from __future__ import annotations
 
 import hashlib
 import json
-import random
 import sqlite3
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
 
-ADVISOR_ASSIGNMENT_NAMESPACE = "advisor-assignment-v1"
+ADVISOR_ASSIGNMENT_NAMESPACE = "advisor-full-cohort-v1"
 ADVISOR_ASSIGNMENT_SEED = 20260919
+ADVISOR_COHORT_SIZE = 100
 ADVISOR_MESSAGE_PREFIX = "당신의 담당 투자 어드바이저가 보낸 메모:"
 ADVISOR_BODY_MAX_CHARS = 500
 ADVISOR_ARTIFACT_TYPE = "integrated_advisor_messages_v1"
@@ -41,25 +41,19 @@ def canonical_sha256(value: Any) -> str:
 
 def deterministic_advisor_agents(
     agent_ids: Iterable[str],
-    *,
-    count: int = 10,
-    seed: int = ADVISOR_ASSIGNMENT_SEED,
-    namespace: str = ADVISOR_ASSIGNMENT_NAMESPACE,
 ) -> tuple[str, ...]:
+    """Return every sealed cohort member in deterministic agent-ID order."""
+
     ordered = sorted(str(value).strip() for value in agent_ids)
-    if not namespace.strip():
-        raise ValueError("advisor assignment namespace must not be empty")
     if not ordered or any(not value for value in ordered):
         raise ValueError("advisor assignment requires non-empty agent IDs")
     if len(ordered) != len(set(ordered)):
         raise ValueError("advisor assignment agent IDs must be unique")
-    if isinstance(count, bool) or count < 1 or count > len(ordered):
-        raise ValueError("advisor assignment count is outside the cohort")
-    derived_seed = int.from_bytes(
-        hashlib.sha256(f"{namespace}|{int(seed)}".encode("utf-8")).digest()[:8],
-        "big",
-    )
-    return tuple(sorted(random.Random(derived_seed).sample(ordered, count)))
+    if len(ordered) != ADVISOR_COHORT_SIZE:
+        raise ValueError(
+            f"advisor assignment requires the full {ADVISOR_COHORT_SIZE}-agent cohort"
+        )
+    return tuple(ordered)
 
 
 def _nonempty_text(value: Any, label: str) -> str:
@@ -165,7 +159,6 @@ class AdvisorArtifact:
         path: Path | str,
         *,
         cohort_agent_ids: Sequence[str],
-        expected_count: int = 10,
     ) -> "AdvisorArtifact":
         artifact_path = Path(path)
         raw = json.loads(artifact_path.read_text(encoding="utf-8"))
@@ -185,16 +178,17 @@ class AdvisorArtifact:
         if raw.get("reasoning_policy") != ADVISOR_REASONING_POLICY:
             raise ValueError("advisor reasoning policy differs")
         values = raw.get("messages")
-        if not isinstance(values, list) or len(values) != expected_count:
-            raise ValueError(f"advisor artifact must contain exactly {expected_count} messages")
+        expected_ids = deterministic_advisor_agents(cohort_agent_ids)
+        if not isinstance(values, list) or len(values) != len(expected_ids):
+            raise ValueError(
+                f"advisor artifact must contain exactly {len(expected_ids)} messages"
+            )
         messages = tuple(AdvisorMessage.from_mapping(value) for value in values)
         ids = tuple(message.agent_id for message in messages)
         if len(ids) != len(set(ids)):
             raise ValueError("advisor artifact contains duplicate agents")
-        cohort = tuple(str(value) for value in cohort_agent_ids)
-        expected_ids = deterministic_advisor_agents(cohort, count=expected_count)
         if tuple(sorted(ids)) != expected_ids:
-            raise ValueError("advisor artifact agents differ from deterministic assignment")
+            raise ValueError("advisor artifact agents differ from the full cohort")
         if any(message.source_cutoff_event_id != "2026-05-04/PM" for message in messages):
             raise ValueError("advisor source cutoff must be 2026-05-04/PM")
         if any(message.valid_from_event_id != "2026-05-06/AM" for message in messages):

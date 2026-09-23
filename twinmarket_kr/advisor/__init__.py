@@ -3,6 +3,7 @@
 from twinmarket_kr.advisor.artifact import (
     ADVISOR_ASSIGNMENT_NAMESPACE,
     ADVISOR_ASSIGNMENT_SEED,
+    ADVISOR_COHORT_SIZE,
     ADVISOR_MESSAGE_PREFIX,
     AdvisorArtifact,
     AdvisorMessage,
@@ -12,6 +13,7 @@ from twinmarket_kr.advisor.artifact import (
 __all__ = [
     "ADVISOR_ASSIGNMENT_NAMESPACE",
     "ADVISOR_ASSIGNMENT_SEED",
+    "ADVISOR_COHORT_SIZE",
     "ADVISOR_MESSAGE_PREFIX",
     "AdvisorArtifact",
     "AdvisorMessage",

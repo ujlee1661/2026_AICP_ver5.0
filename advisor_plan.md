@@ -7,13 +7,13 @@
 
 삼성전자 단일 종목 시뮬레이션에서 동일한 100명 에이전트를 먼저
 2026-02-27부터 2026-05-04까지 실행한다. 그때까지 생성된 각 에이전트의
-persona, belief, 거래 및 포트폴리오 기록만 사용해 전체 100명 중 무작위로
-선정한 10명에게 개인화된 Advisor 메모를 한 번 전달한다.
+persona, belief, 거래 및 포트폴리오 기록만 사용해 전체 100명 모두에게
+개인화된 Advisor 메모를 한 번 전달한다.
 
 이후 2026-05-06부터 2026-05-29까지 시뮬레이션을 이어서 실행하고, Advisor
 메모를 받은 세계와 받지 않은 세계를 비교한다. 핵심 질문은 다음 두 가지다.
 
-1. Advisor 메모를 받은 10명의 투자 행동이 달라지는가?
+1. Advisor 메모를 받은 100명 전원의 투자 행동이 달라지는가?
 2. 그 행동 변화가 포트폴리오 성과 차이로 이어지는가?
 
 Advisor는 매수·매도 방향이나 미래 수익률을 예측하지 않는다. 현재 시장 정보,
@@ -36,7 +36,7 @@ Advisor는 매수·매도 방향이나 미래 수익률을 예측하지 않는�
 | Advisor 최초 노출 | 2026-05-06 AM |
 | 사후 관찰 구간 | 2026-05-06 ~ 2026-05-29, 17거래일·34 events |
 | 전체 실행 구간 | 2026-02-27 ~ 2026-05-29, 62거래일·124 events |
-| Advisor 대상 | 전체 100명 중 무작위 10명 |
+| Advisor 대상 | 전체 100명 전원 |
 | Advisor 형식 | 대화 없는 1회성 통보 |
 
 2026-05-05는 휴장일이다. 여기서 “약 3주”는 봉인 거래일 기준으로 5월 6일부터
@@ -58,7 +58,7 @@ Advisor 유무만 다른 두 continuation을 만든다.
 
 ```text
 공통 사전 상태: 2/27 ~ 5/4
-             ├─ Advisor ON  : 무작위 10명에게 메모 전달 → 5/6 ~ 5/29
+             ├─ Advisor ON  : 100명 전원에게 메모 전달 → 5/6 ~ 5/29
              └─ Advisor OFF : 누구에게도 메모 없음     → 5/6 ~ 5/29
 ```
 
@@ -68,7 +68,7 @@ Advisor ON과 OFF는 다음 항목이 같아야 한다.
 - 5월 4일 종료 시점 LTB·포트폴리오·거래·outcome 상태
 - 뉴스, 가격, 캘린더와 Community 설정
 - 모델, provider, temperature, seed와 거래 정책
-- Advisor 대상 10명의 ID
+- Advisor 대상 100명의 ID(전체 cohort)
 
 허용되는 차이는 Advisor artifact와 그 노출 여부뿐이다.
 
@@ -91,32 +91,22 @@ Community OFF와 ON에 각각 적용해 다음 2×2를 구성한다.
 이 4셀은 Community 상호작용을 검정하는 확장 설계다. 실행한다면 Community별
 사전 상태를 각각 같은 조건에서 현재 통합 엔진으로 생성해야 한다.
 
-## 4. Advisor 대상 10명 선정
+## 4. Advisor 대상 전체 cohort 확정
 
 Advisor 대상은 행동 점수나 수익률로 선별하지 않는다. 봉인 cohort 100명
-전체에서 10명을 단순 무작위 추출한다.
+전원을 대상으로 한다.
 
-- Advisor 대상 배정 전용 namespace는 `advisor-assignment-v1`, seed는
-  `20260919`로 고정한다. 메인 시뮬레이션 seed와 섞어 쓰지 않는다.
-- 정렬된 agent ID 목록에 결정론적 추출을 적용한다.
-- 선택 결과와 seed를 별도 JSON artifact로 봉인한다.
-- Advisor ON/OFF 및 선택적 후속 반복에서도 동일한 10명을 사용한다.
-- 선정 후 결과를 보고 대상자를 다시 뽑지 않는다.
+- 대상 계약 namespace는 `advisor-full-cohort-v1`이다.
+- 정렬된 전체 agent ID 목록을 JSON artifact로 봉인한다.
+- Advisor ON/OFF 및 선택적 후속 반복에서도 동일한 100명을 사용한다.
 
-이는 “행동이 나쁜 사람에게만 Advisor를 붙였을 때”가 아니라 “일반 개인투자자에게
-개인화 Advisor를 무작위 제공했을 때”의 평균 처치 효과를 묻는 설계다. 과거
+이는 “행동이 나쁜 사람에게만 Advisor를 붙였을 때”가 아니라 “전체 개인투자자에게
+개인화 Advisor를 제공했을 때”의 평균 처치 효과를 묻는 설계다. 과거
 문서의 하위 20명, 규율 결여 점수 및 matched-control 선별 절차는 사용하지 않는다.
 
-비교 집단은 다음과 같다.
-
-- 직접 처치 집단: 선정된 10명의 Advisor ON 대 Advisor OFF 차이
-- 비선정 집단: 나머지 90명
-- Community OFF의 비선정 집단: Advisor 누출 여부를 보는 음성 통제
-- Community ON의 비선정 집단: 게시글을 통한 간접 전파를 보는 spillover 집단
-
-비선정 90명의 live LLM 출력이 byte 단위로 완전히 같아야 한다고 가정하지
-않는다. 프롬프트 누출 0건을 기계적으로 확인하고, 행동 차이는 Advisor 없는
-동일 포크에서 측정한 노이즈 바닥과 비교한다.
+직접 처치 비교는 전체 100명의 Advisor ON 대 Advisor OFF 차이다. live LLM
+출력이 byte 단위로 완전히 같아야 한다고 가정하지 않고, 행동 차이는 Advisor
+없는 동일 포크에서 측정한 노이즈 바닥과 비교한다.
 
 ## 5. Advisor의 역할과 입력
 
@@ -276,7 +266,7 @@ Advisor ON이라고 해서 market analysis, decision, STB, LTB 또는 Community
 
 ### 6.2 Advisor 메모 생성
 
-Advisor가 10명의 사전 기록을 검토해 메모를 생성하는 별도 1회성 호출만
+Advisor가 100명 전원의 사전 기록을 검토해 각자 메모를 생성하는 별도 호출만
 reasoning ON을 사용한다.
 
 Advisor는 메인 에이전트와 동일하게 OpenRouter를 통해 다음 모델과 provider를
@@ -358,9 +348,9 @@ valid_from_event_id, created_at
 `agent_system_messages`를 저장소로 사용할 수 있지만 다음 조건을 만족해야 한다.
 
 - `message_type='advisor'`
-- 대상 10명에게 정확히 한 행
+- 대상 100명에게 정확히 한 행
 - 5월 6일 AM부터 조회 가능
-- 대상이 아닌 90명과 Advisor OFF에는 advisor 행 0개
+- Advisor OFF에는 advisor 행 0개
 - 다른 system message가 생겨도 Advisor가 가려지지 않는 전용 조회
 - prompt trace에서 agent·event·advisor ID 연결 가능
 
@@ -400,11 +390,10 @@ fail-closed로 검증한다.
 
 다음은 기계적으로 전부 통과해야 한다.
 
-- 선정 artifact에 고유한 10명 존재
-- Advisor ON DB에 대상별 메시지 1건, 총 10건
-- Advisor OFF 및 비선정 90명에게 advisor 메시지 0건
+- Advisor artifact에 고유한 전체 100명 존재
+- Advisor ON DB에 대상별 메시지 1건, 총 100건
+- Advisor OFF에는 advisor 메시지 0건
 - 5월 6일 AM부터 대상자의 analysis·decision prompt에 동일 메모 포함
-- 대상 외 prompt에 Advisor 본문이나 ID 노출 0건
 - 본문 길이·금지 표현·cutoff·hash 검증 통과
 - 구조화 출력의 persona 근거와 행동 관찰이 실제 입력에 의해 뒷받침됨
 
@@ -421,7 +410,7 @@ fail-closed로 검증한다.
 
 ### 10.2 2층: 행동 변화 — 주 평가
 
-Advisor 대상 10명의 ON/OFF paired 차이를 계산한다.
+Advisor 대상 100명 전원의 ON/OFF paired 차이를 계산한다.
 
 - 거래 회전율과 거래 빈도
 - 체결 수량·체결 금액과 그 분산
@@ -441,23 +430,22 @@ agent 단위의 사후 기간 변화로 집계한다.
 - 실현손익과 평가손익
 - 최종 총자산
 
-성과 차이는 보고하지만 표본 10명과 짧은 사후 기간을 고려해 주된 성공 기준으로
+성과 차이는 보고하지만 짧은 사후 기간을 고려해 주된 성공 기준으로
 삼지 않는다. “Advisor가 수익을 예측했다”는 주장도 하지 않는다.
 
 ### 10.4 Spillover
 
-Community OFF에서는 비선정 90명에게 Advisor 정보가 전달될 경로가 없어야 한다.
-Community ON에서는 대상 10명의 게시글을 통해 맞춤 판단 조언의 영향이 간접
-전파될 수 있다.
-이 경우 비선정 90명의 변화는 직접 효과와 분리해 spillover로 보고한다.
+Community ON에서는 모두 Advisor를 받은 상태에서 게시글을 통한 조언 영향의
+상호 전파가 생길 수 있다. 비처치 집단이 없으므로 이를 별도 spillover 효과로
+식별하지 않는다.
 
 ## 11. 통계와 선택적 반복 실행
 
 Advisor 주효과는 같은 agent·같은 5월 4일 상태의 ON/OFF paired 차이로 본다.
-n=10만으로 충분한 검정력이 있다고 미리 가정하지 않는다.
+n=100이라고 충분한 검정력이 있다고 미리 가정하지 않는다.
 
-여기서 “반복 seed”는 Advisor 대상 10명을 다시 뽑는다는 뜻이 아니다. 같은
-10명·같은 Advisor 메모·같은 입력을 유지한 채, live LLM 생성의 우연한 변동에
+여기서 “반복 seed”는 Advisor 대상을 다시 정한다는 뜻이 아니다. 같은
+100명·같은 Advisor 메모·같은 입력을 유지한 채, live LLM 생성의 우연한 변동에
 결과가 좌우되는지 확인하기 위해 시뮬레이션 생성 seed만 바꿔 같은 ON/OFF 쌍을
 추가 실행하는 것을 뜻한다.
 
@@ -524,8 +512,8 @@ Advisor 없는 동일 continuation 두 개를 먼저 돌리는 dummy fork는 반
 |---|---|
 | 연구 질문 | Advisor 통보가 대상자의 행동과 성과를 바꾸는가 |
 | 대상 | 삼성전자 에이전트 100명 |
-| Advisor 대상 | 전체 100명 중 seed로 무작위 선정한 10명 |
-| Advisor 배정 seed | namespace `advisor-assignment-v1`, seed `20260919` |
+| Advisor 대상 | 전체 100명 전원 |
+| Advisor 대상 계약 | namespace `advisor-full-cohort-v1`, agent ID 결정론적 정렬 |
 | 메인 시뮬레이션 seed | 기존 StudySpec과 동일한 `2` |
 | 사전 구간 | 2026-02-27 ~ 2026-05-04 |
 | 사후 구간 | 2026-05-06 ~ 2026-05-29 |

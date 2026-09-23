@@ -728,8 +728,8 @@ python scripts/05_run_simulation.py \
 ```
 
 현재 확정되지 않은 Community 조건은 실행 직전에 `off`, `on`, 또는 4셀 중
-선택한다. Advisor 대상은 seed `20260919`와 namespace
-`advisor-assignment-v1`로 전체 100명에서 고정된 10명이다.
+선택한다. Advisor 대상은 namespace `advisor-full-cohort-v1`로 고정한 전체
+100명이며 agent ID 결정론적 정렬 순서로 artifact에 기록한다.
 
 ## 17. 재현 패키지
 

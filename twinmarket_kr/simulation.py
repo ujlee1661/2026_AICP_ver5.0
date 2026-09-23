@@ -383,7 +383,6 @@ async def run_simulation(
                 if advisor_cohort_agent_ids is not None
                 else [str(agent["agent_id"]) for agent in agents]
             ),
-            expected_count=10,
         ).ensure_messages_installed(sim_db_path)
     memory = MemoryAgent(
         sim_db_path,
