@@ -14,7 +14,8 @@
 calendar/stage-input/target/price registry + StudySpec과 함께 sealed 된다.
 
 입력 join:
-  - split JSON 5폴더  : 제목·본문·요약·작성시각(effective_at)·필터링여부(N만)
+  - split JSON 5폴더  : 제목·본문·요약·작성시각(effective_at)·필터링여부(N만).
+    외부 URL 원장이 없는 신규 행은 안정적인 repo://data/... 행 참조를 provenance로 사용한다.
   - rescrape CSV       : article_id·url·published_at·modified_at·source (제목으로 join)
   - crawl *.jsonl      : 실제 scraped_at과 본문 (제목으로 join, 있으면 우선)
   - data/*_news.pkl    : crawl export가 없는 기간의 로컬 수집 원장
@@ -61,6 +62,27 @@ def _norm_ts(s: str | None) -> str | None:
     return s.replace(" ", "T").replace("Z", "+00:00")
 
 
+def _split_ts(value: str | None) -> str | None:
+    normalized = _norm_ts(value)
+    if normalized is None:
+        return None
+    if len(normalized) == 16:
+        return normalized + ":00+09:00"
+    if len(normalized) == 19:
+        return normalized + "+09:00"
+    return normalized
+
+
+def _repo_split_ref(path: Path, *, article_index: int) -> str | None:
+    try:
+        relative = path.resolve().relative_to(PROJECT_ROOT.resolve())
+    except ValueError:
+        return None
+    if not relative.parts or relative.parts[0] != "data":
+        return None
+    return f"repo://{relative.as_posix()}#article={article_index}"
+
+
 def _event_of(effective_at: str) -> tuple[str, str]:
     """effective_at → (date, subturn). AM = ~08:59 이하, PM = 그 이후."""
     date = effective_at[:10]
@@ -76,17 +98,43 @@ def load_curated_summaries(splits_dir: Path) -> dict[str, dict]:
         if not fpath.exists():
             continue
         for jf in sorted(fpath.glob("*.json"), key=lambda x: int(x.stem)):
-            for art in json.loads(jf.read_text(encoding="utf-8")):
+            for article_index, art in enumerate(
+                json.loads(jf.read_text(encoding="utf-8"))
+            ):
                 if not isinstance(art, dict) or str(art.get("필터링 여부", "N")) != "N":
                     continue
                 title = str(art.get("제목", "")).strip()
                 summary = str(art.get("요약", "")).strip()
                 if not title or not summary:
                     continue
+                split_ref = _repo_split_ref(jf, article_index=article_index)
+                split_body = str(art.get("본문", "")).strip()
+                split_effective_at = _split_ts(art.get("작성시각"))
                 cur = by_title.get(title)
                 if cur is not None and SECTOR_PRIORITY[cur["category"]] <= SECTOR_PRIORITY[sector]:
                     continue
-                by_title[title] = {"summary": summary, "category": sector}
+                by_title[title] = {
+                    "summary": summary,
+                    "category": sector,
+                    "split_provenance": (
+                        {
+                            "url": split_ref,
+                            "body": split_body,
+                            "published_at": split_effective_at,
+                            "modified_at": None,
+                            "effective_at": split_effective_at,
+                            "observed_at": split_effective_at,
+                            "source": (
+                                "매일경제"
+                                if title.endswith(" - 매일경제")
+                                else "repository-split"
+                            ),
+                            "file_category": folder,
+                        }
+                        if split_ref and split_body and split_effective_at
+                        else None
+                    ),
+                }
     return by_title
 
 
@@ -211,6 +259,10 @@ def build(
             quarantine.append({"title": title, "reason": "eod_leakage_in_text"})
             continue
         prov = provenance.get(title)
+        if prov is None:
+            prov = c.get("split_provenance")
+            if prov is not None:
+                stats["repo_split_provenance"] += 1
         if prov is None:
             stats["no_crawl_provenance"] += 1
             quarantine.append({"title": title, "reason": "no_crawl_provenance"})

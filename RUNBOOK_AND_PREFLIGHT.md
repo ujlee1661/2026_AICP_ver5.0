@@ -1,6 +1,7 @@
 # 실행·Preflight·복구 Runbook
 
-> 현재 판정 (2026-07-31): **45일 본실험 GO-ready (유료 승인 대기)**
+> 현재 판정: **2026-02-27~2026-07-22 본실험 입력·무과금 E2E 검증 완료
+> (유료 승인 및 clean freeze 대기)**
 >
 > `05 -> simulation.py`에는 sealed StudySpec, atomic checkpoint/resume,
 > response journal, canonical validator와 유료 호출 gate가 연결되어 있다.
@@ -10,12 +11,12 @@
 > - 유료 2일 검증 v8 완주 (100 agent, 400/400 turn, 소진 0, 최대 재시도
 >   3/10, $1.87) 및 `99_validate` `segment_valid_not_publication_ready` 통과.
 >   보존본: `outputs/logs/live_2day_v8_20260731/`
-> - 무과금 45일 전 구간 E2E 완주 (D2 agent 포함 `--max-agents 7`,
->   90/90 event, outcome ledger finalize, h5·right-censoring 검증)
+> - 무과금 98거래일 전 구간 E2E 완주 (D2 agent 포함 `--max-agents 7`,
+>   196/196 event, outcome ledger finalize, h5·right-censoring 검증)
 > - `kill -9` 중단 후 동일 인자 resume 복구와 journal 재생(재과금 없음) 실증
 >
 > 봉인 기준: `baseline_commit 6ecd2c9`, `prompt_bundle_sha256 9cb9c07a…`.
-> 45일 본실험(ON/OFF 2 arm, 예상 $40~55)은 사용자 승인 후에만 시작한다.
+> 98거래일 본실험은 조건·run ID·비용 상한을 명시해 사용자 승인 후에만 시작한다.
 
 이 문서는 앞으로 사용할 단일 번호형 파이프라인의 운영 절차다. 정책과 상세
 아키텍처는 각각 [`EXPERIMENT_DESIGN.md`](EXPERIMENT_DESIGN.md)와
@@ -69,12 +70,13 @@ production `05`는 legacy CSV나 JSON split을 자동 선택하지 않고 sealed
 없거나 hash가 다르면 중단한다. RN `09/12`와 별도 checkpoint runner는
 제거됐다.
 
-무과금 P0에서 현 profile 재봉인, 전체 회귀, profile validator, 45거래일
-OFF/ON 실제 중단·재개 offline 검증과 report fixture 시각 검수는 완료했다.
+무과금 P0에서 현 profile 재봉인, 전체 회귀, profile validator와 과거 45거래일
+OFF/ON 중단·재개 검증을 완료했고, 7월 22일 확장 profile은 7 agent Community ON
+전 구간 offline E2E와 canonical validator를 통과했다.
 live reasoning-off canary와 유료 2일 검증(v8)도 승인 하에 완료했다
 (문서 상단 판정 참조). 현재 실제 하드 스톱은 다음뿐이다.
 
-1. 45거래일 OFF/ON 본실험은 별도 비용·기간·run ID 승인 없이는 실행할 수 없다.
+1. 98거래일 본실험은 별도 비용·조건·run ID 승인 없이는 실행할 수 없다.
 2. live 실행 전에는 의도한 diff를 freeze하고 clean code/prompt/input 기록을
    승인 run record에 남겨야 한다. 현재 작업의 무과금 검증은 이를 대체하지 않는다.
 
@@ -198,23 +200,22 @@ telemetry 또는 canary 승인 증거가 아니므로, 기존 묶음을 유료 �
    명시적 `--write`와 source/target 경로가 있을 때만 한다.
 5. `04`: clean base DB, 초기 portfolio, 결정론적 LTB₀과 base digest를 만든다.
 
-현재 baseline에서는 수진의 `preparation/rn_ab_sealed_v1/`을 입력 정본으로
+현재 본실험에서는 `preparation/rn_ab_sealed_to_20260722_v1/`을 입력 정본으로
 사용하며 cohort와 news를 재선발하지 않는다. source를 바꾸지 않는 일반
 재현·실행 준비에서 `00`, `02`, `03`, `13`, `14`를 다시 실행하지 않는다.
 
-2026-05-29까지 확장 실행할 때는 별도 정본
-`preparation/rn_ab_sealed_to_20260529_v1/`을 사용한다. 이 profile은 기존
-2026-05-04까지의 90개 event·760개 slot을 변경하지 않고, 2026-05-06
-AM부터 2026-05-29 PM까지만 추가한다. 기본 profile을 묵시적으로
-바꾸지 않으므로 확장 실행은 다음 입력을 모두 명시해야 한다.
+7월 22일 본실험은 아래처럼 기간과 versioned 입력을 모두 명시한다. 설정 기본값도
+같은 profile을 가리키지만, 승인 run record에는 해석의 여지가 없도록 경로를
+생략하지 않는다.
 
 ```bash
 TWINMARKET_OFFLINE_LLM=1 python scripts/05_run_simulation.py \
   --start-date 2026-02-27 \
-  --end-date 2026-05-29 \
-  --news-bundle preparation/rn_ab_sealed_to_20260529_v1/news.json \
-  --calendar-registry preparation/rn_ab_sealed_to_20260529_v1/calendar.json \
-  --price-registry preparation/rn_ab_sealed_to_20260529_v1/prices.json \
+  --end-date 2026-07-22 \
+  --news-bundle preparation/rn_ab_sealed_to_20260722_v1/news.json \
+  --calendar-registry preparation/rn_ab_sealed_to_20260722_v1/calendar.json \
+  --price-registry preparation/rn_ab_sealed_to_20260722_v1/prices.json \
+  --base-db outputs/experiment_base_to_20260722.db \
   --run-dir outputs/experiments/<run_id>
 ```
 

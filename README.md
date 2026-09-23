@@ -50,11 +50,12 @@ runtime이나 과거 compatibility runner를 사용하지 않습니다.
 
 ## 정본 입력
 
-현재 기본 baseline profile은 `preparation/rn_ab_sealed_v1/`(…‑2026-05-04,
-45거래일)입니다. 2026-05-29까지 실행할 때는 기존 90개 event를
-그대로 보존하고 34개 event만 추가한
-`preparation/rn_ab_sealed_to_20260529_v1/` profile을 명시합니다. 종료일은
-일요일인 5월 31일이 아니라 마지막 거래일인 5월 29일입니다.
+현재 본실험의 기본 baseline profile은
+`preparation/rn_ab_sealed_to_20260722_v1/`입니다. 기간은 2026-02-27부터
+2026-07-22까지 98거래일·196 event이며, 기존 2026-05-29 profile의
+1,009개 slot은 payload와 순서를 그대로 보존하고 593개 slot을 추가했습니다.
+이전 `rn_ab_sealed_v1/`과 `rn_ab_sealed_to_20260529_v1/`은 과거 범위 재현용이며
+새 본실험의 기본 입력이 아닙니다.
 
 | 파일 | 역할 |
 | --- | --- |
@@ -68,9 +69,9 @@ runtime이나 과거 compatibility runner를 사용하지 않습니다.
 뉴스 정본 hash는 다음과 같습니다.
 
 - bundle:
-  `a6fb61900c27071b2a79781478592d99d914482fbba0f4ecaafa73edcb8ab707`
+  `6ba52298c4d00029ee370c5f6d5d43d4860658e8c27dd9ed66482ee4f40dc11c`
 - file:
-  `cf3561dbe9f9fa360b716970e8352022fa8cbcd4d824c1ef249880d1ee7e5f55`
+  `b45a1b71d25e8cf4738a63a921dad313eb5445503b286b176820d8ee5b3da197`
 
 에이전트는 기사 본문을 받지 않습니다. D0는 제목만 보고, D1은 event 기사
 요약까지, D2는 여기에 최근 7일 cutoff-safe 검색 요약 최대 5건을 추가로

@@ -251,15 +251,15 @@ def _write_segment_run(root: Path) -> Path:
     return root
 
 
-def test_sujin_sealed_shortages_accept_exact_five_to_ten() -> None:
+def test_current_sealed_shortages_accept_exact_three_to_ten() -> None:
     report = validate_sealed_news_coverage(
         config.SEALED_REAL_NEWS_BUNDLE
     )
     assert report["target_real_count"] == 10
-    assert report["event_count"] == 90
-    assert report["delivered_real_count"] == 760
-    assert report["shortage_event_count"] == 59
-    assert min(report["slot_counts"].values()) == 5
+    assert report["event_count"] == 196
+    assert report["delivered_real_count"] == 1_602
+    assert report["shortage_event_count"] == 138
+    assert min(report["slot_counts"].values()) == 3
     assert max(report["slot_counts"].values()) == 10
     for event_id, shortage in report["accepted_shortages"].items():
         assert shortage["actual_real_count"] == report["slot_counts"][event_id]

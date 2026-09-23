@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 import json
 import sqlite3
 from decimal import Decimal
@@ -258,25 +259,34 @@ def test_pair_finalizer_reads_common_runs_and_writes_one_hash_index(
         events=events,
         initial_cash=initial_cash,
     )
+    target_csv = tmp_path / "individual_targets.csv"
+    date_ids = list(dict.fromkeys(str(event["date"]) for event in events))
+    with target_csv.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=["Date", "Individuals"])
+        writer.writeheader()
+        for index, date_id in enumerate(date_ids):
+            writer.writerow(
+                {"Date": date_id, "Individuals": 1 if index % 2 == 0 else -1}
+            )
     output = tmp_path / "pair_evaluation.json"
     artifact = finalize_realnews_community_pair(
         off_run_dir=off,
         on_run_dir=on,
-        target_csv=Path("validation/data_trading_value.csv"),
+        target_csv=target_csv,
         output_path=output,
     )
 
     assert output.is_file()
     assert artifact["status"] == "pass"
     assert artifact["invariant_contract"]["cohort_agent_count"] == 100
-    assert artifact["invariant_contract"]["event_count"] == 90
+    assert artifact["invariant_contract"]["event_count"] == 196
     assert (
         artifact["invariant_contract"]["expected_fill_rows_per_arm"]
-        == 9_000
+        == 19_600
     )
     assert len(artifact["schedule"]["burn_in_dates"]) == 3
-    assert len(artifact["schedule"]["evaluation_dates"]) == 42
-    assert len(artifact["daily_gross_signed_fill_value"]) == 45
+    assert len(artifact["schedule"]["evaluation_dates"]) == 95
+    assert len(artifact["daily_gross_signed_fill_value"]) == 98
     assert artifact["hash_index"][OFF_CONDITION][
         "canonical_fill_rows_sha256"
     ]
@@ -286,7 +296,7 @@ def test_pair_finalizer_reads_common_runs_and_writes_one_hash_index(
     assert finalize_realnews_community_pair(
         off_run_dir=off,
         on_run_dir=on,
-        target_csv=Path("validation/data_trading_value.csv"),
+        target_csv=target_csv,
         output_path=output,
     ) == artifact
 

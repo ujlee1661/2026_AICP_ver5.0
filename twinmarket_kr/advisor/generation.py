@@ -32,11 +32,11 @@ ADVISOR_OUTPUT_KEYS = {
 ADVISOR_VALIDATION_ATTEMPTS = 3
 ADVISOR_MAX_TOKENS = 8192
 ADVISOR_SCHEMA_HINT = """{
-  "persona_basis": ["페르소나 근거"],
+  "persona_basis": ["참고한 페르소나 근거와 현재 상황에서의 적합성 평가"],
   "observed_behavior": ["fill_A001_t090: 관찰된 원장 근거"],
-  "persona_behavior_assessment": "페르소나와 행동의 관계 평가",
+  "persona_behavior_assessment": "페르소나의 상황 적합성과 실제 행동의 최적 판단 부합 여부",
   "performance_context": "과거 성과 맥락",
-  "advice_body": "1~500자의 비지시적 맞춤형 진단"
+  "advice_body": "시장·원장상 최적 절차를 persona에 맞게 개인화한 1~500자의 비지시적 조언"
 }
 persona_basis와 observed_behavior는 비어 있지 않은 문자열 배열이어야 합니다.
 나머지 값은 비어 있지 않은 문자열이어야 하며, advice_body에는 매수·매도 지시나

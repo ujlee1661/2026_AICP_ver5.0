@@ -1,4 +1,4 @@
-"""Persona-grounded advisor treatment for the integrated simulation."""
+"""Market- and ledger-grounded personalized advisor treatment."""
 
 from twinmarket_kr.advisor.artifact import (
     ADVISOR_ASSIGNMENT_NAMESPACE,

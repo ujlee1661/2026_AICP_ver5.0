@@ -61,7 +61,7 @@ class IntegratedStudySpecTests(unittest.TestCase):
         self.assertEqual(profile.required_agent_count, 100)
         self.assertEqual(profile.stock_code, config.STOCK_CODE)
         self.assertEqual(profile.instrument_name, "삼성전자")
-        self.assertEqual(len(profile.schedule_date_ids), 45)
+        self.assertEqual(len(profile.schedule_date_ids), 98)
         self.assertEqual(profile.per_arm_concurrency, 8)
         self.assertEqual(len(profile.burn_in_dates), 3)
 

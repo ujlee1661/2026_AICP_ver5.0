@@ -39,7 +39,7 @@ class NumberedPrepareStepTests(unittest.TestCase):
         self.assertTrue(report["validation_pass"])
         self.assertEqual(report["mode"], "read_only_sealed_news_validation")
         self.assertEqual(report["stock_code"], "005930")
-        self.assertEqual(report["event_count"], 90)
+        self.assertEqual(report["event_count"], 196)
 
     def test_market_step_default_validation_does_not_modify_database(self) -> None:
         module = _load_script("03_load_stock_data.py")

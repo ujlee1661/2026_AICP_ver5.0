@@ -3,7 +3,7 @@
 > 상태: **승인된 설계 계약, 무과금 P0 리팩터링·재봉인·검증 PASS · live 실행 전**
 >
 > 현재 번호형 엔진에 핵심 정책이 연결되어 있고, 현 code·prompt·persona projection
-> 재봉인, 전체 무과금 회귀, 1 agent/45거래일 OFF/ON 실제 중단·재개 offline 검증,
+> 재봉인, 전체 무과금 회귀, 7 agent/98거래일 Community ON offline E2E 검증,
 > PDF fixture QA를 마쳤다. 아래
 > 정책이 적혀 있다는 사실만으로 clean/frozen live 승인, live canary 또는 본실험
 > 완료를 의미하지 않는다.
@@ -34,10 +34,10 @@
 | 축 | 현재 값 |
 | --- | --- |
 | instrument | 삼성전자 `005930`, 한국 거래소 가격·달력 |
-| 기간 | 2026-02-27 ~ 2026-05-04, 45거래일 |
-| decision event | 거래일별 AM·PM, 총 90 event |
+| 기간 | 2026-02-27 ~ 2026-07-22, 98거래일 |
+| decision event | 거래일별 AM·PM, 총 196 event |
 | burn-in | 첫 3거래일 |
-| 주 분석 | burn-in 이후 42거래일 |
+| 주 분석 | burn-in 이후 95거래일 |
 | cohort | 동일한 고정 100명 |
 | depth | D0=30, D1=55, D2=15 |
 | community 선택·반응 가능 | D1+D2=70명 |
@@ -53,7 +53,7 @@
 | reasoning | strict off |
 
 종목, 날짜, agent 수를 바꾸는 후속 study는 같은 실행 엔진에서 별도의 봉인
-profile을 만든다. 삼성전자·45일·100명 값을 코드에 새로 하드코딩하거나 현재
+profile을 만든다. 삼성전자·98일·100명 값을 코드에 새로 하드코딩하거나 현재
 baseline의 hash를 수정해 재사용하지 않는다.
 
 ## 3. 조건과 비교 원칙
@@ -84,18 +84,19 @@ polarity는 에이전트가 보는 입력에 노출하지 않고 사후 분석 r
 
 ## 4. 최신 실제뉴스 정본
 
-현재 실행 입력은 `preparation/rn_ab_sealed_v1/news.json` 하나다. 이 파일은
-`sujin_0727`의 Git 기준 커밋에 포함되어 있고 다음 특성을 가진다.
+현재 실행 입력은
+`preparation/rn_ab_sealed_to_20260722_v1/news.json` 하나다. 기존 봉인 범위를
+그대로 보존한 뒤 2026-07-22까지 versioned profile로 확장했으며 다음 특성을 가진다.
 
 - 종목: `005930`
-- 등록 event: 90
+- 등록 event: 196
 - event별 실제뉴스 목표: 10
 - event별 카테고리 목표: 종목 5·섹터 3·경제 2
-- 봉인 article/slot: 760
-- 목표 미달을 명시적으로 수락한 event: 59
+- 봉인 article/slot: 1,602
+- 목표 미달을 명시적으로 수락한 event: 138
 - fake registry ID와 payload hash: 0
 - canonical bundle hash:
-  `a6fb61900c27071b2a79781478592d99d914482fbba0f4ecaafa73edcb8ab707`
+  `6ba52298c4d00029ee370c5f6d5d43d4860658e8c27dd9ed66482ee4f40dc11c`
 
 shortage는 오류를 숨기는 기본값이 아니다. 안전한 고유 기사만 전달하고 아래를
 event별로 기록한 뒤 실험은 계속한다.
@@ -108,7 +109,7 @@ event별로 기록한 뒤 실험은 계속한다.
 부족분을 미래 기사, 중복 기사, 합성 기사, 조건별 다른 기사로 채우지 않는다.
 한 카테고리의 초과 기사로 다른 카테고리의 부족분도 채우지 않는다. 예를 들어
 종목 4·섹터 4·경제 2가 가능해도 선택은 4·3·2, 총 9개이며 shortage로 남긴다.
-전체 45일 분석과 함께 complete-news-only 민감도 분석, shortage event 목록,
+전체 98일 분석과 함께 complete-news-only 민감도 분석, shortage event 목록,
 고정 denominator를 보고한다.
 
 `archive/legacy_inputs/rn_ab_source_candidate_v1/input_candidates/`, legacy 뉴스 CSV,

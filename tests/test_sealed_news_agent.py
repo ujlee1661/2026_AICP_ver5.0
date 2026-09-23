@@ -49,6 +49,13 @@ def _article(index: int, *, event_date: str = "2026-02-27") -> dict[str, Any]:
     }
 
 
+def _replace_source_url(article: dict[str, Any], source_url: str) -> None:
+    article["source_url"] = source_url
+    payload = dict(article)
+    payload.pop("payload_sha256", None)
+    article["payload_sha256"] = _canonical_sha256(payload)
+
+
 def _bundle_payload(*, shortage: bool = False) -> dict[str, Any]:
     articles = [_article(1)] if shortage else [_article(1), _article(2)]
     slots = [
@@ -138,17 +145,43 @@ class SealedNewsBundleTests(unittest.TestCase):
         bundle = SealedNewsBundle.load(config.SEALED_REAL_NEWS_BUNDLE)
         self.assertEqual(bundle.stock_code, "005930")
         self.assertEqual(bundle.target_real_count, 10)
-        self.assertEqual(len(bundle.slots_by_event), 90)
+        self.assertEqual(len(bundle.slots_by_event), 196)
         self.assertEqual(
             sum(len(slots) for slots in bundle.slots_by_event.values()),
-            760,
+            1_602,
         )
-        self.assertEqual(len(bundle.articles), 760)
-        self.assertEqual(len(bundle.accepted_shortages), 59)
+        self.assertEqual(len(bundle.articles), 1_602)
+        self.assertEqual(len(bundle.accepted_shortages), 138)
         self.assertEqual(
             bundle.bundle_sha256,
-            "a6fb61900c27071b2a79781478592d99d914482fbba0f4ecaafa73edcb8ab707",
+            "6ba52298c4d00029ee370c5f6d5d43d4860658e8c27dd9ed66482ee4f40dc11c",
         )
+
+    def test_sealed_repo_split_source_is_accepted_but_arbitrary_repo_uri_is_not(self) -> None:
+        payload = _bundle_payload()
+        _replace_source_url(
+            payload["articles"][0],
+            "repo://data/samsung_split/048.json#article=3",
+        )
+        payload["slots"][0]["payload_sha256"] = payload["articles"][0][
+            "payload_sha256"
+        ]
+        _reseal(payload)
+        SealedNewsBundle.load(self._write(payload))
+
+        _replace_source_url(
+            payload["articles"][0],
+            "repo://data/../private/secret.json#article=3",
+        )
+        payload["slots"][0]["payload_sha256"] = payload["articles"][0][
+            "payload_sha256"
+        ]
+        _reseal(payload)
+        with self.assertRaisesRegex(
+            SealedNewsBundleError,
+            "http\\(s\\) URL or a sealed repo",
+        ):
+            SealedNewsBundle.load(self._write(payload))
 
     def test_depth2_additional_results_never_repeat_current_event_base_news(
         self,

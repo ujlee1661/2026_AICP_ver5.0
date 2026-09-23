@@ -14,6 +14,12 @@
 | `<run-dir>/daily_exchange_summary.csv` | canonical 일별 가격/거래 요약 |
 | `<run-dir>/run_metadata.json` | 봉인된 거래일·조건 메타데이터 |
 
+2026-02-27~2026-07-22 구간은 KRX 정보데이터시스템의 삼성전자(`005930`)
+`투자자별 거래실적(개별종목) > 일별추이 > 순매수`에서 내려받은 원본
+`data/data_5238_20260923_value.csv`와
+`data/data_5307_20260923_volume.csv`로 검증한다. 원본은 EUC-KR이며, 기존 원장과
+겹치는 69거래일의 값이 모든 투자자 열에서 정확히 일치한 상태로 병합했다.
+
 `--run-dir`와 `--output-dir`는 모두 명시해야 한다. `outputs/current`, latest
 glob, 전역 DB, archive는 입력으로 사용하지 않는다.
 

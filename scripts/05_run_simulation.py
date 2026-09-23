@@ -100,7 +100,7 @@ def build_parser() -> argparse.ArgumentParser:
         default=config.SEALED_REAL_NEWS_BUNDLE,
         help=(
             "Hash-validated event-slot news bundle. The baseline default is "
-            "preparation/rn_ab_sealed_v1/news.json."
+            "preparation/rn_ab_sealed_to_20260722_v1/news.json."
         ),
     )
     parser.add_argument(

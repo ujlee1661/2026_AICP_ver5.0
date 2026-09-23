@@ -27,6 +27,7 @@ from twinmarket_kr.advisor.generation import (
 from twinmarket_kr.advisor.case_builder import normalize_runtime_constraints
 from twinmarket_kr.agents.memory_agent import MemoryAgent
 from twinmarket_kr.db.connection import init_sim_db
+from twinmarket_kr.llm.belief import render_prompt
 
 
 class AdvisorArtifactTests(unittest.TestCase):
@@ -169,6 +170,23 @@ class AdvisorGenerationRetryTests(unittest.IsolatedAsyncioTestCase):
             "performance_context": "수익률은 보조 근거로 사용함",
             "advice_body": "거래 규모와 판단 근거를 함께 점검하세요.",
         }
+
+    def test_generation_prompt_prioritizes_optimal_process_over_persona_compliance(self) -> None:
+        prompt = render_prompt("advisor_generation.txt", advisor_case_json="{}")
+        optimal_process = "앞으로 가장 합리적인 판단 절차가 무엇인지 먼저 결정하세요"
+        persona_reference = "persona는 그 절차의"
+        self.assertIn(optimal_process, prompt)
+        self.assertIn(persona_reference, prompt)
+        self.assertLess(prompt.index(optimal_process), prompt.index(persona_reference))
+        self.assertIn("참고 자료이지, 지켜야 할 최상위", prompt)
+        self.assertIn("상충하더라도 더 나은 판단", prompt)
+        self.assertIn("부적합한 persona를 무조건 따르라고", prompt)
+        self.assertIn("persona의 방식이 현재 상황에도 합리적인데 실제 행동만 이탈", prompt)
+        self.assertIn("조언은 반드시 이 투자자에게 개인화하세요", prompt)
+        self.assertIn("조언 내용 개인화의 핵심 근거입니다", prompt)
+        self.assertIn("persona가 달라도 동일하게 나올 수 있는 비개인화된 일반론", prompt)
+        self.assertIn("persona의 말투·어휘·캐릭터를 흉내 내지는 말고", prompt)
+        self.assertIn("명료하고 중립적인 일반적 어드바이저 문체", prompt)
 
     def test_reasoning_text_with_fenced_json_is_parsed_without_coercion(self) -> None:
         expected = self._valid_output()

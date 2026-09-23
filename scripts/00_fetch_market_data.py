@@ -9,8 +9,9 @@ from __future__ import annotations
 
 import sys
 import io
+import argparse
 from pathlib import Path
-from datetime import date
+from datetime import date, datetime, timedelta
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
@@ -75,9 +76,21 @@ def calc_volatility(close: pd.Series, window: int = 20) -> pd.Series:
 
 # ── 데이터 수집 ──────────────────────────────────────────────────────────────
 
-def fetch_samsung() -> pd.DataFrame:
-    print(f"삼성전자({SAMSUNG_TICKER}) 수집 중: {WARMUP_START} ~ {END_DATE} (지표 계산용 워밍업 포함)")
-    raw = yf.download(SAMSUNG_TICKER, start=WARMUP_START, end=END_DATE, auto_adjust=False, progress=False)
+def _exclusive_end(end_date: str) -> str:
+    """Convert the user-facing inclusive end date to yfinance's exclusive end."""
+    parsed = datetime.strptime(end_date, "%Y-%m-%d").date()
+    return str(parsed + timedelta(days=1))
+
+
+def fetch_samsung(*, end_date: str = END_DATE) -> pd.DataFrame:
+    print(f"삼성전자({SAMSUNG_TICKER}) 수집 중: {WARMUP_START} ~ {end_date} (지표 계산용 워밍업 포함)")
+    raw = yf.download(
+        SAMSUNG_TICKER,
+        start=WARMUP_START,
+        end=_exclusive_end(end_date),
+        auto_adjust=False,
+        progress=False,
+    )
 
     if raw.empty:
         raise RuntimeError("yfinance에서 데이터를 받지 못했습니다.")
@@ -128,11 +141,12 @@ def fetch_samsung() -> pd.DataFrame:
     return df
 
 
-def fetch_macro() -> pd.DataFrame:
-    print(f"매크로 데이터 수집 중: {START_DATE} ~ {END_DATE}")
+def fetch_macro(*, end_date: str = END_DATE) -> pd.DataFrame:
+    print(f"매크로 데이터 수집 중: {START_DATE} ~ {end_date}")
 
-    kospi_raw = yf.download(KOSPI_TICKER, start=START_DATE, end=END_DATE, auto_adjust=False, progress=False)
-    usdkrw_raw = yf.download(USDKRW_TICKER, start=START_DATE, end=END_DATE, auto_adjust=False, progress=False)
+    exclusive_end = _exclusive_end(end_date)
+    kospi_raw = yf.download(KOSPI_TICKER, start=START_DATE, end=exclusive_end, auto_adjust=False, progress=False)
+    usdkrw_raw = yf.download(USDKRW_TICKER, start=START_DATE, end=exclusive_end, auto_adjust=False, progress=False)
 
     if isinstance(kospi_raw.columns, pd.MultiIndex):
         kospi_raw.columns = kospi_raw.columns.get_level_values(0)
@@ -156,15 +170,26 @@ def fetch_macro() -> pd.DataFrame:
     return macro.reset_index(drop=True)
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
+    parser = argparse.ArgumentParser(
+        description="삼성전자 OHLCV·기술지표와 매크로 데이터를 수집합니다."
+    )
+    parser.add_argument(
+        "--end-date",
+        default=END_DATE,
+        help="수집에 포함할 마지막 날짜(YYYY-MM-DD, 기본값: 오늘)",
+    )
+    args = parser.parse_args(argv)
+    datetime.strptime(args.end_date, "%Y-%m-%d")
+
     data_dir = PROJECT_ROOT / "data"
     data_dir.mkdir(parents=True, exist_ok=True)
 
     stock_path = data_dir / "stock_data.csv"
     macro_path = data_dir / "macro_data.csv"
 
-    stock_df = fetch_samsung()
-    macro_df = fetch_macro()
+    stock_df = fetch_samsung(end_date=args.end_date)
+    macro_df = fetch_macro(end_date=args.end_date)
 
     stock_df.to_csv(stock_path, index=False, encoding="utf-8-sig")
     macro_df.to_csv(macro_path, index=False, encoding="utf-8-sig")

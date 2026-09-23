@@ -21,6 +21,11 @@ class SealedNewsBundleError(RuntimeError):
 
 _SEALED_SHA256_RE = re.compile(r"^[0-9a-f]{64}$", re.IGNORECASE)
 _SEALED_EVENT_ID_RE = re.compile(r"^\d{4}-\d{2}-\d{2}/(?:AM|PM)$")
+_SEALED_REPO_SOURCE_RE = re.compile(
+    r"^repo://data/(?:samsung_split|semiconductor_split|"
+    r"macro_economic-policy_split|macro_business-index_split|"
+    r"macro_trade_split)/\d+\.json#article=\d+$"
+)
 _SEALED_FAKE_FIELD_RE = re.compile(
     r"(?:^|_)(?:fake|synthetic|injection|false_claim)(?:_|$)",
     re.IGNORECASE,
@@ -307,8 +312,13 @@ class SealedNewsArticle:
                 raise SealedNewsBundleError(
                     "article last_modified_at must be between published_at and observed_at"
                 )
-        if not re.fullmatch(r"https?://[^\s]+", article.source_url):
-            raise SealedNewsBundleError("article source_url must be an http(s) URL")
+        if not (
+            re.fullmatch(r"https?://[^\s]+", article.source_url)
+            or _SEALED_REPO_SOURCE_RE.fullmatch(article.source_url)
+        ):
+            raise SealedNewsBundleError(
+                "article source_url must be an http(s) URL or a sealed repo://data split reference"
+            )
         _validate_sealed_visible_text(article.article_id, label="article_id")
         _validate_sealed_visible_text(article.title, label="article title")
         _validate_sealed_visible_text(article.summary, label="article summary")

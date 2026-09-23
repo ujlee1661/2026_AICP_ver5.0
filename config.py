@@ -32,20 +32,21 @@ SYS_100_DB = Path(
     os.getenv("TWINMARKET_SYS_100_DB", str(DATA_DIR / "sys_100_ko_ver5.db"))
 )
 SIM_DB = OUTPUT_DIR / "sim.db"
-EXPERIMENT_BASE_DB = OUTPUT_DIR / "experiment_base_sim.db"
+EXPERIMENT_BASE_DB = OUTPUT_DIR / "experiment_base_to_20260722.db"
 
 # 현재 실제뉴스 baseline의 유일한 production 입력이다. ``outputs/*_split``과
 # legacy selected-news CSV는 이 봉인 파일을 만드는 source/history artifact일
 # 뿐이며, 시뮬레이션이 런타임에 다시 표본을 뽑는 입력으로 사용하지 않는다.
-# Sealed profile directory. Default is the original baseline; set
+# Sealed profile directory. Default is the approved 2026-02-27..2026-07-22
+# experiment profile; set
 # TWINMARKET_SEALED_PROFILE to point the regression suite at another sealed profile
 # without editing checked-in tests.
 SEALED_PROFILE_ROOT = PREPARATION_DIR / os.getenv(
-    "TWINMARKET_SEALED_PROFILE", "rn_ab_sealed_v1"
+    "TWINMARKET_SEALED_PROFILE", "rn_ab_sealed_to_20260722_v1"
 )
-SEALED_REAL_NEWS_BUNDLE = PREPARATION_DIR / "rn_ab_sealed_v1" / "news.json"
-SEALED_EVENT_CALENDAR = PREPARATION_DIR / "rn_ab_sealed_v1" / "calendar.json"
-SEALED_EVENT_PRICES = PREPARATION_DIR / "rn_ab_sealed_v1" / "prices.json"
+SEALED_REAL_NEWS_BUNDLE = SEALED_PROFILE_ROOT / "news.json"
+SEALED_EVENT_CALENDAR = SEALED_PROFILE_ROOT / "calendar.json"
+SEALED_EVENT_PRICES = SEALED_PROFILE_ROOT / "prices.json"
 
 STOCK_CODE = "005930"
 COUNTERSIDE_USER_ID = "COUNTERSIDE"

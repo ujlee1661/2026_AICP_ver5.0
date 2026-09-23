@@ -3,7 +3,7 @@
 > 문서 성격: 코드 구현·인수인계용 기술 정본
 > 기준 저장소: `sujin809/2026_AICP_ver3.0`, `sujin_0727`
 > 기준일: 2026-07-29
-> 현재 상태: 무과금 P0 리팩터링·재봉인·검증 PASS, 유료 live canary·45일 본실험은 별도 승인 전 NO-GO
+> 현재 상태: 7월 22일 확장 입력·무과금 E2E 검증 PASS, 유료 본실험은 별도 승인 전 NO-GO
 
 이 문서는 AICP 3.0의 실제 실행 구조를 코드 수준에서 설명한다. 연구질문과
 실험 조건의 통계적 의미는 `EXPERIMENT_DESIGN.md`, 운영 명령과 Go/No-Go
@@ -34,7 +34,7 @@
 | 기준 HEAD | `f4e17956f39e0cb0d94974cb03684d68f5e53ce7` |
 | 작성자 | `sujinjung <e62974347@gmail.com>` |
 | 커밋 제목 | `RN Community A/B: 뉴스 재구축, 입력 봉인, D2 후보 풀 재정의` |
-| 뉴스 정본 | `preparation/rn_ab_sealed_v1/news.json` |
+| 뉴스 정본 | `preparation/rn_ab_sealed_to_20260722_v1/news.json` |
 
 `news.json`은 Git tracked이며 HEAD blob과 현재 파일의 blob이
 `b3a7528f5f976c14662a056c46ed686a29e80ad1`로 같다. 따라서 수진이 만든 이
@@ -168,11 +168,12 @@ runtime은 제거됐다. journal, StudySpec, sealing, reasoning-off gate와 pair
 
 ### 3.1 봉인 입력
 
-현재 삼성전자 baseline은 `preparation/rn_ab_sealed_v1/`을 사용한다.
+현재 삼성전자 본실험 baseline은
+`preparation/rn_ab_sealed_to_20260722_v1/`을 사용한다.
 
 | 파일 | 의미 |
 | --- | --- |
-| `calendar.json` | 45거래일, AM/PM 90 event의 순서와 turn |
+| `calendar.json` | 98거래일, AM/PM 196 event의 순서와 turn |
 | `prices.json` | 각 event의 외생 체결가격 |
 | `news.json` | event별 실제뉴스 slot, article/version/hash, shortage |
 | `cohort.json` | 100명 agent와 depth 배정 |

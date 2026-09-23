@@ -454,7 +454,9 @@ async def analyze_market(
         execution_state=json.dumps(execution_state, ensure_ascii=False, indent=2),
         portfolio_summary=portfolio_summary,
         advisor_note_block=(
-            "\n담당 투자 어드바이저의 행동 규율 메모:\n" + advisor_note + "\n"
+            "\n담당 투자 어드바이저의 persona 맞춤형 시장·기록 기반 조언:\n"
+            + advisor_note
+            + "\n"
             if advisor_note
             else ""
         ),
