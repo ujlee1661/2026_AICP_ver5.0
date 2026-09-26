@@ -1,0 +1,20 @@
+{
+  "run_id": "ADVISOR_MAIN_FROM_SCRATCH_PARENT_20260923",
+  "agent_count": 100,
+  "date_count": 1,
+  "information_mode": "pre_close_cutoff",
+  "decision_space": "buy_sell_only",
+  "turn_offset": 68,
+  "day_offset": 34,
+  "global_turn_start": 69,
+  "global_turn_end": 70,
+  "phases": [
+    "pm",
+    "community"
+  ],
+  "community_delivery_summary": null,
+  "outcome_finalized": false,
+  "right_censored_outcome_count": 0,
+  "schedule_complete": false,
+  "log_dir": "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_MAIN_FROM_SCRATCH_PARENT_20260923"
+}

@@ -1,0 +1,79 @@
+2026-05-06 turns=91/92 phases=am am_orders=100 am_volume=16955 pm=skipped_or_loaded
+log_dir=/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_MAIN_CONT_ON_20260925
+  community_phase done: 70 agents, 5 best posts
+2026-05-06 turns=91/92 phases=pm,community am=skipped pm_orders=100 pm_volume=16570
+log_dir=/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_MAIN_CONT_ON_20260925
+2026-05-07 turns=93/94 phases=am am_orders=100 am_volume=18947 pm=skipped_or_loaded
+log_dir=/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_MAIN_CONT_ON_20260925
+  community_phase done: 70 agents, 5 best posts
+2026-05-07 turns=93/94 phases=pm,community am=skipped pm_orders=100 pm_volume=19803
+log_dir=/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_MAIN_CONT_ON_20260925
+2026-05-08 turns=95/96 phases=am am_orders=100 am_volume=30598 pm=skipped_or_loaded
+log_dir=/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_MAIN_CONT_ON_20260925
+  community_phase done: 70 agents, 5 best posts
+2026-05-08 turns=95/96 phases=pm,community am=skipped pm_orders=100 pm_volume=27113
+log_dir=/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_MAIN_CONT_ON_20260925
+2026-05-11 turns=97/98 phases=am am_orders=100 am_volume=38519 pm=skipped_or_loaded
+log_dir=/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_MAIN_CONT_ON_20260925
+  community_phase done: 70 agents, 5 best posts
+2026-05-11 turns=97/98 phases=pm,community am=skipped pm_orders=100 pm_volume=25566
+log_dir=/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_MAIN_CONT_ON_20260925
+2026-05-12 turns=99/100 phases=am am_orders=100 am_volume=17962 pm=skipped_or_loaded
+log_dir=/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_MAIN_CONT_ON_20260925
+  community_phase done: 70 agents, 5 best posts
+2026-05-12 turns=99/100 phases=pm,community am=skipped pm_orders=100 pm_volume=24523
+log_dir=/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_MAIN_CONT_ON_20260925
+2026-05-13 turns=101/102 phases=am am_orders=100 am_volume=27267 pm=skipped_or_loaded
+log_dir=/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_MAIN_CONT_ON_20260925
+  community_phase done: 70 agents, 5 best posts
+2026-05-13 turns=101/102 phases=pm,community am=skipped pm_orders=100 pm_volume=33771
+log_dir=/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_MAIN_CONT_ON_20260925
+2026-05-14 turns=103/104 phases=am am_orders=100 am_volume=23305 pm=skipped_or_loaded
+log_dir=/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_MAIN_CONT_ON_20260925
+  community_phase done: 70 agents, 5 best posts
+2026-05-14 turns=103/104 phases=pm,community am=skipped pm_orders=100 pm_volume=31970
+log_dir=/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_MAIN_CONT_ON_20260925
+2026-05-15 turns=105/106 phases=am am_orders=100 am_volume=19078 pm=skipped_or_loaded
+log_dir=/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_MAIN_CONT_ON_20260925
+Traceback (most recent call last):
+  File "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/twinmarket_kr/simulation.py", line 1025, in _generate_post_fill_ltb
+    generated = await update_long_term_belief(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/twinmarket_kr/llm/belief.py", line 751, in update_long_term_belief
+    generated = await _generate_hierarchical_belief(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/twinmarket_kr/llm/belief.py", line 563, in _generate_hierarchical_belief
+    raise BeliefValidationError(
+twinmarket_kr.llm.belief.BeliefValidationError: post_fill_long_term_belief failed after 10 attempts: [["integration_evidence.dim_6.support:unknown_ids:['news_20260515_종목_9d7e3ce7']", "integration_evidence.dim_6.contradict:unknown_ids:['news_20260515_종목_4a9e65f4']"], ["integration_evidence.dim_5:must_preserve_evidence_relation:support_moved_to_contradict:['news_20260515_종목_4a9e65f4']"], ["integration_evidence.dim_5:must_preserve_evidence_relation:support_moved_to_contradict:['news_20260515_종목_4a9e65f4']"], ["integration_evidence.dim_5:must_preserve_evidence_relation:support_moved_to_contradict:['news_20260515_종목_4a9e65f4']"], ["integration_evidence.dim_5:must_preserve_evidence_relation:support_moved_to_contradict:['news_20260515_종목_4a9e65f4']"], ["integration_evidence.dim_5:must_preserve_evidence_relation:support_moved_to_contradict:['news_20260515_종목_4a9e65f4']"], ["integration_evidence.dim_5:must_preserve_evidence_relation:support_moved_to_contradict:['news_20260515_종목_4a9e65f4']"], ["integration_evidence.dim_5:must_preserve_evidence_relation:support_moved_to_contradict:['news_20260515_종목_4a9e65f4']"], ["integration_evidence.dim_5:must_preserve_evidence_relation:support_moved_to_contradict:['news_20260515_종목_4a9e65f4']"], ["integration_evidence.dim_5:must_preserve_evidence_relation:support_moved_to_contradict:['news_20260515_종목_4a9e65f4']"]]
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/scripts/05_run_simulation.py", line 1166, in <module>
+    main()
+  File "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/scripts/05_run_simulation.py", line 1161, in main
+    run_dir = asyncio.run(_run(args))
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/scripts/05_run_simulation.py", line 1064, in _run
+    raise terminal_error
+  File "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/scripts/05_run_simulation.py", line 952, in _run
+    last_phase_result = await run_simulation(
+                        ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/twinmarket_kr/simulation.py", line 136, in wrapped
+    return await function(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/twinmarket_kr/simulation.py", line 609, in run_simulation
+    pm_results = await _run_subturn(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/twinmarket_kr/simulation.py", line 1064, in _run_subturn
+    raise ParallelTaskError(
+twinmarket_kr.experiment_runtime.ParallelTaskError: 1 post-fill LTB call(s) failed: BeliefValidationError: post_fill_long_term_belief failed after 10 attempts: [["integration_evidence.dim_6.support:unknown_ids:['news_20260515_종목_9d7e3ce7']", "integration_evidence.dim_6.contradict:unknown_ids:['news_20260515_종목_4a9e65f4']"], ["integration_evidence.dim_5:must_preserve_evidence_relation:support_moved_to_contradict:['news_20260515_종목_4a9e65f4']"], ["integration_evidence.dim_5:must_preserve_evidence_relation:support_moved_to_contradict:['news_20260515_종목_4a9e65f4']"], ["integration_evidence.dim_5:must_preserve_evidence_relation:support_moved_to_contradict:['news_20260515_종목_4a9e65f4']"], ["integration_evidence.dim_5:must_preserve_evidence_relation:support_moved_to_contradict:['news_20260515_종목_4a9e65f4']"], ["integration_evidence.dim_5:must_preserve_evidence_relation:support_moved_to_contradict:['news_20260515_종목_4a9e65f4']"], ["integration_evidence.dim_5:must_preserve_evidence_relation:support_moved_to_contradict:['news_20260515_종목_4a9e65f4']"], ["integration_evidence.dim_5:must_preserve_evidence_relation:support_moved_to_contradict:['news_20260515_종목_4a9e65f4']"], ["integration_evidence.dim_5:must_preserve_evidence_relation:support_moved_to_contradict:['news_20260515_종목_4a9e65f4']"], ["integration_evidence.dim_5:must_preserve_evidence_relation:support_moved_to_contradict:['news_20260515_종목_4a9e65f4']"]]
