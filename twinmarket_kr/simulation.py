@@ -1033,6 +1033,7 @@ async def _run_subturn(
                     previous_ltb=turn_result["previous_ltb"],
                     current_stb=turn_result["stb"],
                     transaction_episode=execution["fill"],
+                    advisor_note=turn_result["context"].get("advisor_note"),
                     eligible_price_outcomes_dim_6_only=eligible_outcomes,
                     client=client,
                     seed=stable_llm_seed(

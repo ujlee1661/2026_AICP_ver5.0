@@ -225,6 +225,7 @@ class IntegratedMemoryPromptWiringTests(unittest.IsolatedAsyncioTestCase):
                 "executed_price": 100.0,
                 "fee": 0.0,
             },
+            advisor_note="이번에 받은 개인화 조언",
             eligible_price_outcomes_dim_6_only=[
                 {
                     "outcome_id": due_outcome_id,
@@ -256,6 +257,7 @@ class IntegratedMemoryPromptWiringTests(unittest.IsolatedAsyncioTestCase):
                 "previous_ltb",
                 "current_stb",
                 "transaction_episode",
+                "advisor_note",
                 "eligible_price_outcomes_dim_6_only",
                 "sanitized_evidence_registry",
             },
@@ -268,6 +270,7 @@ class IntegratedMemoryPromptWiringTests(unittest.IsolatedAsyncioTestCase):
             payload["transaction_episode"]["fill_id"],
             "fill:current",
         )
+        self.assertEqual(payload["advisor_note"], "이번에 받은 개인화 조언")
         # 가격 결과는 ID 대신 순번으로만 노출된다(환각 차단).
         self.assertEqual(
             [
@@ -687,6 +690,7 @@ class StbScopeAndAnalysisEvidenceContractTests(unittest.IsolatedAsyncioTestCase)
         self.assertIn("정보 한계:", prompt)
         payload = _stage_payload(prompt)
         self.assertIn("transaction_episode", payload)
+        self.assertNotIn("advisor_note", payload)
         self.assertIn("eligible_price_outcomes_dim_6_only", payload)
         self.assertEqual(
             [item["순번"] for item in payload["eligible_price_outcomes_dim_6_only"]],

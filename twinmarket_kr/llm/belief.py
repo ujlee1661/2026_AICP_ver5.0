@@ -631,6 +631,7 @@ async def update_long_term_belief(
     previous_ltb: Mapping[str, Any],
     current_stb: Mapping[str, Any],
     transaction_episode: Mapping[str, Any],
+    advisor_note: str | None = None,
     eligible_price_outcomes_dim_6_only: list[Mapping[str, Any]] | None = None,
     client: OpenRouterClient | None = None,
     seed: int | None = None,
@@ -748,6 +749,8 @@ async def update_long_term_belief(
             set().union(*allowed_by_dimension.values())
         ),
     }
+    if advisor_note:
+        payload["advisor_note"] = advisor_note
     generated = await _generate_hierarchical_belief(
         prompt_name="update_long_term_belief.txt",
         prompt_payload=payload,

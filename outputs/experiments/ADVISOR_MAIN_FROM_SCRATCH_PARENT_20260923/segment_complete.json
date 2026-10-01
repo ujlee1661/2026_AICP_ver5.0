@@ -1,0 +1,37 @@
+{
+  "community_delivery_summary": null,
+  "completed_event_count": 90,
+  "event_count": 90,
+  "full_frozen_schedule": false,
+  "log_dir": "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_MAIN_FROM_SCRATCH_PARENT_20260923",
+  "outcome_finalized": false,
+  "response_journal": {
+    "logical_counts": {
+      "accepted/committed": 52540
+    },
+    "path": "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_MAIN_FROM_SCRATCH_PARENT_20260923/.runtime/response_journal.sqlite",
+    "physical_attempt_counts": {
+      "accepted": 52540,
+      "error": 32,
+      "rejected": 2813
+    },
+    "schema_version": "integrated-response-journal-v1",
+    "stage_labels": [
+      "community_posting",
+      "community_read_react",
+      "community_read_select",
+      "community_thinking",
+      "depth2_post_search",
+      "depth2_pre_search",
+      "market_analysis",
+      "post_fill_long_term_belief",
+      "short_term_belief",
+      "trading_decision"
+    ]
+  },
+  "right_censored_outcome_count": 0,
+  "run_id": "ADVISOR_MAIN_FROM_SCRATCH_PARENT_20260923",
+  "runtime_db": "/Users/leeyujeong/2026_AICP_ver3.0/2026_AICP_ver3.0/outputs/experiments/ADVISOR_MAIN_FROM_SCRATCH_PARENT_20260923/.runtime/runtime_sim.db",
+  "schedule_complete": false,
+  "status": "segment_complete"
+}

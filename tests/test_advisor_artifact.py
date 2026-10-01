@@ -13,6 +13,8 @@ from twinmarket_kr.advisor.artifact import (
     ADVISOR_MODEL,
     ADVISOR_PROVIDER,
     ADVISOR_REASONING_POLICY,
+    GENERAL_ADVISOR_MODEL,
+    GENERAL_ADVISOR_PROVIDER,
     AdvisorArtifact,
     canonical_sha256,
     deterministic_advisor_agents,
@@ -74,6 +76,53 @@ class AdvisorArtifactTests(unittest.TestCase):
             path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
             return AdvisorArtifact.load(path, cohort_agent_ids=self.agent_ids)
 
+    def _general_payload(self, body: str = "매매 전 정보를 확인하고 신중하게 판단하세요.") -> dict:
+        payload = self._payload(body)
+        payload.update(
+            advice_kind="general",
+            model=GENERAL_ADVISOR_MODEL,
+            provider=GENERAL_ADVISOR_PROVIDER,
+            reasoning_policy=None,
+            source_cases_sha256="c" * 64,
+        )
+        for message in payload["messages"]:
+            message.update(
+                advisor_prompt_sha256=None,
+                generation_seed=None,
+                persona_basis=[],
+                observed_behavior=[],
+                persona_behavior_assessment="",
+                performance_context="",
+            )
+        payload["artifact_sha256"] = canonical_sha256(
+            {key: value for key, value in payload.items() if key != "artifact_sha256"}
+        )
+        return payload
+
+    def test_general_advice_is_identical_and_has_no_personal_assessment(self) -> None:
+        artifact = self._load(self._general_payload())
+        self.assertEqual(artifact.advice_kind, "general")
+        self.assertEqual(len({message.message_body for message in artifact.messages}), 1)
+
+        payload = self._general_payload()
+        payload["messages"][0]["persona_basis"] = ["개인 성향"]
+        payload["artifact_sha256"] = canonical_sha256(
+            {key: value for key, value in payload.items() if key != "artifact_sha256"}
+        )
+        with self.assertRaisesRegex(ValueError, "personalized assessments"):
+            self._load(payload)
+
+    def test_general_advice_rejects_different_body_for_one_agent(self) -> None:
+        payload = self._general_payload()
+        body = "다른 조언"
+        payload["messages"][0]["message_body"] = body
+        payload["messages"][0]["message_body_sha256"] = hashlib.sha256(body.encode()).hexdigest()
+        payload["artifact_sha256"] = canonical_sha256(
+            {key: value for key, value in payload.items() if key != "artifact_sha256"}
+        )
+        with self.assertRaisesRegex(ValueError, "identical advice"):
+            self._load(payload)
+
     def test_assignment_is_reproducible_and_contains_full_unique_cohort(self) -> None:
         first = deterministic_advisor_agents(self.agent_ids)
         second = deterministic_advisor_agents(reversed(self.agent_ids))
@@ -113,6 +162,7 @@ class AdvisorArtifactTests(unittest.TestCase):
         agent_id = artifact.agent_ids[0]
         self.assertIsNone(artifact.message_for(agent_id, "2026-05-04/PM"))
         self.assertIsNotNone(artifact.message_for(agent_id, "2026-05-06/AM"))
+        self.assertIsNone(artifact.message_for(agent_id, "2026-05-06/PM"))
         self.assertIsNone(artifact.message_for("A999", "2026-05-06/AM"))
 
     def test_install_is_idempotent_and_reader_hides_note_until_turn_91(self) -> None:
@@ -127,6 +177,8 @@ class AdvisorArtifactTests(unittest.TestCase):
             self.assertIsNone(memory.get_advisor_note(agent_id, current_turn=90))
             note = memory.get_advisor_note(agent_id, current_turn=91)
             self.assertIn("담당 투자 어드바이저", note or "")
+            self.assertIsNone(memory.get_advisor_note(agent_id, current_turn=92))
+            self.assertIsNone(memory.get_recent_system_message(agent_id, current_turn=92))
             self.assertIsNone(memory.get_advisor_note("A999", current_turn=91))
 
 

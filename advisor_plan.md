@@ -78,6 +78,22 @@ Advisor ON과 OFF는 다음 항목이 같아야 한다.
 Advisor ON/OFF를 검증한다. Community 조건은 실행 전에 `on` 또는 `off`로
 명시하고 두 continuation 사이에서는 바꾸지 않는다.
 
+### 3.3 사용자 제공 general 조언 비교
+
+동일한 5월 4일 parent에서 `Advisor OFF`, `personalized Advisor ON`,
+`general Advisor ON`을 각각 fork한다. ON 두 조건은 모두 5월 6일 AM에만
+조언을 한 번 전달하고, 이후에는 갱신된 LTB를 사용한다. cohort 100명,
+뉴스·가격·Community 조건·메인 모델·seed·기간은 같게 둔다. 두 ON 조건에서
+달라지는 처치는 조언 본문뿐이다.
+
+- Personalized 정본: `outputs/advisor/advisor_comm_on_20260919/advisor_messages_100_final.json`
+- General 정본: `outputs/advisor/advisor_comm_on_20260919/advisor_messages_100_general.json`
+- General은 사용자 제공 동일 본문 419자를 100명 전원에게 전달한다. 개인별
+  평가나 생성 모델 호출을 주장하지 않으며, 두 JSON은 같은 9/23 parent의
+  상태 해시를 사용한다.
+- 5월 6일~7월 10일 비교에는 `rn_ab_sealed_to_20260722_v1`의 봉인 입력을
+  사용한다. 이 확장 기간의 결과는 기존 5월 29일 종료 설계와 구분한다.
+
 Community가 Advisor 효과를 증폭하거나 약화하는지도 연구하려면 동일 실험을
 Community OFF와 ON에 각각 적용해 다음 2×2를 구성한다.
 
@@ -231,7 +247,7 @@ Advisor 모델은 검증 가능한 다음 내부 JSON을 출력한다.
 `advice_body`뿐이고 나머지는 연구·감사 artifact로 보존한다.
 
 - 통보형이며 응답이나 재질문은 받지 않는다.
-- 한 에이전트당 한 번 생성하고 5월 6일 AM부터 동일한 불변 메모를 노출한다.
+- 한 에이전트당 한 번 생성하고 5월 6일 AM에만 불변 메모를 노출한다.
 - 본문은 1~500자다. 자동으로 자르지 않고 501자 이상이면 거부한다.
 - 관찰과 행동 지침을 포함한다.
 - 가장 중요한 판단 문제 하나를 적용 순간·확인 방법·정당한 예외와 함께 다룬다.
@@ -307,10 +323,11 @@ Advisor의 reasoning ON이 메인 에이전트의 reasoning-off 계약을 바꾸
 ## 7. 주입 위치와 인과 순서
 
 Advisor 메모는 LTB나 STB에 직접 덮어쓰지 않는다. 별도의 `advisor_note`
-컨텍스트로 관리하고 다음 두 단계에 같은 원문을 제공한다.
+컨텍스트로 관리하고 5월 6일 AM의 다음 단계에만 같은 원문을 제공한다.
 
 1. `market_analysis`
 2. `make_decision`
+3. `post-fill LTB`
 
 실행 순서는 유지한다.
 
@@ -320,13 +337,13 @@ Advisor 메모는 LTB나 STB에 직접 덮어쓰지 않는다. 별도의 `adviso
   → 이전 LTB + 현재 STB + advisor_note로 market analysis
   → market analysis + advisor_note로 decision
   → 실제 fill
-  → post-fill LTB
+  → 이전 LTB + 현재 STB + 실제 fill + advisor_note로 post-fill LTB
   → PM community
 ```
 
 따라서 5월 6일 AM의 STB는 아직 Advisor 메모를 보지 않는다. 같은 turn의 반영
-여부는 market analysis와 decision에서 검사한다. post-fill LTB와 다음 event의
-STB 변화는 후속 침투 또는 지속 효과로 측정한다.
+여부는 market analysis와 decision, post-fill LTB에서 검사한다. 이후 event에는
+Advisor 원문을 다시 제공하지 않고, 갱신된 LTB를 통한 지속 효과를 측정한다.
 
 Advisor OFF에서는 빈 안내문을 대신 넣지 않는다. Advisor block 자체가 렌더링되지
 않아야 한다.
@@ -349,7 +366,7 @@ valid_from_event_id, created_at
 
 - `message_type='advisor'`
 - 대상 100명에게 정확히 한 행
-- 5월 6일 AM부터 조회 가능
+- 5월 6일 AM에만 조회 가능
 - Advisor OFF에는 advisor 행 0개
 - 다른 system message가 생겨도 Advisor가 가려지지 않는 전용 조회
 - prompt trace에서 agent·event·advisor ID 연결 가능
@@ -393,7 +410,7 @@ fail-closed로 검증한다.
 - Advisor artifact에 고유한 전체 100명 존재
 - Advisor ON DB에 대상별 메시지 1건, 총 100건
 - Advisor OFF에는 advisor 메시지 0건
-- 5월 6일 AM부터 대상자의 analysis·decision prompt에 동일 메모 포함
+- 5월 6일 AM에만 대상자의 analysis·decision·post-fill LTB prompt에 동일 메모 포함
 - 본문 길이·금지 표현·cutoff·hash 검증 통과
 - 구조화 출력의 persona 근거와 행동 관찰이 실제 입력에 의해 뒷받침됨
 

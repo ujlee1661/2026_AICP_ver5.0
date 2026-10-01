@@ -19,7 +19,15 @@ if str(PROJECT_ROOT) not in sys.path:
 
 import config
 from twinmarket_kr.agents.news_agent import SealedNewsBundle
-from twinmarket_kr.advisor.artifact import AdvisorArtifact
+from twinmarket_kr.advisor.artifact import (
+    ADVISOR_ASSIGNMENT_NAMESPACE,
+    ADVISOR_ASSIGNMENT_SEED,
+    INTERACTIVE_ADVISOR_MODEL,
+    GENERAL_ADVISOR_MODEL,
+    AdvisorArtifact,
+    deterministic_advisor_agents,
+)
+from twinmarket_kr.advisor.case_builder import build_advisor_cases
 from twinmarket_kr.community.validation import can_author_community_post
 from twinmarket_kr.experiment_runtime import (
     EventCheckpointRuntime,
@@ -57,6 +65,82 @@ from twinmarket_kr.study_spec import (
     ResolvedStudyProfile,
     validate_integrated_study_profile,
 )
+
+
+def _validate_warm_parent_db_path(
+    parent_dir: Path, base_db: Path, parent_terminal: dict[str, Any]
+) -> None:
+    """Accept a byte-identical relocated parent without changing its records."""
+
+    recorded = Path(str(parent_terminal.get("runtime_db") or "")).resolve()
+    supplied = base_db.resolve()
+    if supplied == recorded:
+        return
+    local = (parent_dir / ".runtime" / "runtime_sim.db").resolve()
+    if (
+        supplied != local
+        or recorded.name != "runtime_sim.db"
+        or recorded.parent.name != ".runtime"
+        or recorded.parent.parent.name != parent_dir.name
+    ):
+        raise ExperimentCheckpointError(
+            "--base-db must be the parent segment canonical runtime DB"
+        )
+    metadata = _read_json_object(parent_dir / "run_metadata.json", "parent run metadata")
+    expected_hash = metadata.get("committed_database_sha256")
+    if not isinstance(expected_hash, str) or file_sha256(local) != expected_hash:
+        raise ExperimentCheckpointError("Relocated parent runtime DB hash differs")
+
+
+def _validate_interactive_advisor_source(
+    artifact: AdvisorArtifact,
+    *,
+    parent_dir: Path,
+    base_db: Path,
+    agents: list[dict[str, Any]],
+) -> None:
+    if artifact.model not in {INTERACTIVE_ADVISOR_MODEL, GENERAL_ADVISOR_MODEL}:
+        return
+    if any(message.source_run_id != parent_dir.name for message in artifact.messages):
+        raise ExperimentCheckpointError("Interactive advisor source run differs from warm parent")
+    signature = _read_json_object(parent_dir / "run_signature.json", "parent run signature")
+    payload = signature.get("signature_payload")
+    if not isinstance(payload, dict) or signature.get("signature_sha256") != canonical_sha256(payload):
+        raise ExperimentCheckpointError("Warm parent run signature hash differs")
+    parameters = payload.get("parameters")
+    if not isinstance(parameters, dict):
+        raise ExperimentCheckpointError("Warm parent run signature lacks parameters")
+    constraints = {
+        "decision_space": parameters.get("decision_space"),
+        "allow_hold": parameters.get("decision_space") != "buy_sell_only",
+        "minimum_order_quantity": parameters.get("min_order_unit", int(config.MIN_ORDER_UNIT)),
+        "transaction_fee_rate": parameters.get("commission_rate"),
+    }
+    selected = deterministic_advisor_agents(agent["agent_id"] for agent in agents)
+    cases = build_advisor_cases(
+        base_db,
+        agents=agents,
+        selected_agent_ids=selected,
+        runtime_constraints=constraints,
+    )
+    case_hashes = {case["agent_id"]: case["source_state_sha256"] for case in cases}
+    if any(
+        message.source_state_sha256 != case_hashes.get(message.agent_id)
+        for message in artifact.messages
+    ):
+        raise ExperimentCheckpointError("Interactive advisor source states differ from warm parent")
+    cases_payload = {
+        "artifact_type": "integrated_advisor_cases_v1",
+        "assignment_namespace": ADVISOR_ASSIGNMENT_NAMESPACE,
+        "assignment_seed": ADVISOR_ASSIGNMENT_SEED,
+        "source_run_id": parent_dir.name,
+        "source_runtime_db_sha256": file_sha256(base_db),
+        "source_cutoff_event_id": "2026-05-04/PM",
+        "selected_agent_ids": list(selected),
+        "cases": cases,
+    }
+    if canonical_sha256(cases_payload) != artifact.source_cases_sha256:
+        raise ExperimentCheckpointError("Interactive advisor source cases hash differs")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -822,8 +906,9 @@ async def _run(args: argparse.Namespace) -> Path:
         raise ExperimentCheckpointError(
             f"--max-agents exceeds the sealed cohort size {full_cohort_size}"
         )
+    advisor = None
     if args.advisor_artifact is not None:
-        AdvisorArtifact.load(
+        advisor = AdvisorArtifact.load(
             args.advisor_artifact,
             cohort_agent_ids=[str(agent["agent_id"]) for agent in sealed_agents],
         )
@@ -864,11 +949,9 @@ async def _run(args: argparse.Namespace) -> Path:
                     raise ExperimentCheckpointError(
                         "Warm parent must be a complete 90-event canonical segment"
                     )
-                parent_runtime = Path(str(parent_terminal.get("runtime_db") or "")).resolve()
-                if parent_runtime != Path(args.base_db).resolve():
-                    raise ExperimentCheckpointError(
-                        "--base-db must be the parent segment canonical runtime DB"
-                    )
+                _validate_warm_parent_db_path(
+                    parent_dir, Path(args.base_db), parent_terminal
+                )
                 validate_warm_experiment_base(
                     args.base_db,
                     expected_agent_ids=[str(agent["agent_id"]) for agent in agents],
@@ -876,6 +959,13 @@ async def _run(args: argparse.Namespace) -> Path:
                     boundary_date="2026-05-04",
                     community_mode=args.community_mode,
                 )
+                if advisor is not None:
+                    _validate_interactive_advisor_source(
+                        advisor,
+                        parent_dir=parent_dir,
+                        base_db=Path(args.base_db),
+                        agents=sealed_agents,
+                    )
             else:
                 validate_clean_experiment_base(
                     args.base_db,
