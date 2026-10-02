@@ -21,6 +21,10 @@ cat "$archive_dir/RUN_ID.ignored_logs.tar.zst.part-"* | zstd -d -c | tar -xf - -
 2026-07-10 PM and passed `scripts/99_validate.py --allow-segment`. Their
 validation reports are in `outputs/validation/`.
 
-`ADVISOR_MAIN_CONT_OFF_20260925` is the copied historical OFF run. Its metadata
-records 91 completed events through 2026-07-10 AM; a 2026-07-10 PM phase file
-exists, but the run is not marked complete. The archive preserves that state.
+`ADVISOR_MAIN_CONT_OFF_20260925` is the copied historical OFF run. Its
+checkpoint records all 92 events through 2026-07-10 PM as committed, and the
+committed DB hash matches that checkpoint. The PM agent-turn, fill, and
+community logs are present. `run_metadata.json` is stale at 91 events through
+AM, and `segment_complete.json` is absent. Thus the PM event completed, while
+final segment closeout and canonical validation were not recorded. The archive
+preserves this state without modifying the original run.

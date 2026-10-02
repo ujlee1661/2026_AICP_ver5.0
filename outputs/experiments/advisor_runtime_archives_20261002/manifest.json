@@ -91,7 +91,12 @@
           ]
         }
       },
+      "checkpoint_committed_database_sha256_matches": true,
+      "checkpoint_completed_events": 92,
+      "checkpoint_last_committed_event": "2026-07-10/PM",
+      "checkpoint_status": "segment_complete",
       "completed_events": 92,
+      "completed_events_source": "run_metadata.json",
       "last_completed_event": "2026-07-10/PM",
       "run_status": "segment_complete"
     },
@@ -204,7 +209,12 @@
           ]
         }
       },
+      "checkpoint_committed_database_sha256_matches": true,
+      "checkpoint_completed_events": 92,
+      "checkpoint_last_committed_event": "2026-07-10/PM",
+      "checkpoint_status": "running",
       "completed_events": 91,
+      "completed_events_source": "run_metadata.json",
       "last_completed_event": "2026-07-10/AM",
       "run_status": "running"
     },
@@ -297,7 +307,12 @@
           ]
         }
       },
+      "checkpoint_committed_database_sha256_matches": true,
+      "checkpoint_completed_events": 92,
+      "checkpoint_last_committed_event": "2026-07-10/PM",
+      "checkpoint_status": "segment_complete",
       "completed_events": 92,
+      "completed_events_source": "run_metadata.json",
       "last_completed_event": "2026-07-10/PM",
       "run_status": "segment_complete"
     }
