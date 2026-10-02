@@ -1,0 +1,305 @@
+{
+  "format": "tar.zst split into lexically ordered parts",
+  "part_max_bytes": 90000000,
+  "runs": {
+    "ADVISOR_GENERAL_20261001_TO_20260710": {
+      "archives": {
+        "ignored_logs": {
+          "archive_sha256": "d1a9b06d3fad1618dd633bcfd9b7178a17076b3192dc678fa2d173d920de8292",
+          "files": {
+            "agent_turns.jsonl": {
+              "bytes": 360722594,
+              "sha256": "7fc482cb182669ef9c03276620e907ed415205d3156f07f6260a76c134188063"
+            },
+            "community_events.jsonl": {
+              "bytes": 228120528,
+              "sha256": "0b564fe456ffb649ce796f76b491f17f04ae350b369739319595232894f157dc"
+            },
+            "community_interactions.csv": {
+              "bytes": 156394856,
+              "sha256": "4d2e879384a3674d3ddadd5f2eec5b6c2ee364d149f3292f4a129e64834c0b79"
+            },
+            "community_logs.csv": {
+              "bytes": 133621494,
+              "sha256": "183e6bfc8e017561bc931cbfe26634027b75e5591b4c020c9fd584ec75ad5a41"
+            },
+            "openrouter_calls.jsonl": {
+              "bytes": 246401065,
+              "sha256": "c68210b5c2bbf16a2cd11f6d09cf30c4b32d7a2e8f07162a0c1aec83a0dee977"
+            },
+            "traces/community_exposure_trace.jsonl": {
+              "bytes": 275477544,
+              "sha256": "636196d8fb92cc324284809a1509f89b7f718a3d06c864ed380a4d97303bcf36"
+            }
+          },
+          "parts": [
+            {
+              "bytes": 37470118,
+              "name": "ADVISOR_GENERAL_20261001_TO_20260710.ignored_logs.tar.zst.part-aa",
+              "sha256": "d1a9b06d3fad1618dd633bcfd9b7178a17076b3192dc678fa2d173d920de8292"
+            }
+          ]
+        },
+        "runtime": {
+          "archive_sha256": "282b311efbcb588ce357a243c5e14139b94d061e5aaad3f3e895c96ff266c7c7",
+          "files": {
+            "checkpoint.json": {
+              "bytes": 7882638,
+              "sha256": "c985132f665104e154f0cf3d9d2a6363af513cdb0302e6520afd1b6f25462150"
+            },
+            "committed.db": {
+              "bytes": 795959296,
+              "sha256": "2fbe6e9c2d69b08db1b47eb72a095be3953f91a187dd44f4f12901f5e0f997b4"
+            },
+            "response_journal.sqlite": {
+              "bytes": 1232023552,
+              "sha256": "22ccdb7f46e86850052b3090c274965a3f634679e48a68b0af76b73b7d628831"
+            },
+            "response_journal.sqlite-shm": {
+              "bytes": 65536,
+              "sha256": "28dd3e7afa10644c166668ba2c7f99b8f5892077f09beed089ea0cf3a62f6123"
+            },
+            "response_journal.sqlite-wal": {
+              "bytes": 17967352,
+              "sha256": "ccd2a5e15f2a73f2aec417ea0039cd560aab0c40b8cd1e3872f684b7e5d81082"
+            },
+            "runtime_sim.db": {
+              "bytes": 795959296,
+              "sha256": "2fbe6e9c2d69b08db1b47eb72a095be3953f91a187dd44f4f12901f5e0f997b4"
+            },
+            "runtime_sim.db.lock": {
+              "bytes": 10,
+              "sha256": "0a4c3756a1fa84f365b1ffdbe02731e6b6ba07ab1dfa16c8eadb1a86806f041f"
+            }
+          },
+          "parts": [
+            {
+              "bytes": 90000000,
+              "name": "ADVISOR_GENERAL_20261001_TO_20260710.runtime.tar.zst.part-aa",
+              "sha256": "4db5ed4385bff06cf36f066875325560b7f04e05acff67ccc124f646cd198d2c"
+            },
+            {
+              "bytes": 90000000,
+              "name": "ADVISOR_GENERAL_20261001_TO_20260710.runtime.tar.zst.part-ab",
+              "sha256": "21e51b802505b2f492a42ccddc6915ddad59f09db594d36cfaa594051675bd46"
+            },
+            {
+              "bytes": 744867,
+              "name": "ADVISOR_GENERAL_20261001_TO_20260710.runtime.tar.zst.part-ac",
+              "sha256": "ea67ad6c29445a549a91332d6b16cbcff06702bd06c5493385781e770843c0c4"
+            }
+          ]
+        }
+      },
+      "completed_events": 92,
+      "last_completed_event": "2026-07-10/PM",
+      "run_status": "segment_complete"
+    },
+    "ADVISOR_MAIN_CONT_OFF_20260925": {
+      "archives": {
+        "ignored_logs": {
+          "archive_sha256": "312c553b055e292710027671b8106e554de2ffcfc263d195a20d79e1e424e8f2",
+          "files": {
+            "agent_turns.jsonl": {
+              "bytes": 360449318,
+              "sha256": "1606ddab9f4d3dd546fa1eca553e4d4fc1be5b5114b5a103de91d9213baf203a"
+            },
+            "community_events.jsonl": {
+              "bytes": 227647301,
+              "sha256": "af98055e185a386c6f4a79b70de25911d92db516dc98e1177890d0f7a73c6f64"
+            },
+            "community_interactions.csv": {
+              "bytes": 154446260,
+              "sha256": "e3ee5429c6e452b53cc430bb8bdec09d837e723fab8caa779b28246ee8cb8ca6"
+            },
+            "community_logs.csv": {
+              "bytes": 133508991,
+              "sha256": "f42f66c5a05085d201fb8e8b9a7797ec6ec6fe26c4bda564fbb2a429dcd20e63"
+            },
+            "openrouter_calls.jsonl": {
+              "bytes": 245540955,
+              "sha256": "3439ff83cc6f68298665f6d9f23ea96e156ee1881025e45dc29918768a7048ae"
+            },
+            "traces/community_exposure_trace.jsonl": {
+              "bytes": 273509202,
+              "sha256": "4338474bbcf2d9c68ccd858b6793f97bf669e94e6783fd2519b6f4e6f923b18d"
+            }
+          },
+          "parts": [
+            {
+              "bytes": 37485709,
+              "name": "ADVISOR_MAIN_CONT_OFF_20260925.ignored_logs.tar.zst.part-aa",
+              "sha256": "312c553b055e292710027671b8106e554de2ffcfc263d195a20d79e1e424e8f2"
+            }
+          ]
+        },
+        "runtime": {
+          "archive_sha256": "6a84f3755c0e5918d5d76b45011d4b2cc70a7ee49669cf5c36ae42290c0d6610",
+          "files": {
+            "checkpoint.json": {
+              "bytes": 7883324,
+              "sha256": "a360b40e28ff4eb2e1265518deafdb7c7d46b1ce0d1dbcfb8ceb93bf7243c95f"
+            },
+            "committed.db": {
+              "bytes": 796086272,
+              "sha256": "5ad15074e267a0c83d95c8242c302536b553af228280ab8865a66cb08a71e6d6"
+            },
+            "committed.db-shm": {
+              "bytes": 32768,
+              "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+            },
+            "committed.db-wal": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "response_journal.before_20260926_fresh_0630pm.sqlite": {
+              "bytes": 1012670464,
+              "sha256": "b909d833266ed3940b596f9f790891a1e1a673c458ca0b8e6cc2ea14953b4ce8"
+            },
+            "response_journal.sqlite": {
+              "bytes": 1232228352,
+              "sha256": "08677ecef68f758db003e93051582760928a9cfe3fe65b077131976ce11f9225"
+            },
+            "response_journal.sqlite-shm": {
+              "bytes": 32768,
+              "sha256": "4d292c08e4d1112e37b5215e636beb355010d859771f2b6290a25627954c5bfc"
+            },
+            "response_journal.sqlite-wal": {
+              "bytes": 12446552,
+              "sha256": "b088f4eb0cae33c7245b4fbd4eaa70b4733eb917ba20b6188749e4879a8b1e29"
+            },
+            "runtime_sim.db": {
+              "bytes": 796086272,
+              "sha256": "5ad15074e267a0c83d95c8242c302536b553af228280ab8865a66cb08a71e6d6"
+            },
+            "runtime_sim.db-shm": {
+              "bytes": 32768,
+              "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb"
+            },
+            "runtime_sim.db-wal": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "runtime_sim.db.lock": {
+              "bytes": 10,
+              "sha256": "71255c0b43b3af5c565ef93d180972b19754a22e5424394afeea5054812f0a2f"
+            }
+          },
+          "parts": [
+            {
+              "bytes": 90000000,
+              "name": "ADVISOR_MAIN_CONT_OFF_20260925.runtime.tar.zst.part-aa",
+              "sha256": "08529985e1f40ada7b565daf38ddbc35bd8fda767f39d1a6372c04d64f24f735"
+            },
+            {
+              "bytes": 90000000,
+              "name": "ADVISOR_MAIN_CONT_OFF_20260925.runtime.tar.zst.part-ab",
+              "sha256": "6ade7bba780c8a50b3650211aacb8eaa4ffee4e646166f5b2b42ae0a44de9f69"
+            },
+            {
+              "bytes": 53777324,
+              "name": "ADVISOR_MAIN_CONT_OFF_20260925.runtime.tar.zst.part-ac",
+              "sha256": "69ab4e2ce1e42e5b94e9b45f5cd7c63d20ed684ec8a04356f04d7cc02574b03b"
+            }
+          ]
+        }
+      },
+      "completed_events": 91,
+      "last_completed_event": "2026-07-10/AM",
+      "run_status": "running"
+    },
+    "ADVISOR_PERSONAL_20261001_TO_20260710": {
+      "archives": {
+        "ignored_logs": {
+          "archive_sha256": "4b6c1ae5baadd8214a3e3901343aa6afc97031f5f6e5912740f5afc9f7fde857",
+          "files": {
+            "agent_turns.jsonl": {
+              "bytes": 359551670,
+              "sha256": "98d83431c7b24f6dc91e8e83b8b000450435ab672852e503ac29c94e22581762"
+            },
+            "community_events.jsonl": {
+              "bytes": 225858427,
+              "sha256": "f97de376e931f0ba3633f1280c68290e41b33b3ad823ed7d0b1e7db1e495ee8f"
+            },
+            "community_interactions.csv": {
+              "bytes": 155436757,
+              "sha256": "afa63aea37c7bf7c5a5fe4c26f0eb10b25ec02d8cd1f8269aa11004d799a12d9"
+            },
+            "community_logs.csv": {
+              "bytes": 132630731,
+              "sha256": "e243bdef68d721d9f94208af7afd9cd631e2e90f402c53915b4e2ad01e6e0e83"
+            },
+            "openrouter_calls.jsonl": {
+              "bytes": 246753171,
+              "sha256": "b759e2b9faceb0cd1dfd4f17e861397bc8c7052e12ecdb4896fb02337ab86966"
+            },
+            "traces/community_exposure_trace.jsonl": {
+              "bytes": 274503725,
+              "sha256": "666135186bd5f5d23da5faf0ebea69297d60a74d63ecfcfb1cc48e2b60bd2c0b"
+            }
+          },
+          "parts": [
+            {
+              "bytes": 37335414,
+              "name": "ADVISOR_PERSONAL_20261001_TO_20260710.ignored_logs.tar.zst.part-aa",
+              "sha256": "4b6c1ae5baadd8214a3e3901343aa6afc97031f5f6e5912740f5afc9f7fde857"
+            }
+          ]
+        },
+        "runtime": {
+          "archive_sha256": "c50b85d629ef81d22f589182c377c378eadda7e868d78ea1b850d51c9ed3646c",
+          "files": {
+            "checkpoint.json": {
+              "bytes": 7882207,
+              "sha256": "ec6461d6c613607c008f7bdf80794442025946664e14432a40e6739dd2be692e"
+            },
+            "committed.db": {
+              "bytes": 795275264,
+              "sha256": "9671fb72f0aa195ca9ac876bbed09ae99dfc90eeebaf246c51282f35cc6ddbd9"
+            },
+            "response_journal.sqlite": {
+              "bytes": 1227825152,
+              "sha256": "d1d049b52043e2d2c79685a3ffb8c9ac342bed5733090bc472192c18e872acb5"
+            },
+            "response_journal.sqlite-shm": {
+              "bytes": 65536,
+              "sha256": "cc1cb4985aa473b6bf3eb3e31b68ba6213f6b54c1fc20bd646bb812bd239d78c"
+            },
+            "response_journal.sqlite-wal": {
+              "bytes": 18173352,
+              "sha256": "6b10d388499112aa25e29f80804343cfbadbd0c7bb036b10145631fc27f71f26"
+            },
+            "runtime_sim.db": {
+              "bytes": 795275264,
+              "sha256": "9671fb72f0aa195ca9ac876bbed09ae99dfc90eeebaf246c51282f35cc6ddbd9"
+            },
+            "runtime_sim.db.lock": {
+              "bytes": 10,
+              "sha256": "1be632df9bd73f9f643ac2aca8bd42fd90b454d7a44382711ff146a9acb1e0b9"
+            }
+          },
+          "parts": [
+            {
+              "bytes": 90000000,
+              "name": "ADVISOR_PERSONAL_20261001_TO_20260710.runtime.tar.zst.part-aa",
+              "sha256": "b1ed263ebfa7532687edbef25fc66b414fa92e566f33e2900a48a5ad5d0c5942"
+            },
+            {
+              "bytes": 90000000,
+              "name": "ADVISOR_PERSONAL_20261001_TO_20260710.runtime.tar.zst.part-ab",
+              "sha256": "12f1c45c9b9e0588f2cb3500b5ed73a3b51e2da3f6815132dc34a70889f930cc"
+            },
+            {
+              "bytes": 381453,
+              "name": "ADVISOR_PERSONAL_20261001_TO_20260710.runtime.tar.zst.part-ac",
+              "sha256": "283f1022b28b03ddfa33cddb08b44f8b01e5a34534f6b422f596a225e80c9635"
+            }
+          ]
+        }
+      },
+      "completed_events": 92,
+      "last_completed_event": "2026-07-10/PM",
+      "run_status": "segment_complete"
+    }
+  }
+}
