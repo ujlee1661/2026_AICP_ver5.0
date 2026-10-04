@@ -50071,13 +50071,13 @@
   "response_journal": {
     "logical_counts": {
       "accepted/committed": 49129,
-      "accepted/pending": 397,
+      "accepted/pending": 398,
       "pending/pending": 8
     },
     "path": "/Users/leeyujeong/2026_AICP_ver5.0/outputs/experiments/ADVISOR_GENERAL_REPEAT_20261002_TO_20260710/.runtime/response_journal.sqlite",
     "physical_attempt_counts": {
-      "accepted": 49526,
-      "rejected": 2820
+      "accepted": 49527,
+      "rejected": 2828
     },
     "schema_version": "integrated-response-journal-v1",
     "stage_labels": [

@@ -1,0 +1,3 @@
+﻿run_id,date,turn,subturn,stock_code,submitted_orders,announced_price,close_price,volume,fill_count
+advisor_general_302char_offline_preflight_20261002,2026-05-06,91,am,005930,100,254000.0,254000.0,999,100
+advisor_general_302char_offline_preflight_20261002,2026-05-06,92,pm,005930,100,266000.0,266000.0,994,100
