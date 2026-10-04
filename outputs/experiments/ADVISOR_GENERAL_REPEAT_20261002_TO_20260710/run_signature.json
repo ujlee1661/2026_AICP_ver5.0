@@ -20,10 +20,10 @@
     "code": {
       "files": {
         "/Users/leeyujeong/2026_AICP_ver5.0/config.py": "8edb5702a900c68bead41e1ba28e7fbe189422c0a430753dd414e8cdd5646209",
-        "/Users/leeyujeong/2026_AICP_ver5.0/scripts/05_run_simulation.py": "2e003932cec756657ab93931c525c1d0ae166587892f77e826fbdb3f7b8a1536",
+        "/Users/leeyujeong/2026_AICP_ver5.0/scripts/05_run_simulation.py": "51dbeda412a7e0a975e5876fa376ee1ab263aa4fc344be9310d9da20534861b8",
         "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/__init__.py": "3171dd4242fa1945324cb85febd1d60931afdfa534febcde2cd556ff0616a6b7",
         "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/advisor/__init__.py": "41543232524fed41ad7ec1344e56e6993521a5ec08f0c7e2d37e355975cef572",
-        "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/advisor/artifact.py": "eaf32f5a56a70c4e7067fc6bbfd49d2cfb802f14c45fee0e331a91a5a00610ae",
+        "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/advisor/artifact.py": "f21e3a08e13a7dbe9d4837aa580b3dd52f1101e1ca6d31ec720d22d8a87fd23d",
         "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/advisor/case_builder.py": "7b81903a9b1c0e49256e6dd9457d7a1a77872bf76c064397c0882a00ef909615",
         "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/advisor/generation.py": "4dcc32663af00711aea9ae8285960dc3c37124516bfdba0538e25cdb9a392a72",
         "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/agents/__init__.py": "de1fc994e2cd2bc333d3db306be7bbf963385adc12d576e715b2032510f06809",
@@ -36,7 +36,7 @@
         "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/community/agent.py": "10ca10fb3ce373b07a39ddd65c8c14d661e14863acd88850bdecc68f719fb33b",
         "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/community/posting.py": "aa18253e7294496df01365ed1cafff2d0d5ce83f41daa0c5fd3e3e3df31449fe",
         "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/community/reading.py": "fc83a6416d98bfb40368a5d204f578a47cbf830339ddf8c89e328789835c2bf2",
-        "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/community/thinking.py": "bed1cdafa8a033d9dc5b7ac6a00d02f3bed0a198a9da0706872c0e348d5a54ea",
+        "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/community/thinking.py": "b2cde8cba916b61de9b48d56b084a1a6a202b33d5663d7575fa29ace3869ea60",
         "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/community/validation.py": "9b10bf662c650d24b0c270641a098a356f8eddd85d6e4f0d8a1f2b2625475ac9",
         "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/core/__init__.py": "034ee7cc2f7305c3b48d76ffae946e88d2fb98f000e6b9ce2aed7a8c47811302",
         "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/core/collect_context.py": "da5d106b754240d33e7d9e9d345567f7e78c1365a371a0bf52ba86aa4a8554b9",
@@ -65,7 +65,7 @@
         "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/simulation.py": "508d2dc52eea98ede704eb857a14ca82d4722eeb13f5244fbd6f9a25c1241f25",
         "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/study_spec.py": "dfb8d69949e118d494d236f48d5b3a1e61b0338fd22dbf38bd96822e13928975"
       },
-      "tree_sha256": "18d4b310226a61954c0326a1f88c2b8dac49d2a2ecdc90180ca10ec5c89d0db6"
+      "tree_sha256": "a7862c722f7aa884443495345cc28ea814b5beedf69738645be6c97aa3602f9f"
     },
     "initial_database_sha256": "8b003e1bee937164b30987cdc9fb5c09d612b74b90a6f1636c6d219d04e8cd5d",
     "parameters": {
@@ -658,5 +658,5 @@
       }
     }
   },
-  "signature_sha256": "72b9af2d1b03b4d1a2c5f8278ef51ab53c38ddcbf21d94a001683c8175a023f7"
+  "signature_sha256": "e214f6209197260b3930d611cf99a605158e2504507246b5299939872ec0bde5"
 }

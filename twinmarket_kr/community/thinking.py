@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import json
 import re
 from typing import Any
@@ -116,6 +117,11 @@ async def community_thinking(
     )
     if journal_call is not None and journal_call.replay is not None:
         content = dict(journal_call.replay.response)
+        _canonicalize_claim_source_ids(
+            content,
+            allowed_sources=allowed_sources,
+            quotable_registry=quotable_registry,
+        )
         errors = _community_thinking_errors(
             content,
             allowed_sources=allowed_sources,
@@ -174,7 +180,13 @@ async def community_thinking(
         except (json.JSONDecodeError, TypeError, ValueError) as exc:
             raw = None
             parse_errors.append(f"strict_json_object:{exc}")
-        content = dict(raw or {})
+        journal_response = copy.deepcopy(raw) if raw is not None else None
+        content = copy.deepcopy(raw) if raw is not None else {}
+        _canonicalize_claim_source_ids(
+            content,
+            allowed_sources=allowed_sources,
+            quotable_registry=quotable_registry,
+        )
         errors = [
             *parse_errors,
             *_community_thinking_errors(
@@ -187,7 +199,9 @@ async def community_thinking(
             if journal_call is not None:
                 if raw is None:
                     raise AssertionError("validated response has no raw JSON object")
-                journal_call.accept(raw, attempt, client=client)
+                if journal_response is None:
+                    raise AssertionError("validated response has no journal JSON object")
+                journal_call.accept(journal_response, attempt, client=client)
             content = materialize_claim_quotes(
                 content, quotable_registry=quotable_registry
             )
@@ -226,6 +240,45 @@ async def community_thinking(
     raise CommunityValidationError(
         f"community thinking did not satisfy the structured claim contract after {validation_attempts} attempts"
     )
+
+
+def _canonicalize_claim_source_ids(
+    content: dict[str, Any],
+    *,
+    allowed_sources: dict[str, str],
+    quotable_registry: dict[int, dict[str, Any]],
+) -> None:
+    """Expand shortened post IDs to canonical recipient exposure relations."""
+
+    allowed = tuple(sorted(allowed_sources))
+    claims = content.get("claims")
+    if not isinstance(claims, list):
+        return
+    for claim in claims:
+        if not isinstance(claim, dict):
+            continue
+        raw_ids = claim.get("source_exposure_ids")
+        canonical: list[str] = []
+        if isinstance(raw_ids, list):
+            for raw_id in raw_ids:
+                if not isinstance(raw_id, str) or not raw_id:
+                    continue
+                matches = (
+                    [raw_id]
+                    if raw_id in allowed_sources
+                    else [item for item in allowed if item.startswith(raw_id + ":")]
+                )
+                for exposure_id in matches:
+                    if exposure_id not in canonical:
+                        canonical.append(exposure_id)
+        ref = claim.get("supporting_quote_ref")
+        if isinstance(ref, int) and not isinstance(ref, bool) and ref in quotable_registry:
+            for exposure_id in quotable_registry[ref]["exposure_ids"]:
+                exposure_id = str(exposure_id)
+                if exposure_id not in canonical:
+                    canonical.append(exposure_id)
+        if canonical:
+            claim["source_exposure_ids"] = canonical
 
 
 # 인용을 자유 문자열 복사로 받으면 reasoning-off 경량 모델이 구조적으로

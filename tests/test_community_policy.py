@@ -1078,6 +1078,46 @@ class CommunityThinkingQuoteContractTests(unittest.TestCase):
             claim["source_exposure_ids"],
         )
 
+    def test_short_post_id_is_expanded_before_validation(self) -> None:
+        from twinmarket_kr.community.thinking import (
+            _canonicalize_claim_source_ids,
+            _community_thinking_errors,
+            _format_best_posts,
+        )
+
+        registry: dict[int, dict] = {}
+        _, sources = _format_best_posts(
+            self._community_log()["best_posts_seen"],
+            agent_id="A999",
+            source_turn=2,
+            source_date="2026-02-27",
+            delivery_turn=3,
+            quotable_registry=registry,
+        )
+        payload = self._payload(
+            2,
+            sources=["community:2026-02-27:t2:post:1"],
+        )
+        _canonicalize_claim_source_ids(
+            payload,
+            allowed_sources=sources,
+            quotable_registry=registry,
+        )
+        self.assertEqual(
+            payload["claims"][0]["source_exposure_ids"],
+            [
+                "community:2026-02-27:t2:post:1:best_full_body:A999:delivered_t3"
+            ],
+        )
+        self.assertEqual(
+            _community_thinking_errors(
+                payload,
+                allowed_sources=sources,
+                quotable_registry=registry,
+            ),
+            [],
+        )
+
     def test_overlap_post_refs_carry_both_exposure_relations(self) -> None:
         from twinmarket_kr.community.thinking import (
             _format_best_posts,
