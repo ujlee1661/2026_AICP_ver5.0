@@ -98,4 +98,6 @@ outputs/experiments/**/community_events.jsonl
 outputs/experiments/**/openrouter_calls.jsonl
 outputs/experiments/**/community_logs.csv
 outputs/experiments/**/community_interactions.csv
-outputs/experiments/**/traces/community_exposure_trace.jsonl
+outputs/experiments/**/traces/community_exposure_trace.jsonl**/.runtime/
+*.lock
+tmp/**/.runtime/

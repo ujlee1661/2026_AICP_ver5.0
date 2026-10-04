@@ -4,6 +4,13 @@
 /tmp/advisor_personalized_v5_offline_e2e_20261003/.runtime/runtime_sim.db filter=lfs diff=lfs merge=lfs -text
 /tmp/advisor_repeat_offline_e2e_20261002/.runtime/committed.db filter=lfs diff=lfs merge=lfs -text
 /tmp/advisor_repeat_offline_e2e_20261002/.runtime/runtime_sim.db filter=lfs diff=lfs merge=lfs -text
+/outputs/experiments/ADVISOR_GENERAL_20261001_TO_20260710/runtime.tar.gz filter=lfs diff=lfs merge=lfs -text
+/outputs/experiments/ADVISOR_GENERAL_20261001_TO_20260710/traces/community_exposure_trace.jsonl filter=lfs diff=lfs merge=lfs -text
+/outputs/experiments/ADVISOR_GENERAL_REPEAT_20261002_TO_20260710/traces/community_exposure_trace.jsonl filter=lfs diff=lfs merge=lfs -text
+/outputs/experiments/ADVISOR_MAIN_CONT_OFF_20260925/traces/community_exposure_trace.jsonl filter=lfs diff=lfs merge=lfs -text
+/outputs/experiments/ADVISOR_MAIN_FROM_SCRATCH_PARENT_20260923/traces/community_exposure_trace.jsonl filter=lfs diff=lfs merge=lfs -text
+/outputs/experiments/ADVISOR_PERSONALIZED_V5_20261003_TO_20260710/traces/community_exposure_trace.jsonl filter=lfs diff=lfs merge=lfs -text
+/outputs/experiments/ADVISOR_PERSONAL_20261001_TO_20260710/traces/community_exposure_trace.jsonl filter=lfs diff=lfs merge=lfs -text
 outputs/experiments/ADVISOR_GENERAL_20261001_TO_20260710/runtime.tar.gz filter=lfs diff=lfs merge=lfs -text
 tmp/*/.runtime/*.db filter=lfs diff=lfs merge=lfs -text
 outputs/experiments/*/traces/community_exposure_trace.jsonl filter=lfs diff=lfs merge=lfs -text
