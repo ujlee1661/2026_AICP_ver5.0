@@ -13,6 +13,8 @@ from twinmarket_kr.advisor.artifact import (
     ADVISOR_MODEL,
     ADVISOR_PROVIDER,
     ADVISOR_REASONING_POLICY,
+    CODEX_ADVISOR_MODEL,
+    CODEX_ADVISOR_PROVIDER,
     GENERAL_ADVISOR_MODEL,
     GENERAL_ADVISOR_PROVIDER,
     AdvisorArtifact,
@@ -112,6 +114,20 @@ class AdvisorArtifactTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "personalized assessments"):
             self._load(payload)
 
+    def test_codex_personalized_artifact_preserves_generation_provenance(self) -> None:
+        payload = self._payload()
+        payload.update(
+            model=CODEX_ADVISOR_MODEL,
+            provider=CODEX_ADVISOR_PROVIDER,
+            source_cases_sha256="c" * 64,
+        )
+        payload["artifact_sha256"] = canonical_sha256(
+            {key: value for key, value in payload.items() if key != "artifact_sha256"}
+        )
+        artifact = self._load(payload)
+        self.assertEqual(artifact.source_cases_sha256, "c" * 64)
+        self.assertEqual(artifact.messages[0].advisor_prompt_sha256, "b" * 64)
+
     def test_general_advice_rejects_different_body_for_one_agent(self) -> None:
         payload = self._general_payload()
         body = "다른 조언"
@@ -157,12 +173,14 @@ class AdvisorArtifactTests(unittest.TestCase):
             ):
                 self._load(self._payload(body))
 
-    def test_message_is_visible_only_from_the_sealed_event(self) -> None:
+    def test_message_is_visible_from_the_sealed_event_onward(self) -> None:
         artifact = self._load(self._payload())
         agent_id = artifact.agent_ids[0]
         self.assertIsNone(artifact.message_for(agent_id, "2026-05-04/PM"))
-        self.assertIsNotNone(artifact.message_for(agent_id, "2026-05-06/AM"))
-        self.assertIsNone(artifact.message_for(agent_id, "2026-05-06/PM"))
+        first = artifact.message_for(agent_id, "2026-05-06/AM")
+        self.assertIsNotNone(first)
+        self.assertEqual(artifact.message_for(agent_id, "2026-05-06/PM"), first)
+        self.assertEqual(artifact.message_for(agent_id, "2026-07-10/PM"), first)
         self.assertIsNone(artifact.message_for("A999", "2026-05-06/AM"))
 
     def test_install_is_idempotent_and_reader_hides_note_until_turn_91(self) -> None:
@@ -177,7 +195,8 @@ class AdvisorArtifactTests(unittest.TestCase):
             self.assertIsNone(memory.get_advisor_note(agent_id, current_turn=90))
             note = memory.get_advisor_note(agent_id, current_turn=91)
             self.assertIn("담당 투자 어드바이저", note or "")
-            self.assertIsNone(memory.get_advisor_note(agent_id, current_turn=92))
+            self.assertEqual(memory.get_advisor_note(agent_id, current_turn=92), note)
+            self.assertEqual(memory.get_advisor_note(agent_id, current_turn=182), note)
             self.assertIsNone(memory.get_recent_system_message(agent_id, current_turn=92))
             self.assertIsNone(memory.get_advisor_note("A999", current_turn=91))
 

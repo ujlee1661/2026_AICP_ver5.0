@@ -1,0 +1,19 @@
+{
+  "run_id": "ADVISOR_GENERAL_REPEAT_20261002_TO_20260710",
+  "agent_count": 100,
+  "date_count": 1,
+  "information_mode": "pre_close_cutoff",
+  "decision_space": "buy_sell_only",
+  "turn_offset": 136,
+  "day_offset": 68,
+  "global_turn_start": 137,
+  "global_turn_end": 138,
+  "phases": [
+    "am"
+  ],
+  "community_delivery_summary": null,
+  "outcome_finalized": false,
+  "right_censored_outcome_count": 0,
+  "schedule_complete": false,
+  "log_dir": "/Users/leeyujeong/2026_AICP_ver5.0/outputs/experiments/ADVISOR_GENERAL_REPEAT_20261002_TO_20260710"
+}

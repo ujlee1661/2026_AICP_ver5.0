@@ -1,0 +1,8 @@
+{
+  "checkpoint_status": "paused",
+  "error": "8 agent turn(s) failed after all parallel tasks settled: CommunityValidationError: community thinking did not satisfy the structured claim contract after 10 attempts; CommunityValidationError: community thinking did not satisfy the structured claim contract after 10 attempts; CommunityValidationError: community thinking did not satisfy the structured claim contract after 10 attempts; CommunityValidationError: community thinking did not satisfy the structured claim contract after 10 attempts; CommunityValidationError: community thinking did not satisfy the structured claim contract after 10 attempts",
+  "error_type": "ParallelTaskError",
+  "event_id": "2026-07-07/AM",
+  "restart_command": "rerun the identical command with --resume and --run-dir /Users/leeyujeong/2026_AICP_ver5.0/outputs/experiments/ADVISOR_GENERAL_REPEAT_20261002_TO_20260710",
+  "status": "paused"
+}

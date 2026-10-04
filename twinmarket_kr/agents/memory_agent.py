@@ -1859,17 +1859,17 @@ class MemoryAgent:
         return f"시스템 알림: {row['date']} turn {row['turn']} {row['message_type']}. {row['message']}"
 
     def get_advisor_note(self, agent_id: str, *, current_turn: int) -> str | None:
-        """Return the advisor treatment only for its first eligible event."""
+        """Return the sealed advisor treatment at every eligible event."""
 
         with connect(self.db_path) as conn:
             rows = conn.execute(
                 """
                 SELECT turn, date, message
                 FROM agent_system_messages
-                WHERE agent_id = ? AND message_type = 'advisor' AND turn = ?
+                WHERE agent_id = ? AND message_type = 'advisor' AND turn < ?
                 ORDER BY turn DESC, message_id DESC
                 """,
-                (agent_id, int(current_turn) - 1),
+                (agent_id, int(current_turn)),
             ).fetchall()
         if len(rows) > 1:
             raise ValueError(f"multiple advisor messages found for {agent_id}")

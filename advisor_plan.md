@@ -1,6 +1,6 @@
 # Advisor 실험 설계안 v3
 
-> 갱신일: 2026-09-19  
+> 갱신일: 2026-10-02
 > 상태: 연구 설계 문서. 유료 API 호출이나 본실험 승인을 뜻하지 않는다.
 
 ## 1. 핵심 연구 아이디어
@@ -8,7 +8,8 @@
 삼성전자 단일 종목 시뮬레이션에서 동일한 100명 에이전트를 먼저
 2026-02-27부터 2026-05-04까지 실행한다. 그때까지 생성된 각 에이전트의
 persona, belief, 거래 및 포트폴리오 기록만 사용해 전체 100명 모두에게
-개인화된 Advisor 메모를 한 번 전달한다.
+개인화된 Advisor 메모를 한 번 생성한다. 2026-05-06 AM부터 매 거래 판단마다
+같은 메모 전문을 이전 LTB와 함께 제공한다.
 
 이후 2026-05-06부터 2026-05-29까지 시뮬레이션을 이어서 실행하고, Advisor
 메모를 받은 세계와 받지 않은 세계를 비교한다. 핵심 질문은 다음 두 가지다.
@@ -37,7 +38,7 @@ Advisor는 매수·매도 방향이나 미래 수익률을 예측하지 않는�
 | 사후 관찰 구간 | 2026-05-06 ~ 2026-05-29, 17거래일·34 events |
 | 전체 실행 구간 | 2026-02-27 ~ 2026-05-29, 62거래일·124 events |
 | Advisor 대상 | 전체 100명 전원 |
-| Advisor 형식 | 대화 없는 1회성 통보 |
+| Advisor 형식 | 대화 없는 고정 메모, 유효 시점 이후 매 거래 판단에 재노출 |
 
 2026-05-05는 휴장일이다. 여기서 “약 3주”는 봉인 거래일 기준으로 5월 6일부터
 5월 29일까지를 뜻한다. 기간 입력은 이미 생성된 다음 profile을 사용한다.
@@ -81,8 +82,9 @@ Advisor ON/OFF를 검증한다. Community 조건은 실행 전에 `on` 또는 `o
 ### 3.3 사용자 제공 general 조언 비교
 
 동일한 5월 4일 parent에서 `Advisor OFF`, `personalized Advisor ON`,
-`general Advisor ON`을 각각 fork한다. ON 두 조건은 모두 5월 6일 AM에만
-조언을 한 번 전달하고, 이후에는 갱신된 LTB를 사용한다. cohort 100명,
+`general Advisor ON`을 각각 fork한다. ON 두 조건은 모두 5월 6일 AM부터
+매 거래 판단의 분석·결정·post-fill LTB 입력에 갱신된 LTB와 같은 조언 전문을
+함께 제공한다. cohort 100명,
 뉴스·가격·Community 조건·메인 모델·seed·기간은 같게 둔다. 두 ON 조건에서
 달라지는 처치는 조언 본문뿐이다.
 
@@ -93,6 +95,8 @@ Advisor ON/OFF를 검증한다. Community 조건은 실행 전에 `on` 또는 `o
   상태 해시를 사용한다.
 - 5월 6일~7월 10일 비교에는 `rn_ab_sealed_to_20260722_v1`의 봉인 입력을
   사용한다. 이 확장 기간의 결과는 기존 5월 29일 종료 설계와 구분한다.
+- 기존 5월 6일~7월 10일 ON 결과는 최초 AM에만 조언을 노출한 과거 실행이다.
+  매 거래 판단 재노출 정책의 효과를 평가하려면 새 실행이 필요하다.
 
 Community가 Advisor 효과를 증폭하거나 약화하는지도 연구하려면 동일 실험을
 Community OFF와 ON에 각각 적용해 다음 2×2를 구성한다.
@@ -247,7 +251,7 @@ Advisor 모델은 검증 가능한 다음 내부 JSON을 출력한다.
 `advice_body`뿐이고 나머지는 연구·감사 artifact로 보존한다.
 
 - 통보형이며 응답이나 재질문은 받지 않는다.
-- 한 에이전트당 한 번 생성하고 5월 6일 AM에만 불변 메모를 노출한다.
+- 한 에이전트당 한 번 생성하고, 5월 6일 AM부터 매 거래 판단에 같은 불변 메모를 노출한다.
 - 본문은 1~500자다. 자동으로 자르지 않고 501자 이상이면 거부한다.
 - 관찰과 행동 지침을 포함한다.
 - 가장 중요한 판단 문제 하나를 적용 순간·확인 방법·정당한 예외와 함께 다룬다.
@@ -341,9 +345,9 @@ Advisor 메모는 LTB나 STB에 직접 덮어쓰지 않는다. 별도의 `adviso
   → PM community
 ```
 
-따라서 5월 6일 AM의 STB는 아직 Advisor 메모를 보지 않는다. 같은 turn의 반영
-여부는 market analysis와 decision, post-fill LTB에서 검사한다. 이후 event에는
-Advisor 원문을 다시 제공하지 않고, 갱신된 LTB를 통한 지속 효과를 측정한다.
+STB 단계에는 Advisor 메모를 직접 제공하지 않는다. 5월 6일 AM부터 모든
+event의 market analysis, decision, post-fill LTB 입력에는 이전 LTB와 함께
+동일한 Advisor 원문을 제공한다.
 
 Advisor OFF에서는 빈 안내문을 대신 넣지 않는다. Advisor block 자체가 렌더링되지
 않아야 한다.
@@ -366,7 +370,7 @@ valid_from_event_id, created_at
 
 - `message_type='advisor'`
 - 대상 100명에게 정확히 한 행
-- 5월 6일 AM에만 조회 가능
+- 5월 6일 AM부터 모든 후속 event에서 같은 원문 조회 가능
 - Advisor OFF에는 advisor 행 0개
 - 다른 system message가 생겨도 Advisor가 가려지지 않는 전용 조회
 - prompt trace에서 agent·event·advisor ID 연결 가능
@@ -410,7 +414,7 @@ fail-closed로 검증한다.
 - Advisor artifact에 고유한 전체 100명 존재
 - Advisor ON DB에 대상별 메시지 1건, 총 100건
 - Advisor OFF에는 advisor 메시지 0건
-- 5월 6일 AM에만 대상자의 analysis·decision·post-fill LTB prompt에 동일 메모 포함
+- 5월 6일 AM과 모든 후속 event의 analysis·decision·post-fill LTB prompt에 동일 메모 포함
 - 본문 길이·금지 표현·cutoff·hash 검증 통과
 - 구조화 출력의 persona 근거와 행동 관찰이 실제 입력에 의해 뒷받침됨
 
@@ -534,7 +538,7 @@ Advisor 없는 동일 continuation 두 개를 먼저 돌리는 dummy fork는 반
 | 메인 시뮬레이션 seed | 기존 StudySpec과 동일한 `2` |
 | 사전 구간 | 2026-02-27 ~ 2026-05-04 |
 | 사후 구간 | 2026-05-06 ~ 2026-05-29 |
-| 형식 | 1회성 통보형 개인화 메모 |
+| 형식 | 1회 생성·등록한 통보형 메모를 매 거래 판단에 재노출 |
 | 입력 cutoff | 2026-05-04 PM까지 |
 | 목표 | 시장·원장·제약에 근거한 최적 판단 절차, 수익률 예측 아님 |
 | 맞춤화 원칙 | 조언 내용은 persona의 목표·분석 방식·위험 성향에 맞게 개인화하되, 말투는 일반적이고 중립적인 LLM 문체를 사용하며 persona 일치를 결론보다 우선하지 않음 |

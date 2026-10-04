@@ -1,0 +1,27 @@
+{
+  "artifact_type": "advisor_analysis_cutoff_v1",
+  "created_at_utc": "2026-10-04T02:39:19.519375+00:00",
+  "cutoff_event_id": "2026-07-08/AM",
+  "cutoff_event_state_sha256": "cc6822f4e04afd20ea8a12bf1b4e2c234499e74dc3b14d805a8a14430599974c",
+  "cutoff_turn": 177,
+  "excluded_committed_event_id": "2026-07-08/PM",
+  "files_sha256": {
+    "am_lineage.csv": "9736140fc35e26f39dc9bf2ef0e19c63026b232e31fc2b5f0a82700d7c40a28b",
+    "decisions_post_advisor.csv": "c47cd860239020a38a35218b7a3dffc29d349848fb231aba1d68eeb5dc6da00d",
+    "fills_post_advisor.csv": "3919c1534d83523fe7db98d592738339c10d967d90edc1f93b8e2012c73d3a42",
+    "portfolio_asof.csv": "a2683d65446bfeeca6f19ad6fa1dd50063dcf9bfba985ad6268d50e801404c13"
+  },
+  "portfolio_mean_return_from_turn_zero": 0.12619479,
+  "portfolio_mean_total_value": 384229345.0,
+  "row_counts": {
+    "am_lineage": 100,
+    "decisions_post_advisor": 8700,
+    "fills_post_advisor": 8700,
+    "portfolio_asof": 100
+  },
+  "source_committed_db_sha256": "7c0eedf6d5c849dd2099b662809faf6a5d44d9badb887ba33c699cede7e707fc",
+  "source_run_id": "ADVISOR_PERSONALIZED_V5_20261003_TO_20260710",
+  "source_run_signature_sha256": "d9df8238a751d0f216d27fff98bbe360b9020c4b002286d9d574892c0de82990",
+  "source_run_status": "paused",
+  "status": "derived_as_of_cutoff"
+}

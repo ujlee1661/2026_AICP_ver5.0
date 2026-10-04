@@ -1,0 +1,52 @@
+2026-05-19 turns=109/110 phases=am am_orders=100 am_volume=30420 pm=skipped_or_loaded
+log_dir=/Users/leeyujeong/2026_AICP_ver5.0/outputs/experiments/ADVISOR_GENERAL_20261001_TO_20260710
+  community_phase done: 70 agents, 5 best posts
+2026-05-19 turns=109/110 phases=pm,community am=skipped pm_orders=100 pm_volume=28002
+log_dir=/Users/leeyujeong/2026_AICP_ver5.0/outputs/experiments/ADVISOR_GENERAL_20261001_TO_20260710
+2026-05-20 turns=111/112 phases=am am_orders=100 am_volume=23795 pm=skipped_or_loaded
+log_dir=/Users/leeyujeong/2026_AICP_ver5.0/outputs/experiments/ADVISOR_GENERAL_20261001_TO_20260710
+  community_phase done: 70 agents, 5 best posts
+2026-05-20 turns=111/112 phases=pm,community am=skipped pm_orders=100 pm_volume=26929
+log_dir=/Users/leeyujeong/2026_AICP_ver5.0/outputs/experiments/ADVISOR_GENERAL_20261001_TO_20260710
+Traceback (most recent call last):
+  File "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/simulation.py", line 512, in guarded_turn
+    return await run_agent_turn(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/core/daily_cycle.py", line 271, in run_agent_turn
+    community_reflection = await community_thinking(
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/community/thinking.py", line 226, in community_thinking
+    raise CommunityValidationError(
+twinmarket_kr.community.validation.CommunityValidationError: community thinking did not satisfy the structured claim contract after 10 attempts
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/leeyujeong/2026_AICP_ver5.0/scripts/05_run_simulation.py", line 1256, in <module>
+    main()
+  File "/Users/leeyujeong/2026_AICP_ver5.0/scripts/05_run_simulation.py", line 1251, in main
+    run_dir = asyncio.run(_run(args))
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/Users/leeyujeong/2026_AICP_ver5.0/scripts/05_run_simulation.py", line 1154, in _run
+    raise terminal_error
+  File "/Users/leeyujeong/2026_AICP_ver5.0/scripts/05_run_simulation.py", line 1042, in _run
+    last_phase_result = await run_simulation(
+                        ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/simulation.py", line 136, in wrapped
+    return await function(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/simulation.py", line 574, in run_simulation
+    am_results = await _run_subturn(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/Users/leeyujeong/2026_AICP_ver5.0/twinmarket_kr/simulation.py", line 956, in _run_subturn
+    raise ParallelTaskError(
+twinmarket_kr.experiment_runtime.ParallelTaskError: 1 agent turn(s) failed after all parallel tasks settled: CommunityValidationError: community thinking did not satisfy the structured claim contract after 10 attempts

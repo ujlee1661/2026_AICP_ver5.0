@@ -1,0 +1,244 @@
+{
+  "mean_parent_return": 0.09252696,
+  "return_group_sizes": {
+    "at_or_above_mean": 47,
+    "below_mean": 53
+  },
+  "response_definition": "Among biases diagnosed by 2026-05-04, the personalized post-period opportunity-adjusted measure is lower than the general-advice measure; D uses the profit-loss sell-rate gap. This measures behavior, not whether the agent read or obeyed advice.",
+  "overall_definition": "clear_improvement: at least one diagnosed bias improved and none worsened; mixed: both improved and worsened; clear_worsening: at least one worsened and none improved",
+  "overall_counts": {
+    "mixed": 21,
+    "no_prior_diagnosis": 14,
+    "clear_worsening": 35,
+    "clear_improvement": 28,
+    "unchanged": 2
+  },
+  "overall_clear_improvement_by_return": {
+    "high_return": {
+      "improved": 8,
+      "n": 39,
+      "rate": 0.20512820512820512
+    },
+    "below_mean_return": {
+      "improved": 20,
+      "n": 47,
+      "rate": 0.425531914893617
+    },
+    "risk_difference_high_minus_low": -0.2204037097654119,
+    "fisher_two_sided_p_exploratory": 0.03833262295879761
+  },
+  "improved_vs_pre_and_general_by_return": {
+    "high_return": {
+      "improved": 4,
+      "n": 39,
+      "rate": 0.10256410256410256
+    },
+    "below_mean_return": {
+      "improved": 14,
+      "n": 47,
+      "rate": 0.2978723404255319
+    },
+    "risk_difference_high_minus_low": -0.19530823786142934,
+    "fisher_two_sided_p_exploratory": 0.03394619058096796
+  },
+  "bias_response": {
+    "M": {
+      "diagnosed": 43,
+      "personal_vs_general": {
+        "worsened": 16,
+        "improved": 25,
+        "unchanged": 2
+      },
+      "personal_vs_pre": {
+        "improved": 19,
+        "worsened": 23,
+        "unchanged": 1
+      },
+      "return_group_test": {
+        "high_return": {
+          "improved": 15,
+          "n": 21,
+          "rate": 0.7142857142857143
+        },
+        "below_mean_return": {
+          "improved": 10,
+          "n": 22,
+          "rate": 0.45454545454545453
+        },
+        "risk_difference_high_minus_low": 0.25974025974025977,
+        "fisher_two_sided_p_exploratory": 0.12426406331085192
+      },
+      "improved_agent_ids": [
+        "A003",
+        "A005",
+        "A006",
+        "A007",
+        "A015",
+        "A016",
+        "A023",
+        "A025",
+        "A027",
+        "A029",
+        "A030",
+        "A034",
+        "A035",
+        "A044",
+        "A053",
+        "A056",
+        "A064",
+        "A066",
+        "A070",
+        "A071",
+        "A074",
+        "A083",
+        "A093",
+        "A095",
+        "A100"
+      ]
+    },
+    "D": {
+      "diagnosed": 50,
+      "personal_vs_general": {
+        "improved": 24,
+        "worsened": 26
+      },
+      "personal_vs_pre": {
+        "worsened": 32,
+        "improved": 18
+      },
+      "return_group_test": {
+        "high_return": {
+          "improved": 8,
+          "n": 25,
+          "rate": 0.32
+        },
+        "below_mean_return": {
+          "improved": 16,
+          "n": 25,
+          "rate": 0.64
+        },
+        "risk_difference_high_minus_low": -0.32,
+        "fisher_two_sided_p_exploratory": 0.04647993597471809
+      },
+      "improved_agent_ids": [
+        "A001",
+        "A007",
+        "A008",
+        "A011",
+        "A013",
+        "A014",
+        "A016",
+        "A021",
+        "A022",
+        "A023",
+        "A024",
+        "A025",
+        "A026",
+        "A027",
+        "A032",
+        "A034",
+        "A035",
+        "A039",
+        "A041",
+        "A065",
+        "A069",
+        "A077",
+        "A078",
+        "A086"
+      ]
+    },
+    "S": {
+      "diagnosed": 44,
+      "personal_vs_general": {
+        "improved": 13,
+        "unchanged": 4,
+        "worsened": 27
+      },
+      "personal_vs_pre": {
+        "improved": 36,
+        "unchanged": 3,
+        "worsened": 5
+      },
+      "return_group_test": {
+        "high_return": {
+          "improved": 5,
+          "n": 21,
+          "rate": 0.23809523809523808
+        },
+        "below_mean_return": {
+          "improved": 8,
+          "n": 23,
+          "rate": 0.34782608695652173
+        },
+        "risk_difference_high_minus_low": -0.10973084886128365,
+        "fisher_two_sided_p_exploratory": 0.5176526498137388
+      },
+      "improved_agent_ids": [
+        "A001",
+        "A014",
+        "A017",
+        "A019",
+        "A027",
+        "A028",
+        "A030",
+        "A035",
+        "A045",
+        "A079",
+        "A089",
+        "A091",
+        "A093"
+      ]
+    }
+  },
+  "clear_improvement_agent_ids": [
+    "A007",
+    "A008",
+    "A011",
+    "A015",
+    "A016",
+    "A017",
+    "A019",
+    "A021",
+    "A023",
+    "A024",
+    "A025",
+    "A026",
+    "A027",
+    "A028",
+    "A030",
+    "A032",
+    "A035",
+    "A039",
+    "A045",
+    "A065",
+    "A069",
+    "A074",
+    "A078",
+    "A079",
+    "A086",
+    "A089",
+    "A091",
+    "A100"
+  ],
+  "improved_vs_pre_and_general_agent_ids": [
+    "A007",
+    "A008",
+    "A016",
+    "A017",
+    "A019",
+    "A021",
+    "A024",
+    "A026",
+    "A028",
+    "A030",
+    "A032",
+    "A039",
+    "A045",
+    "A074",
+    "A079",
+    "A086",
+    "A089",
+    "A091"
+  ],
+  "status": "exploratory observational proxy within simulated agents; advisor exposure is not direct evidence of compliance"
+}

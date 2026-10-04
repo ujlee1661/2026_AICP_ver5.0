@@ -19,6 +19,8 @@ ADVISOR_PROVIDER = "alibaba"
 ADVISOR_REASONING_POLICY = {"enabled": True, "exclude": False}
 INTERACTIVE_ADVISOR_MODEL = "Codex (interactive authored advice)"
 INTERACTIVE_ADVISOR_PROVIDER = "OpenAI"
+CODEX_ADVISOR_MODEL = "Codex"
+CODEX_ADVISOR_PROVIDER = "OpenAI"
 GENERAL_ADVISOR_MODEL = "User (provided general advice)"
 GENERAL_ADVISOR_PROVIDER = "manual"
 ADVISOR_FORBIDDEN_BODY_PHRASES = (
@@ -181,7 +183,7 @@ class AdvisorArtifact:
 
     def message_for(self, agent_id: str, event_id: str) -> AdvisorMessage | None:
         for message in self.messages:
-            if message.agent_id == agent_id and event_id == message.valid_from_event_id:
+            if message.agent_id == agent_id and event_id >= message.valid_from_event_id:
                 return message
         return None
 
@@ -212,6 +214,10 @@ class AdvisorArtifact:
             raw.get("model") == INTERACTIVE_ADVISOR_MODEL
             and raw.get("provider") == INTERACTIVE_ADVISOR_PROVIDER
         )
+        codex_generated = (
+            raw.get("model") == CODEX_ADVISOR_MODEL
+            and raw.get("provider") == CODEX_ADVISOR_PROVIDER
+        )
         user_general = (
             raw.get("model") == GENERAL_ADVISOR_MODEL
             and raw.get("provider") == GENERAL_ADVISOR_PROVIDER
@@ -222,6 +228,10 @@ class AdvisorArtifact:
         if authored:
             if raw.get("reasoning_policy") is not None:
                 raise ValueError("authored advisor must not claim a generation reasoning policy")
+        elif codex_generated:
+            if raw.get("reasoning_policy") != ADVISOR_REASONING_POLICY:
+                raise ValueError("Codex advisor reasoning policy differs")
+        if authored or codex_generated:
             source_cases_hash = _nonempty_text(
                 raw.get("source_cases_sha256"), "source_cases_sha256"
             )

@@ -23,6 +23,7 @@ from twinmarket_kr.advisor.artifact import (
     ADVISOR_ASSIGNMENT_NAMESPACE,
     ADVISOR_ASSIGNMENT_SEED,
     INTERACTIVE_ADVISOR_MODEL,
+    CODEX_ADVISOR_MODEL,
     GENERAL_ADVISOR_MODEL,
     AdvisorArtifact,
     deterministic_advisor_agents,
@@ -99,7 +100,7 @@ def _validate_interactive_advisor_source(
     base_db: Path,
     agents: list[dict[str, Any]],
 ) -> None:
-    if artifact.model not in {INTERACTIVE_ADVISOR_MODEL, GENERAL_ADVISOR_MODEL}:
+    if artifact.model not in {INTERACTIVE_ADVISOR_MODEL, CODEX_ADVISOR_MODEL, GENERAL_ADVISOR_MODEL}:
         return
     if any(message.source_run_id != parent_dir.name for message in artifact.messages):
         raise ExperimentCheckpointError("Interactive advisor source run differs from warm parent")
@@ -170,7 +171,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--advisor-mode",
         choices=("off", "on"),
         default="off",
-        help="Enable the sealed one-time advisor treatment for all 100 cohort agents.",
+        help="Expose each sealed advisor message at every eligible event for all 100 cohort agents.",
     )
     parser.add_argument(
         "--advisor-artifact",
